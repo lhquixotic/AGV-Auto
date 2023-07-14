@@ -44,9 +44,13 @@ void SerialCom::runAlgorithm() {
   if(sp.isOpen()){
     // Read serial data
     std::string data;
+    ROS_INFO_STREAM("serial is open");
     data = sp.readline();
+    
     data = trim(data);
-
+    // ROS_INFO_STREAM(data);
+    std::cout<<data;
+    
     // Decode data
     sentence.sentence = data;
     sentence.header.frame_id = "/drivers/serial_info";
