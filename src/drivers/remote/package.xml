@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>serial_com</name>
+  <name>remote</name>
   <version>0.0.0</version>
-  <description>Simple serial_com node, that inputs "cone detections" and outputs array of points</description>
+  <description>Simple remote node, that inputs "cone detections" and outputs array of points</description>
   <maintainer email="killasipilin@gmail.com">chentairan</maintainer>
   <license>TODO</license>
 

@@ -9,7 +9,8 @@ SerialCom::SerialCom(ros::NodeHandle &nh) : nh_(nh) {
 };
 
 // Getters
-nmea_msgs::Sentence SerialCom::getSerialInfo(){return sentence;}
+// nmea_msgs::Sentence SerialCom::getSerialInfo(){return sentence;}
+common_msgs::SerialMsg SerialCom::getSerialInfo(){return serial_msg;}
 
 // Setters
 void SerialCom::setSerialParameters(const Para &msg){
@@ -29,7 +30,7 @@ void SerialCom::initializeSerial(){
     sp.open();
   }
   catch(serial::IOException &e){
-    ROS_WARN_STREAM("Fail to open serial!");
+    ROS_WARN_STREAM("Fail to open serial port!");
   }
 
   if(sp.isOpen()){
@@ -42,19 +43,55 @@ void SerialCom::initializeSerial(){
 
 void SerialCom::runAlgorithm() {
   if(sp.isOpen()){
-    // Read serial data
-    std::string data;
-    ROS_INFO_STREAM("serial is open");
-    data = sp.readline();
+    // read byte number from buffer
+    size_t n = sp.available();
+    if (n!=0){
+      uint8_t buffer[1024];
+      // read data
+      n = sp.read(buffer,n);
+
+      serial_msg.header.frame_id = '/drivers/serial_msg';
+      serial_msg.header.stamp = ros::Time::now();
+      // serial_msg.data = buffer;
+      serial_msg.length = n;
+
+      for(int i=0;i<n;i++){
+        // uint dd = buffer[i];
+        serial_msg.data[i] = buffer[i];
+        // serial_msg.data[i] = dd;
+        // std::cout << std::hex << (buffer[i] & 0xff) << " ";
+        // std::cout << std::hex << (dd & 0xff) << " ";
+        // serial_msg.data[i] = buffer[i];
+      }
+      // std::cout << std::endl;
+      sp.write(buffer,n);
+
+    }
+    // // serial test
+    // if (sp.available()){
+    //   ROS_INFO_STREAM("SP is avaiblab");
+    //   std_msgs::String result;
+    //   result.data = sp.read(sp.available());
+    //   ROS_INFO_STREAM("Read:"<<result.data);
+    // }
+
+    // // Read serial data
+    // std::string data;
+    // ROS_INFO_STREAM("serial is open");
+    // data = sp.readline();
+
+    // std::string test_data;
+    // test_data = "lll lll ";
+    // ROS_INFO_STREAM("test data: "<<test_data);
     
-    data = trim(data);
+    // data = trim(data); 
     // ROS_INFO_STREAM(data);
-    std::cout<<data;
+    // // std::cout<<data;
     
     // Decode data
-    sentence.sentence = data;
-    sentence.header.frame_id = "/drivers/serial_info";
-    sentence.header.stamp = ros::Time::now();
+    // sentence.sentence = data;
+    // sentence.header.frame_id = "/drivers/serial_info";
+    // sentence.header.stamp = ros::Time::now();
   }
   else{
     ROS_WARN_STREAM("Serial not opened.");

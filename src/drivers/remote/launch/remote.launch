@@ -1,0 +1,5 @@
+<launch>
+    <node name="remote_node" pkg="remote" type="remote" output="screen">
+        <rosparam command="load" file="$(find remote)/config/remote.yaml" /> <!--Load parameters from config files-->
+    </node>
+</launch>

@@ -3,6 +3,7 @@
 
 #include "std_msgs/String.h"
 #include "nmea_msgs/Sentence.h"
+#include "common_msgs/SerialMsg.h"
 #include "serial/serial.h"
 
 namespace ns_serial_com {
@@ -19,7 +20,8 @@ class SerialCom {
   SerialCom(ros::NodeHandle &nh);
 
   // Getters
-  nmea_msgs::Sentence getSerialInfo();
+  // nmea_msgs::Sentence getSerialInfo();
+  common_msgs::SerialMsg getSerialInfo();
 
   // Setters
   void setSerialParameters(const Para &msg);
@@ -33,7 +35,8 @@ class SerialCom {
   ros::NodeHandle &nh_;
   Para serial_para;
   serial::Serial sp;
-  nmea_msgs::Sentence sentence;
+  // nmea_msgs::Sentence sentence;
+  common_msgs::SerialMsg serial_msg;
   std::string &trim(std::string &s);
 };
 }

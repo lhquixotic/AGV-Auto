@@ -1,0 +1,5 @@
+remote_signal_topic_name: /drivers/remote/signals
+
+remote_control_topic_name: /drivers/remote/control
+
+node_rate: 20   # [Herz]

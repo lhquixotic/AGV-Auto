@@ -51,6 +51,7 @@ void SerialComHandle::loadParameters() {
   if (!nodeHandle_.param("node_rate", node_rate_, 1)) {
     ROS_WARN_STREAM("Did not load node_rate. Standard value is: " << node_rate_);
   }
+  ROS_INFO_STREAM("[Serial Params] rate: "<<node_rate_);
   nodeHandle_.param("baud",serial_para_.baud,115200);
   nodeHandle_.param<std::string>("port",serial_para_.port,"ttyTHS2");
   ROS_INFO_STREAM("[Serial Parameters] port: "<<serial_para_.port
@@ -62,7 +63,8 @@ void SerialComHandle::subscribeToTopics() {// No topics to subscribe
 
 void SerialComHandle::publishToTopics() {
   ROS_INFO("publish to topics");
-  serialInfoPublisher_ = nodeHandle_.advertise<nmea_msgs::Sentence>(serial_info_topic_name_, 1);
+  // serialInfoPublisher_ = nodeHandle_.advertise<nmea_msgs::Sentence>(serial_info_topic_name_, 1);
+  serialInfoPublisher_ = nodeHandle_.advertise<common_msgs::SerialMsg>(serial_info_topic_name_, 1);
 }
 
 void SerialComHandle::run() {

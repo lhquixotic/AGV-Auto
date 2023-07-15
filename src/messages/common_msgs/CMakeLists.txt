@@ -25,6 +25,8 @@ add_message_files(DIRECTORY msg
     VirtualVehicleState.msg
     ControlState.msg
     Trigger.msg
+    SerialMsg.msg
+    RemoteControl.msg
 )
 
 generate_messages(

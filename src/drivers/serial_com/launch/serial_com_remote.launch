@@ -2,7 +2,7 @@
     <arg name="port" default="/dev/ttyTHS1"/>
     <arg name="baud" default="115200"/>
     <arg name="rate" default="51"/>
-    <arg name="name" default="/drivers/serial_info"/>
+    <arg name="name" default="/drivers/remote/signals"/>
 
     <node name="serial_com_node" pkg="serial_com" type="serial_com" output="screen">
         <param name="port" value="$(arg port)"/>
