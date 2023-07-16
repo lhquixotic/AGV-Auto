@@ -17,12 +17,15 @@ Cansend::Cansend(ros::NodeHandle &nh) : nh_(nh) {
   id_0x0C040B2A->SetconSta(0.0);
   id_0x0C040B2A->SetcontrolScheme(0.0);
 
+  id_0x0001=new ID_0x0001();
+  
   loop_number = 0;
 };
 
 Cansend::~Cansend(){
   delete id_0x04EF8480;
   delete id_0x0C040B2A;
+  delete id_0x0001;
 }
 
 // Getters
@@ -56,6 +59,7 @@ void Cansend::runAlgorithm() {
     int control_mode = 0;
     int target_acc_pedal = 0;
     int target_brk_pedal = 0;
+    
     if (para.test_brk_pedal > 0){
       control_mode = 1;
       target_brk_pedal = para.test_brk_pedal;

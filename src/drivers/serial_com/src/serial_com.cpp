@@ -35,6 +35,11 @@ void SerialCom::initializeSerial(){
 
   if(sp.isOpen()){
     ROS_INFO("Serial initialized success!");
+    if(serial_para.device=="rfid"){
+      uint8_t init_msg[] = {0x02,0x07,0x07,0x4a,0xcf,0xa1,0x00,0x05,0x01,0x5a,0x7a,0x03};
+      ser.write(init_msg,12); 
+      ROS_INFO("[Serial Com] RFID device, initialization message sent!")
+    }
   }
   else{
     ROS_WARN("Serial initialization failed, not open!");
@@ -50,7 +55,7 @@ void SerialCom::runAlgorithm() {
       // read data
       n = sp.read(buffer,n);
 
-      serial_msg.header.frame_id = '/drivers/serial_msg';
+      serial_msg.header.frame_id = 'serial';
       serial_msg.header.stamp = ros::Time::now();
       // serial_msg.data = buffer;
       serial_msg.length = n;

@@ -25,9 +25,11 @@
 #include "common_msgs/ChassisControl.h"
 #include "ID_0x04EF8480.h"
 #include "ID_0x0C040B2A.h"
+#include "ID_0x0001.h"
 
 extern ID_0x04EF8480 *id_0x04EF8480;
 extern ID_0x0C040B2A *id_0x0C040B2A;
+extern ID_0x0001 *id_0x0001;
 namespace ns_cansend {
 
 struct Para{

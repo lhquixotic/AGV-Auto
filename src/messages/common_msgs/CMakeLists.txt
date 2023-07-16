@@ -27,6 +27,7 @@ add_message_files(DIRECTORY msg
     Trigger.msg
     SerialMsg.msg
     RemoteControl.msg
+    MagneticSignal.msg
 )
 
 generate_messages(

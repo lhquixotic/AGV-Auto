@@ -53,9 +53,11 @@ void SerialComHandle::loadParameters() {
   }
   ROS_INFO_STREAM("[Serial Params] rate: "<<node_rate_);
   nodeHandle_.param("baud",serial_para_.baud,115200);
-  nodeHandle_.param<std::string>("port",serial_para_.port,"ttyTHS2");
+  nodeHandle_.param<std::string>("port",serial_para_.port,"ttyTHS1");
+  nodeHandle_.param<std::string>("device",serial_para_.device,"remote");
   ROS_INFO_STREAM("[Serial Parameters] port: "<<serial_para_.port
-                <<", baud: "<<serial_para_.baud);
+                <<", baud: "<<serial_para_.baud
+                <<", device: "<<serial_para_.device);
 }
 
 void SerialComHandle::subscribeToTopics() {// No topics to subscribe

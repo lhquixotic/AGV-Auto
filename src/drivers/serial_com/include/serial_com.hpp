@@ -11,6 +11,7 @@ namespace ns_serial_com {
 struct Para{
   int baud;
   std::string port;
+  std::string device;
 };
 
 class SerialCom {

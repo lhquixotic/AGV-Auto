@@ -1,0 +1,12 @@
+# Subscriber
+remote_control_topic_name: /drivers/remote/control
+
+rfid_signal_topic_name: /drivers/rfid/signal
+
+magnetic_signal_topic_name: /perception/magnetic
+
+# Publisher
+control_command_topic_name: /control_cmd
+
+# control parameters
+node_rate: 50   # [Herz]
