@@ -1,31 +1,24 @@
 #include <ros/ros.h>
 #include "cansend.hpp"
 #include <sstream>
-ID_0x04EF8480 *id_0x04EF8480;
-ID_0x0C040B2A *id_0x0C040B2A;
+
+MagneticReq *magnetic_req;
+SteerControl *steer_control;
 
 namespace ns_cansend {
 // Constructor
 Cansend::Cansend(ros::NodeHandle &nh) : nh_(nh) {
-  id_0x04EF8480=new ID_0x04EF8480();
-  id_0x04EF8480->SetconDegCmd(0.0);
-  id_0x04EF8480->SetcomControlCmd(0.0);
-  id_0x04EF8480->SetconRtCmd(0.0);
 
-  id_0x0C040B2A=new ID_0x0C040B2A();
-  id_0x0C040B2A->SetconAccReq(0.0);
-  id_0x0C040B2A->SetconSta(0.0);
-  id_0x0C040B2A->SetcontrolScheme(0.0);
-
-  id_0x0001=new ID_0x0001();
+  magnetic_req=new MagneticReq();
+  steer_control=new SteerControl();
   
   loop_number = 0;
+  steer_send_times = para.test_steer_angle;
 };
 
 Cansend::~Cansend(){
-  delete id_0x04EF8480;
-  delete id_0x0C040B2A;
-  delete id_0x0001;
+  delete magnetic_req;
+  delete steer_control;
 }
 
 // Getters
@@ -40,61 +33,66 @@ can_msgs::Frame Cansend::getFrame(protocol *frame) {
 }
 
 // Setters
-void Cansend::setChassisControl(common_msgs::ChassisControl msg) {
-  chassis_control_cmd = msg;
+void Cansend::setChassisControl(autoware_msgs::ControlCommandStamped msg) {
+  ccs = msg;
 }
 void Cansend::setParameters(const Para &msg){
   para = msg;
 }
 
 void Cansend::runAlgorithm() {
+  // ROS_WARN_STREAM("steer: "<<steer_send_times);
   if(para.send_mode == 0){
-    //test mode
-    id_0x04EF8480->SetconDegCmd(para.test_steer_angle);
-    id_0x04EF8480->SetcomControlCmd(1);
-    id_0x04EF8480->SetconRtCmd(para.setup_steer_speed);
-
-    id_0x0C040B2A->SetconAccReq(0);
-    id_0x0C040B2A->SetconSta(loop_number);
-    int control_mode = 0;
-    int target_acc_pedal = 0;
-    int target_brk_pedal = 0;
-    
-    if (para.test_brk_pedal > 0){
-      control_mode = 1;
-      target_brk_pedal = para.test_brk_pedal;
+    if(steer_send_times>0){//left +
+      steer_send_times = steer_send_times - 1;
+      steer_control->sendLeftReq();
+      // ROS_INFO("left turn");
     }else{
-      if (para.test_acc_pedal > 0){
-        control_mode = 2;
-        target_acc_pedal = para.test_acc_pedal;
+      if (steer_send_times<0){//right - 
+        steer_send_times = steer_send_times + 1;
+        steer_control->sendRightReq();
+        // ROS_INFO("right turn");
+      }else{
+        steer_control->setNullMsg();
+        // no operation
       }
     }
-    id_0x0C040B2A->SetcontrolScheme(control_mode);
-    id_0x0C040B2A->SetAccPedOpenReq(target_acc_pedal);
-    id_0x0C040B2A->SetBrkPedOpenReq(target_brk_pedal);
+
   }else{
-    //autonomous driving mode
-    id_0x04EF8480->SetconDegCmd(chassis_control_cmd.steer_angle);
-    id_0x04EF8480->SetcomControlCmd(1);
-    id_0x04EF8480->SetconRtCmd(para.setup_steer_speed);
-
-    id_0x0C040B2A->SetconAccReq(0);
-    id_0x0C040B2A->SetconSta(loop_number);
-    int control_mode = 0;
-    int target_acc_pedal = 0;
-    int target_brk_pedal = 0;
-    if (chassis_control_cmd.acc_pedal_open_request > 0){
-      control_mode = 1;
-      target_brk_pedal = chassis_control_cmd.acc_pedal_open_request;
+    if (ccs.cmd.steering_angle>0.1){
+      std::cout << "turn left: " << ccs.cmd.steering_angle;
+      steer_control->sendLeftReq();
     }else{
-      if (chassis_control_cmd.brk_pedal_open_request > 0){
-        control_mode = 2;
-        target_acc_pedal = chassis_control_cmd.brk_pedal_open_request;
+      if (ccs.cmd.steering_angle<-0.1){
+        std::cout << "turn right: " << ccs.cmd.steering_angle;
+        steer_control->sendRightReq();
+      }
+      else{
+        steer_control->setNullMsg();
       }
     }
-    id_0x0C040B2A->SetcontrolScheme(control_mode);
-    id_0x0C040B2A->SetAccPedOpenReq(target_acc_pedal);
-    id_0x0C040B2A->SetBrkPedOpenReq(target_brk_pedal);
+    //autonomous driving mode
+    // id_0x04EF8480->SetconDegCmd(chassis_control_cmd.steer_angle);
+    // id_0x04EF8480->SetcomControlCmd(1);
+    // id_0x04EF8480->SetconRtCmd(para.setup_steer_speed);
+
+    // id_0x0C040B2A->SetconAccReq(0);
+    // id_0x0C040B2A->SetconSta(loop_number);
+    // int control_mode = 0;
+    // int target_acc_pedal = 0;
+    // int target_brk_pedal = 0;
+    // if (chassis_control_cmd.acc_pedal_open_request > 0){
+    //   control_mode = 1;
+    //   target_brk_pedal = chassis_control_cmd.acc_pedal_open_request;
+    // }else{
+    //   if (chassis_control_cmd.brk_pedal_open_request > 0){
+    //     control_mode = 2;
+    //     target_acc_pedal = chassis_control_cmd.brk_pedal_open_request;
+    //   }
+    // }
+    // id_0x0C040B2A->SetcontrolScheme(control_mode);
+    // id_0x0C040B2A->SetAccPedOpenReq(target_acc_pedal);
+    // id_0x0C040B2A->SetBrkPedOpenReq(target_brk_pedal);
   }
 
   if (loop_number >= 16){

@@ -3,8 +3,9 @@
     <include file="$(find socketcan_bridge)/launch/socketcan_bridge.launch"></include>
     <!-- <include file = "$(find canparse)/launch/canparse.launch"></include> -->
     <include file = "$(find cansend)/launch/cansend.launch"></include>
-    <!-- <include file = "$(find serial_com)/launch/serial_com.launch"></include> -->
-    <!-- <include file = "$(find gps)/launch/gps.launch"></include> -->
+    <include file = "$(find serial_com)/launch/serial_com_remote.launch"></include>
+    <include file = "$(find remote)/launch/remote.launch"></include>
+    <include file = "$(find control)/launch/control.launch"></include>
 
     <!-- localization -->
     <!-- <include file = "$(find localization_adapter)/launch/localization_adapter.launch"></include> -->

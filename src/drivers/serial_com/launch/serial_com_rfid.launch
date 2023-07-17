@@ -1,5 +1,5 @@
 <launch>
-    <arg name="port" default="/dev/ttyTHS2"/>
+    <arg name="port" default="/dev/ttyTHS1"/>
     <arg name="baud" default="115200"/>
     <arg name="rate" default="50"/>
     <arg name="name" default="/drivers/rfid/signals"/>

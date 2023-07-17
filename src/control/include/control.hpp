@@ -35,22 +35,23 @@ class Control {
 
   // Setters
   void setRemoteControl(const common_msgs::RemoteControl &msg);
-  void setRdifSignal(const common_msgs::SerialMsg &msg);
+  void setRfidSignal(const common_msgs::SerialMsg &msg);
   void setMagneticSignal(const common_msgs::MagneticSignal &msg);
 
   void setPidParameters(const Pid_para &msg);
-  void setPurePursuitParameters(const Pure_pursuit_para &msg);
   void setControlParameters(const Para &msg);
+
+
+  // signal flags
+  bool remoteControlFlag;
+  bool rfidSignalFlag;
+  bool magneticSignalFlag;
 
   // Methods
   void runAlgorithm();
   void initializeController();
   void latControlUpdate();
   void longControlUpdate();
-  bool finalWaypointsFlag = false;
-  bool vehicleDynamicStateFlag = false;
-  bool v2vInfoFlag = false;
-  bool utmPoseFlag = false;
 
  private:
 
@@ -61,8 +62,9 @@ class Control {
 
   common_msgs::RemoteControl remote_control;
   common_msgs::SerialMsg rfid_signal;
-  int rfid_stop_flag;
+  int rfid_stop;
   common_msgs::MagneticSignal magnetic_signal;
+
 
   // for start-stop state machine
   bool auto_control_enable;

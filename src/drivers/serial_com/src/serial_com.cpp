@@ -37,8 +37,8 @@ void SerialCom::initializeSerial(){
     ROS_INFO("Serial initialized success!");
     if(serial_para.device=="rfid"){
       uint8_t init_msg[] = {0x02,0x07,0x07,0x4a,0xcf,0xa1,0x00,0x05,0x01,0x5a,0x7a,0x03};
-      ser.write(init_msg,12); 
-      ROS_INFO("[Serial Com] RFID device, initialization message sent!")
+      sp.write(init_msg,12); 
+      ROS_INFO("[Serial Com] RFID device, initialization message sent!");
     }
   }
   else{

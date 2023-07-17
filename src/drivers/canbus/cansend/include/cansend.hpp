@@ -22,19 +22,19 @@
 
 #include "std_msgs/String.h"
 #include "can_msgs/Frame.h"
-#include "common_msgs/ChassisControl.h"
-#include "ID_0x04EF8480.h"
-#include "ID_0x0C040B2A.h"
-#include "ID_0x0001.h"
+// #include "common_msgs/ChassisControl.h"
+#include "autoware_msgs/ControlCommandStamped.h"
 
-extern ID_0x04EF8480 *id_0x04EF8480;
-extern ID_0x0C040B2A *id_0x0C040B2A;
-extern ID_0x0001 *id_0x0001;
+#include "MagneticReq.h"
+#include "SteerControl.h"
+
+extern SteerControl *steer_control;
+extern MagneticReq *magnetic_req;
 namespace ns_cansend {
 
 struct Para{
   int send_mode;
-  double test_steer_angle;
+  int test_steer_angle;
   double test_acc_pedal;
   double test_brk_pedal;
   double setup_steer_speed;
@@ -51,7 +51,8 @@ class Cansend {
   can_msgs::Frame getFrame(protocol *frame);
 
   // Setters
-  void setChassisControl(common_msgs::ChassisControl msg);
+  // void setChassisControl(common_msgs::ChassisControl msg);
+  void setChassisControl(autoware_msgs::ControlCommandStamped msg);
   void setParameters(const Para &msg);
 
   void runAlgorithm();
@@ -60,9 +61,12 @@ class Cansend {
 
   ros::NodeHandle &nh_;
 
-  common_msgs::ChassisControl chassis_control_cmd;
+  // common_msgs::ChassisControl chassis_control_cmd;
+  autoware_msgs::ControlCommandStamped ccs;
+  
   Para para;
   int loop_number;
+  int steer_send_times;
 };
 }
 

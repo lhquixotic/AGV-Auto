@@ -26,7 +26,7 @@ class CansendHandle {
   ros::Subscriber chassisControlSubscriber_;
   ros::Publisher cansendStatePublisher_;
 
-  void chassisControlCallback(const common_msgs::ChassisControl &msg);
+  void chassisControlCallback(const autoware_msgs::ControlCommandStamped &msg);
 
   std::string chassis_control_topic_name_;
   std::string cansend_topic_name_;

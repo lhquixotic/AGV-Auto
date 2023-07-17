@@ -29,7 +29,8 @@ void Remote::runAlgorithm() {
     }
     bool XOR_check = (checksum == remote_signals.data[34]);
     if ((XOR_check) && (remote_signals.data[0] == 0x0f)){
-      int mode_value = remote_signals.data[9];
+      int mode = remote_signals.data[9] / 2;
+
       int l_up_h = remote_signals.data[5]; // front most: 0x069f - 0x0400 - 0x0160
       int l_up_l = remote_signals.data[6];
       int l_lf_h = remote_signals.data[7]; // left most: 0x0158 - 0x03f8 - 0x0697
@@ -46,7 +47,11 @@ void Remote::runAlgorithm() {
 
       float factor = 1.0 / (0x069f-0x0400);
 
-      ROS_INFO_STREAM("[Remote] Go forward value: " << std::fixed << std::setprecision(2) << - factor * r_up << ", turn left steer: " << -factor * l_lf);
+      remote_control.mode = mode;
+      remote_control.accel = -factor * r_up;
+      remote_control.steer = -factor * l_lf;
+
+      // ROS_INFO_STREAM("[Remote] Control mode: " << mode << ", go forward value: " << std::fixed << std::setprecision(2) << - factor * r_up << ", turn left steer: " << -factor * l_lf);
       
       // for(int i=0;i<signal_len;i++){
         

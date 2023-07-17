@@ -56,10 +56,11 @@ void CansendHandle::loadParameters() {
     ROS_WARN_STREAM("Did not load node_rate. Standard value is: " << node_rate_);
   }
   nodeHandle_.param<int>("cansend_para/send_mode",para_.send_mode,0);
-  nodeHandle_.param<double>("cansend_para/test_steer_angle",para_.test_steer_angle,0);
+  nodeHandle_.param<int>("cansend_para/test_steer_angle",para_.test_steer_angle,0);
   nodeHandle_.param<double>("cansend_para/test_acc_pedal",para_.test_acc_pedal,0);
   nodeHandle_.param<double>("cansend_para/test_brk_pedal",para_.test_brk_pedal,0);
   nodeHandle_.param<double>("cansend_para/setup_steer_speed",para_.setup_steer_speed,100);
+  ROS_INFO_STREAM("[Cansend] Para: test_steer_angle" << para_.test_steer_angle);
 }
 
 void CansendHandle::subscribeToTopics() {
@@ -83,12 +84,13 @@ void CansendHandle::run() {
 }
 
 void CansendHandle::sendMsg() {
-  cansendStatePublisher_.publish(cansend_.getFrame(id_0x04EF8480));
-  cansendStatePublisher_.publish(cansend_.getFrame(id_0x0C040B2A));
-  cansendStatePublisher_.publish(cansend_.getFrame(id_0x0001));
+  // cansendStatePublisher_.publish(cansend_.getFrame(id_0x04EF8480));
+  // cansendStatePublisher_.publish(cansend_.getFrame(id_0x0C040B2A));
+  cansendStatePublisher_.publish(cansend_.getFrame(magnetic_req));
+  cansendStatePublisher_.publish(cansend_.getFrame(steer_control));
 }
 
-void CansendHandle::chassisControlCallback(const common_msgs::ChassisControl &msg) {
+void CansendHandle::chassisControlCallback(const autoware_msgs::ControlCommandStamped &msg) {
   cansend_.setChassisControl(msg);
 }
 }

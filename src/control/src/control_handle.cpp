@@ -41,7 +41,7 @@ void ControlHandle::loadParameters() {
                                       magnetic_signal_topic_name_,
                                       "/perception/magnetic")) {
     ROS_WARN_STREAM(
-        "Did not load magnetic_signal_topic_name. Standard value is: " << magnetic_signal_state_topic_name_);
+        "Did not load magnetic_signal_topic_name. Standard value is: " << magnetic_signal_topic_name_);
   }
   if (!nodeHandle_.param<std::string>("control_command_topic_name",
                                       control_command_topic_name_,
@@ -99,10 +99,10 @@ void ControlHandle::remoteControlCallback(const common_msgs::RemoteControl &msg)
 
 void ControlHandle::magneticSignalCallback(const common_msgs::MagneticSignal &msg) {
   control_.setMagneticSignal(msg);
-  control_.MagneticSignalFlag = true; // Warn
+  control_.magneticSignalFlag = true; // Warn
 }
 
-void ControlHandle::rfidSignalCallback(const common_msgs::VehicleDynamicState &msg){
+void ControlHandle::rfidSignalCallback(const common_msgs::SerialMsg &msg){
   control_.setRfidSignal(msg);
   control_.rfidSignalFlag = true; // Warn
 }
