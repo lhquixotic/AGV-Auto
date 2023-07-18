@@ -72,31 +72,6 @@ void SerialCom::runAlgorithm() {
       sp.write(buffer,n);
 
     }
-    // // serial test
-    // if (sp.available()){
-    //   ROS_INFO_STREAM("SP is avaiblab");
-    //   std_msgs::String result;
-    //   result.data = sp.read(sp.available());
-    //   ROS_INFO_STREAM("Read:"<<result.data);
-    // }
-
-    // // Read serial data
-    // std::string data;
-    // ROS_INFO_STREAM("serial is open");
-    // data = sp.readline();
-
-    // std::string test_data;
-    // test_data = "lll lll ";
-    // ROS_INFO_STREAM("test data: "<<test_data);
-    
-    // data = trim(data); 
-    // ROS_INFO_STREAM(data);
-    // // std::cout<<data;
-    
-    // Decode data
-    // sentence.sentence = data;
-    // sentence.header.frame_id = "/drivers/serial_info";
-    // sentence.header.stamp = ros::Time::now();
   }
   else{
     ROS_WARN_STREAM("Serial not opened.");

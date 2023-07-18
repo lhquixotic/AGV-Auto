@@ -1,48 +1,25 @@
 #include "Magnetic.h"
-MgsGain::MgsGain(){
-  id_ = 0x2;
+Magnetic::Magnetic(){
+  id_ = 0x42;
   dlc_ = 8;
   is_extended_ = 0;
   is_error_ = 0;
   is_rtr_ = 0;
   for(int i=0;i<dlc_;i++) data_[i] = 0;
-  MgsGainCmd_=0;
-  MgsGainDataH_=0;
-  MgsGainDataL_=0;
+  MagneticDataH_=0;
+  MagneticDataL_=0;
 }
-void MgsGain::Reset(){
-  MgsGainCmd_=0;
-  MgsGainDataH_=0;
-  MgsGainDataL_=0;
+void Magnetic::Reset(){
+  MagneticDataH_=0;
+  MagneticDataL_=0;
 }
-void MgsGain::Update(uint8_t *data){
+void Magnetic::Update(uint8_t *data){
   for(int i=0;i<dlc_;i++) data_[i] = data[i];
-  UpdateMgsGainCmd();
-  UpdateMgsGainDataH();
-  UpdateMgsGainDataL();
+  UpdateMagneticDataH();
+  UpdateMagneticDataL();
 }
 /******************
-signalname: MgsGainCmd;
-signalclass: uint8;
-StartBit: 40;
-SignalSize: 8;
-ByteOrder: LittleEndian;
-Factor: 1;
-Offset: 0;
-Minimum: 0;
-Maximum: 3;
-******************/
-void MgsGain::UpdateMgsGainCmd(){
-  int16_t x0 = GetByte(data_ + 5,0,8);
-  x0<<=0;
-  double ret = x0 * 1.0000000000 + 0.0000000000;
-  MgsGainCmd_ = ret;
-}
-double MgsGain::MgsGainCmd(){
-  return MgsGainCmd_;
-}
-/******************
-signalname: MgsGainDataH;
+signalname: MagneticDataH;
 signalclass: uint8;
 StartBit: 48;
 SignalSize: 8;
@@ -52,17 +29,17 @@ Offset: 0;
 Minimum: 0;
 Maximum: 255;
 ******************/
-void MgsGain::UpdateMgsGainDataH(){
+void Magnetic::UpdateMagneticDataH(){
   int16_t x0 = GetByte(data_ + 6,0,8);
   x0<<=0;
   double ret = x0 * 1.0000000000 + 0.0000000000;
-  MgsGainDataH_ = ret;
+  MagneticDataH_ = ret;
 }
-double MgsGain::MgsGainDataH(){
-  return MgsGainDataH_;
+double Magnetic::MagneticDataH(){
+  return MagneticDataH_;
 }
 /******************
-signalname: MgsGainDataL;
+signalname: MagneticDataL;
 signalclass: uint8;
 StartBit: 56;
 SignalSize: 8;
@@ -72,12 +49,12 @@ Offset: 0;
 Minimum: 0;
 Maximum: 255;
 ******************/
-void MgsGain::UpdateMgsGainDataL(){
+void Magnetic::UpdateMagneticDataL(){
   int16_t x0 = GetByte(data_ + 7,0,8);
   x0<<=0;
   double ret = x0 * 1.0000000000 + 0.0000000000;
-  MgsGainDataL_ = ret;
+  MagneticDataL_ = ret;
 }
-double MgsGain::MgsGainDataL(){
-  return MgsGainDataL_;
+double Magnetic::MagneticDataL(){
+  return MagneticDataL_;
 }

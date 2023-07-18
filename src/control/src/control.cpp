@@ -9,6 +9,7 @@ namespace ns_control
                                           pid_controller(1.0, 0.0, 0.0){
                                             is_initialized = false;
                                             auto_control_enable = false;
+                                            kept_rfid_value = 0;
                                           };
 
   // Getters
@@ -25,7 +26,6 @@ namespace ns_control
   }
   void Control::setRfidSignal(const common_msgs::SerialMsg &msg){
     rfid_signal = msg;
-    rfid_stop = rfid_signal.data[0];//TODO: check the rfid msgs
   }
   void Control::setMagneticSignal(const common_msgs::MagneticSignal &msg){
     magnetic_signal = msg;
@@ -80,6 +80,19 @@ namespace ns_control
 
     if (remoteControlFlag){
       // ROS_INFO_STREAM("control mode: "<<remote_control.mode);
+      // Update RFID stop
+      // 如果接收到17位长度的报文，为RFID的有效报文，此时读取第7位寄存，如果先前
+      // 寄存数据与当前读取数据不一致，且当前数据不为0；则出发stop。
+      int signal_len = rfid_signal.length;
+      if(signal_len == 17){//valid message
+        int rfid_value = rfid_signal.data[7];
+        if ((rfid_value != kept_rfid_value) && (rfid_value != 0)){
+          rfid_stop = 1;
+        }else{
+          rfid_stop = 0;
+        }
+      }
+
       // Switch remote control mode
       switch (remote_control.mode)
       {
@@ -97,6 +110,9 @@ namespace ns_control
 
         control_cmd.control_mode = 2;
         if((!magneticSignalFlag)||(magnetic_signal.intensity == 0)||(!auto_control_enable)){
+          if(!magneticSignalFlag){ROS_WARN("[Control] Stop because no magnetic signal received.")};
+          if(magnetic_signal.intensity == 0){ROS_WARN("[Control] Stop because magnetic intensity is 0.")};
+          if(!auto_control_enable){ROSINFO("[Control] Stop because rfid is detected.")};
           control_cmd.linear_velocity = 0;
           control_cmd.steering_angle = 0;
         }else{

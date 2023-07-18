@@ -24,11 +24,12 @@ class CanparseHandle {
  private:
   ros::NodeHandle nodeHandle_;
   ros::Subscriber canbus_receive_Subscriber_;
-  ros::Publisher chassisStatePublisher_;
+  ros::Publisher magneticSignalPublisher_;
 
   void CanbusReceiveCallback(const can_msgs::Frame &f);
 
-  std::string chassis_state_topic_name_; 
+  std::string magnetic_signal_topic_name_;
+
   std::string canbus_receive_topic_name_;
 
   int node_rate_;

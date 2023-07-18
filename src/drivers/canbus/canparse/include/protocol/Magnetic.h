@@ -1,19 +1,18 @@
 #pragma once
 #include "protocol.h" 
-class MgsGain:public protocol{
+class Magnetic:public protocol{
   public:
-    MgsGain();
-    virtual ~MgsGain()=default;
+    Magnetic();
+    virtual ~Magnetic()=default;
     void Reset() override;
     virtual void Update(uint8_t *data) override;
-    double MgsGainCmd();
-    void UpdateMgsGainCmd();
-    double MgsGainDataH();
-    void UpdateMgsGainDataH();
-    double MgsGainDataL();
-    void UpdateMgsGainDataL();
+
+    double MagneticDataH();
+    void UpdateMagneticDataH();
+    double MagneticDataL();
+    void UpdateMagneticDataL();
   private:
-    double MgsGainCmd_;
-    double MgsGainDataH_;
-    double MgsGainDataL_;
+    // double MagneticCmd_;
+    double MagneticDataH_;
+    double MagneticDataL_;
 };

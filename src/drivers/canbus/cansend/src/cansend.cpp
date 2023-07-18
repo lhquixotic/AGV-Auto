@@ -43,6 +43,7 @@ void Cansend::setParameters(const Para &msg){
 void Cansend::runAlgorithm() {
   // ROS_WARN_STREAM("steer: "<<steer_send_times);
   if(para.send_mode == 0){
+    // Test steer
     if(steer_send_times>0){//left +
       steer_send_times = steer_send_times - 1;
       steer_control->sendLeftReq();
@@ -57,49 +58,35 @@ void Cansend::runAlgorithm() {
         // no operation
       }
     }
+    // Test drive
+    double drive_cmd = clamp(para.test_motor_input,-1.0,1.0);
+    drive_cmd = deadband(drive_cmd,para.motor_dead_input);
+    int test_motor_rpm = drive_cmd * para.motor_max_rmp;
+    motor_control->SetMotor1SpeedCon(test_motor_rpm);
+    motor_control->SetMotor2SpeedCon(test_motor_rpm);
 
   }else{
-    if (ccs.cmd.steering_angle>0.1){
-      std::cout << "turn left: " << ccs.cmd.steering_angle;
+    // Autonomous driving mode
+    // steering
+    double steer_cmd = clamp(ccs.cmd.steering_angle,-1.0,1.0);
+    if (steer_cmd>para.steer_dead_input){
+      std::cout << "turn left: " << steer_cmd;
       steer_control->sendLeftReq();
     }else{
-      if (ccs.cmd.steering_angle<-0.1){
-        std::cout << "turn right: " << ccs.cmd.steering_angle;
+      if (steer_cmd<-para.steer_dead_input){
+        std::cout << "turn right: " << steer_cmd;
         steer_control->sendRightReq();
       }
       else{
         steer_control->setNullMsg();
       }
     }
-    //autonomous driving mode
-    // id_0x04EF8480->SetconDegCmd(chassis_control_cmd.steer_angle);
-    // id_0x04EF8480->SetcomControlCmd(1);
-    // id_0x04EF8480->SetconRtCmd(para.setup_steer_speed);
-
-    // id_0x0C040B2A->SetconAccReq(0);
-    // id_0x0C040B2A->SetconSta(loop_number);
-    // int control_mode = 0;
-    // int target_acc_pedal = 0;
-    // int target_brk_pedal = 0;
-    // if (chassis_control_cmd.acc_pedal_open_request > 0){
-    //   control_mode = 1;
-    //   target_brk_pedal = chassis_control_cmd.acc_pedal_open_request;
-    // }else{
-    //   if (chassis_control_cmd.brk_pedal_open_request > 0){
-    //     control_mode = 2;
-    //     target_acc_pedal = chassis_control_cmd.brk_pedal_open_request;
-    //   }
-    // }
-    // id_0x0C040B2A->SetcontrolScheme(control_mode);
-    // id_0x0C040B2A->SetAccPedOpenReq(target_acc_pedal);
-    // id_0x0C040B2A->SetBrkPedOpenReq(target_brk_pedal);
+    // driving
+    double drive_cmd = clamp(ccs.cmd.velocity,-1.0,1.0);
+    drive_cmd = deadband(drive_cmd,para.motor_dead_input);
+    int motor_rpm = drive_cmd * para.motor_max_rmp;
+    motor_control->SetMotor1SpeedCon(motor_rpm);
+    motor_control->SetMotor2SpeedCon(motor_rpm);
   }
-
-  if (loop_number >= 16){
-    loop_number = 0;
-  }  
-  loop_number += 1;
 }
-
-
 }

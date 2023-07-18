@@ -8,7 +8,7 @@ Canparse::Canparse(ros::NodeHandle &nh) : nh_(nh) {
 };
 
 // Getters
-common_msgs::ChassisState Canparse::getChassisState(){return chassis_state;}
+common_msgs::MagneticSignal Canparse::getMagneticSignal(){return magnetic_signal;}
 
 // Setters
 void Canparse::Parse(can_msgs::Frame f) {
@@ -21,10 +21,8 @@ void Canparse::Parse(can_msgs::Frame f) {
     //     id_0x00000650.uwbDis(), id_0x00000650.uwbFW(), id_0x00000650.uwbSta(),id_0x00000650.uwbZT());
     break;
 
-  case 0x002:
-    id_0x0000005A.Update(f.data.c_array());
-    // ROS_INFO("5AMessage:flwPitchRt: %f ; flwYawRt: %f;",
-    //     id_0x0000005A.flwPitchRt(),id_0x0000005A.flwYawRt());
+  case 0x042:
+    magnetic.Update(f.data.c_array());
     break;
 
   default:
@@ -33,13 +31,31 @@ void Canparse::Parse(can_msgs::Frame f) {
 }
 
 void Canparse::runAlgorithm() {
-  chassis_state.header.frame_id = "base_link";
-  chassis_state.header.stamp = ros::Time::now();
-  //id_0x18F02501.UpdateflwSpd();
-  chassis_state.vehicle_lon_acceleration = id_0x18F02501.flwAcc();
-  chassis_state.real_acc_pedal = id_0x18F02502.flwPdlAcc();
-  chassis_state.real_brake_pedal = id_0x18F02502.flwPedBrk();
-  chassis_state.real_steer_angle = id_0x18FF4BD1.flwStrAgl();
-}
+  // Magnetic data
+  // read data
+  uint8_t magnetic_data_h = magnetic.MagneticDataH();
+  uint8_t magnetic_data_l = magnetic.MagneticDataL();
+  uint16_t magnetic_data = (magnetic_data_h << 8) | magnetic_data_l;
+  int number_of_1 = 0;
+  int sum_of_1 = 0;
 
+  // serarch for position of 1
+  for (int i=0;i<16;i++){
+    uint16_t mask = 1 << i;
+    if (magnetic_data & mask){
+      number_of_1 += 1;
+      sum_of_1 += i;
+    }
+  }
+  // set message
+  magnetic_signal.header.frame_id = 'vehicle';
+  magnetic_signal.header.stamp = ros::Time::now();
+  magnetic_signal.intensity = number_of_1;
+  magnetic_signal.middle_loc = 8;
+  if(number_of_1 == 0){
+    magnetic_signal.current_loc = 99;
+  }else{
+    magnetic_signal.current_loc = sum_of_1/number_of_1;
+  }
+}
 }

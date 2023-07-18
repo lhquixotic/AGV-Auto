@@ -5,10 +5,11 @@ cansend_topic_name: /sent_messages
 node_rate: 50   # [Herz]
 
 cansend_para:
-  send_mode: 1 # 0 for autonomous driving; 1-test magnetic, 2-test steer
+  send_mode: 1 # 0 for test and 1 for autonomous driving
   test_steer_angle: -1
-  test_acc_pedal: 0
-  test_brk_pedal: 0
-  setup_steer_speed: 300
-  
+  test_motor_input: 0 # [-1,1], test_motor_rpm = test_motor_input * max_motor_rpm
+  motor_max_rpm: 1000
+  motor_dead_input: 0.1
+  steer_max_angle: 45
+  steer_dead_input: 0.1
   

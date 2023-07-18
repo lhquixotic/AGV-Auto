@@ -34,6 +34,7 @@ add_executable(${PROJECT_NAME}
   src/cansend_handle.cpp
   src/cansend.cpp
   src/main.cpp
+  src/utils.cpp
   )
 add_dependencies(${PROJECT_NAME} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(${PROJECT_NAME}

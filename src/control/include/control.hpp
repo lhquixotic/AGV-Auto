@@ -72,6 +72,7 @@ class Control {
   bool is_initialized;
   int kept_remote_mode;
   int kept_rfid_stop;
+  int kept_rfid_value;
 
   PID pid_controller;
   Pid_para pid_para;

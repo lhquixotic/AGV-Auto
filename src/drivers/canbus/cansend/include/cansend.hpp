@@ -27,17 +27,24 @@
 
 #include "MagneticReq.h"
 #include "SteerControl.h"
+#include "MotorControl.h"
+
+#include "utils.hpp"
 
 extern SteerControl *steer_control;
 extern MagneticReq *magnetic_req;
+extern MotorControl *motor_control;
+
 namespace ns_cansend {
 
 struct Para{
   int send_mode;
   int test_steer_angle;
-  double test_acc_pedal;
-  double test_brk_pedal;
-  double setup_steer_speed;
+  double test_motor_input;
+  double motor_max_rpm;
+  double motor_dead_input;
+  double steer_max_angle;
+  double steer_dead_input;
 };
 
 class Cansend {

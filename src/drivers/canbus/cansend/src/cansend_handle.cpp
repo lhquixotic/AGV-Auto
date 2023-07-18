@@ -57,9 +57,11 @@ void CansendHandle::loadParameters() {
   }
   nodeHandle_.param<int>("cansend_para/send_mode",para_.send_mode,0);
   nodeHandle_.param<int>("cansend_para/test_steer_angle",para_.test_steer_angle,0);
-  nodeHandle_.param<double>("cansend_para/test_acc_pedal",para_.test_acc_pedal,0);
-  nodeHandle_.param<double>("cansend_para/test_brk_pedal",para_.test_brk_pedal,0);
-  nodeHandle_.param<double>("cansend_para/setup_steer_speed",para_.setup_steer_speed,100);
+  nodeHandle_.param<double>("cansend_para/test_motor_input",para_.test_motor_input,0);
+  nodeHandle_.param<double>("cansend_para/motor_max_rpm",para_.setup_steer_speed,1000);
+  nodeHandle_.param<double>("cansend_para/motor_dead_input",para_.setup_steer_speed,0.1);
+  nodeHandle_.param<double>("cansend_para/steer_max_angle",para_.setup_steer_speed,45);
+  nodeHandle_.param<double>("cansend_para/steer_dead_input",para_.setup_steer_speed,0.1);
   ROS_INFO_STREAM("[Cansend] Para: test_steer_angle" << para_.test_steer_angle);
 }
 
@@ -88,6 +90,8 @@ void CansendHandle::sendMsg() {
   // cansendStatePublisher_.publish(cansend_.getFrame(id_0x0C040B2A));
   cansendStatePublisher_.publish(cansend_.getFrame(magnetic_req));
   cansendStatePublisher_.publish(cansend_.getFrame(steer_control));
+  cansendStatePublisher_.publish(cansend_.getFrame(motor_control));
+
 }
 
 void CansendHandle::chassisControlCallback(const autoware_msgs::ControlCommandStamped &msg) {
