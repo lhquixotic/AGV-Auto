@@ -42,6 +42,7 @@ add_executable(${PROJECT_NAME}
   src/main.cpp
   src/pid.cpp
   src/pure_pursuit.cpp
+  src/utils.cpp
   )
 
   add_dependencies(${PROJECT_NAME} ${catkin_EXPORTED_TARGETS})

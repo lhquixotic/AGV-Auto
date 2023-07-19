@@ -7,17 +7,17 @@ class Steer:public protocol{
     void Reset() override;
     virtual void Update(uint8_t *data) override;
 
-    double SteerPositionH();
+    uint16_t SteerPositionH();
     void UpdateSteerPositionH();
-    double SteerPositionL();
+    uint16_t SteerPositionL();
     void UpdateSteerPositionL();
     double SteerPosition();
     void UpdateSteerPosition();
     bool SteerDataRecved();
   private:
     // double SteerCmd_;
-    double SteerPositionH_;
-    double SteerPositionL_;
+    uint16_t SteerPositionH_;
+    uint16_t SteerPositionL_;
     double SteerPosition_;
 
     bool Hdata_recved;

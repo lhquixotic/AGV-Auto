@@ -44,7 +44,7 @@ void Cansend::setParameters(const Para &msg){
 }
 
 void Cansend::sendSteerReq(double steer_cmd, int device_id){
-  if (steer_cmd>0) steer_control->sendLeftReq(device_id);
+  if (steer_cmd>0) {steer_control->sendLeftReq(device_id);}
   else if (steer_cmd<0) steer_control->sendRightReq(device_id);
   else steer_control->setNullMsg();
 }
@@ -84,7 +84,29 @@ void Cansend::runAlgorithm() {
 
     if (remote_mode == 1){ // manual control, need not to read angle. 
     // left and right once each time
-      sendSteerReq(steer_cmd,loop_number%2);
+      // sendSteerReq(steer_cmd,loop_number%2);
+
+      int loop_flag = loop_number % 4;
+      switch (loop_flag)
+      {
+      case 0: 
+        sendSteerReq(steer_cmd,1);
+        break;
+      case 1:
+        sendSteerReq(steer_cmd,0);
+        break;
+      case 2: 
+        steer_control->sendReadReq(false,1);
+        break;
+
+      case 3:
+        steer_control->sendReadReq(true,1);
+        break;
+      
+      default:
+        break;
+      }
+
       // if (steer_cmd>0) steer_control->sendLeftReq(loop_number%2);
       // else if (steer_cmd<0) steer_control->sendRightReq(loop_number%2);
       // else steer_control->setNullMsg();
@@ -114,6 +136,7 @@ void Cansend::runAlgorithm() {
     // driving
     double drive_cmd = clamp(ccs.cmd.linear_velocity,-1.0,1.0);
     drive_cmd = deadband(drive_cmd,para.motor_dead_input);
+    // if(drive_cmd > 0){ROS_WARN("Goooooo");}
     int motor_rpm = drive_cmd * para.motor_max_rpm;
     motor_control->SetMotor1SpeedCon(motor_rpm);
     motor_control->SetMotor2SpeedCon(-motor_rpm);

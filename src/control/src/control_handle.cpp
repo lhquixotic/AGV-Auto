@@ -43,6 +43,12 @@ void ControlHandle::loadParameters() {
     ROS_WARN_STREAM(
         "Did not load magnetic_signal_topic_name. Standard value is: " << magnetic_signal_topic_name_);
   }
+  if (!nodeHandle_.param<std::string>("chassis_state_topic_name",
+                                      chassis_state_topic_name_,
+                                      "/chassis_state")) {
+    ROS_WARN_STREAM(
+        "Did not load chassis_state_topic_name. Standard value is: " << chassis_state_topic_name_);
+  }
   if (!nodeHandle_.param<std::string>("control_command_topic_name",
                                       control_command_topic_name_,
                                       "/control_cmd")) {
@@ -75,6 +81,8 @@ void ControlHandle::subscribeToTopics() {
       nodeHandle_.subscribe(rfid_signal_topic_name_, 10, &ControlHandle::rfidSignalCallback, this);
   magneticSignalSubscriber_ =
       nodeHandle_.subscribe(magnetic_signal_topic_name_, 10, &ControlHandle::magneticSignalCallback, this);
+  chassisStateSubscriber_ = 
+      nodeHandle_.subscribe(chassis_state_topic_name_,10, &ControlHandle::chassisStateCallback, this);
 }
 
 void ControlHandle::publishToTopics() {
@@ -105,6 +113,10 @@ void ControlHandle::magneticSignalCallback(const common_msgs::MagneticSignal &ms
 void ControlHandle::rfidSignalCallback(const common_msgs::SerialMsg &msg){
   control_.setRfidSignal(msg);
   control_.rfidSignalFlag = true; // Warn
+}
+
+void ControlHandle::chassisStateCallback(const common_msgs::ChassisState &msg){
+  control_.setChassisState(msg);
 }
 
 }

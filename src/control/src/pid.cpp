@@ -23,9 +23,9 @@ double PID::outputSignal(double tar, double act) {
             integral = -PID_INT_MAX;
         }
     }
-    ROS_INFO_STREAM("[PID control]" << "target: " << tar << ", act: " << act << ", integral: " << integral);
+    // ROS_DEBUG_STREAM("[PID control]" << "target: " << tar << ", act: " << act << ", integral: " << integral);
     u = kp * error + ki * integral + kd * (error - error_pre);
-    ROS_INFO_STREAM("[PID control]" << "u: " << u);
+    // ROS_DEBUG_STREAM("[PID control]" << "u: " << u);
     error_pre = error;
     return u;
 }

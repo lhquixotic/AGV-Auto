@@ -11,7 +11,7 @@ cansend_para:
   test_steer_angle: -1
   test_motor_input: 0.1 # [-1,1], test_motor_rpm = test_motor_input * max_motor_rpm
   motor_max_rpm: 1200
-  motor_dead_input: 0.1
+  motor_dead_input: 0.48
   steer_max_angle: 45
-  steer_dead_input: 0.5
+  steer_dead_input: 0.3
   

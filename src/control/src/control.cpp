@@ -1,5 +1,6 @@
 #include <ros/ros.h>
 #include "control.hpp"
+#include "utils.hpp"
 #include <sstream>
 
 namespace ns_control
@@ -12,6 +13,7 @@ namespace ns_control
                                             rfid_stop=0;
                                             kept_rfid_value = 0;
                                             kept_rfid_stop = 0;
+                                            loop_number = 0;
                                           };
 
   // Getters
@@ -31,6 +33,9 @@ namespace ns_control
   }
   void Control::setMagneticSignal(const common_msgs::MagneticSignal &msg){
     magnetic_signal = msg;
+  }
+  void Control::setChassisState(const common_msgs::ChassisState &msg){
+    chassis_state = msg;
   }
 
   void Control::setPidParameters(const Pid_para &msg){
@@ -54,6 +59,7 @@ namespace ns_control
       // ROS_INFO_STREAM("RFID Read, data: "<<rfid_value);
       if ((rfid_value != kept_rfid_value) && (rfid_value != 0)){
         // ROS_INFO_STREAM("[Control] rfid value: "<<rfid_value<<", kept_rfid_value: "<<kept_rfid_value);
+        ROS_INFO("[Control] Stop because rfid is detected.");
         rfid_stop = 1;
       }else{
         rfid_stop = 0;
@@ -69,6 +75,7 @@ namespace ns_control
       kept_rfid_stop = 0;
       is_initialized = true;
       auto_control_enable = true;
+      ini_wheel_angle = chassis_state.real_steer_angle;
     }else{
       // Update state machine
       if ((kept_rfid_stop==0)&&(rfid_stop==1)){
@@ -84,6 +91,7 @@ namespace ns_control
   }
 
   void Control::runAlgorithm(){
+    loop_number ++;
     ROS_DEBUG("[Control]In run() ... ");
     // 判断逻辑：
     // 判断是否接收到遥控器指令及读取遥控器模式：如果模式为0-手动模式，输出控制量为遥控器控制量；
@@ -96,7 +104,8 @@ namespace ns_control
 
     if (remoteControlFlag){
       // ROS_INFO_STREAM("control mode: "<<remote_control.mode);
-      ROS_INFO("Remote control mode: %d",remote_control.mode);
+      if (kept_remote_mode!=remote_control.mode){ROS_INFO("Remote control mode: %d",remote_control.mode);}
+      // 
       // Switch remote control mode
       switch (remote_control.mode)
       {
@@ -106,6 +115,7 @@ namespace ns_control
         control_cmd.steering_angle = remote_control.steer;
         is_initialized = false;
         auto_control_enable = false;
+        kept_rfid_value = 0;
         break;
       
       case 2: // automatic control mode
@@ -115,24 +125,29 @@ namespace ns_control
         // update rfid signal
         updateRfid();
         // ROS_INFO("[Control] kept_rfid_value: %d, kept_rfid_stop: %d, rfid_stop: %d", kept_rfid_value,kept_rfid_stop,rfid_stop);
-        if(!auto_control_enable)ROS_WARN("STOP");
+        // if(!auto_control_enable)ROS_WARN("STOP");
+        cur_wheel_angle = chassis_state.real_steer_angle - ini_wheel_angle;
         control_cmd.control_mode = 2;
         if((!magneticSignalFlag)||(magnetic_signal.intensity == 0)||(!auto_control_enable)){
           // if(!magneticSignalFlag){ROS_WARN("[Control] Stop because no magnetic signal received.");}
           // if(magnetic_signal.intensity == 0){ROS_WARN("[Control] Stop because magnetic intensity is 0.");}
-          if(!auto_control_enable){ROS_INFO("[Control] Stop because rfid is detected.");}
+          // if(!auto_control_enable){ROS_INFO("[Control] Stop because rfid is detected.");}
           control_cmd.linear_velocity = 0;
           control_cmd.steering_angle = 0;
         }else{
-          control_cmd.steering_angle = pid_controller.outputSignal(magnetic_signal.middle_loc,magnetic_signal.current_loc);
-          ROS_INFO("[Control] Current magnetic loc: %d, steer angle: %f",magnetic_signal.current_loc,control_cmd.steering_angle);
+          double desired_angle = 10*pid_controller.outputSignal(magnetic_signal.middle_loc,magnetic_signal.current_loc);
+          desired_angle = clamp(desired_angle,-40.0,40.0);          
+          control_cmd.steering_angle = -pid_controller.outputSignal(desired_angle,cur_wheel_angle);
           // left +, current > middle -
           control_cmd.linear_velocity = control_para.desired_speed; // TODO:calculate the control value
+          if(loop_number%25==0){
+            ROS_INFO("[Control] Magnetic loc: %d, desired angle: %f, current_angle: %f, steer cmd: %f",
+            magnetic_signal.current_loc,desired_angle, cur_wheel_angle, control_cmd.steering_angle);}
         }
         break;
 
       case 3: // Locked mode
-        ROS_INFO("[Control] Lock mode.");
+        // ROS_INFO("[Control] Lock mode.");
         control_cmd.linear_velocity = 0;
         control_cmd.steering_angle = 0;
         break;

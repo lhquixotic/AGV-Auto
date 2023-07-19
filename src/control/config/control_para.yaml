@@ -1,5 +1,5 @@
 pid:
-  kp: 0.5
+  kp: 0.6
   ki: 0.00
   kd: 0.00
 pure_pursuit:

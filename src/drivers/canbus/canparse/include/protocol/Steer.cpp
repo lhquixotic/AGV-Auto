@@ -1,4 +1,6 @@
 #include "Steer.h"
+#include <cstdint>
+
 Steer::Steer(){
   id_ = 0x02;
   dlc_ = 8;
@@ -35,21 +37,22 @@ Minimum: 0;
 Maximum: 65535;
 ******************/
 void Steer::UpdateSteerPositionH(){
-  int16_t d0 = GetByte(data_ + 0,0,8);
-  int16_t d1 = GetByte(data_ + 1,0,8);
-  int16_t d2 = GetByte(data_ + 2,0,8);
+  uint16_t d0 = GetByte(data_ + 0,0,8);
+  uint16_t d1 = GetByte(data_ + 1,0,8);
+  uint16_t d2 = GetByte(data_ + 2,0,8);
   if((d0==1)&&(d1==3)&&(d2==2)){
     if(!Hdata_recved) Hdata_recved = true;
-    int32_t x0 = GetByte(data_ + 3,0,8);
-    int32_t x1 = GetByte(data_ + 4,0,8);
+    uint32_t x0 = GetByte(data_ + 3,0,8);
+    uint32_t x1 = GetByte(data_ + 4,0,8);
     x0<<=8;
     x1<<=0;
     x0|=x1;
-    double ret = x0 * 1.0000000000 + 0.0000000000;
+    uint16_t ret = x0;
+    // double ret = x0 * 1.0000000000 + 0.0000000000;
     SteerPositionH_ = ret;
   }
 }
-double Steer::SteerPositionH(){
+uint16_t Steer::SteerPositionH(){
   return SteerPositionH_;
 }
 
@@ -65,26 +68,29 @@ Minimum: 0;
 Maximum: 65535;
 ******************/
 void Steer::UpdateSteerPositionL(){
-  int16_t d0 = GetByte(data_ + 0,0,8);
-  int16_t d1 = GetByte(data_ + 1,0,8);
-  int16_t d2 = GetByte(data_ + 2,0,8);
+  uint16_t d0 = GetByte(data_ + 0,0,8);
+  uint16_t d1 = GetByte(data_ + 1,0,8);
+  uint16_t d2 = GetByte(data_ + 2,0,8);
   if((d0==1)&&(d1==3)&&(d2==4)){
     if(!Ldata_recved) Ldata_recved = true;
-    int32_t x0 = GetByte(data_ + 3,0,8);
-    int32_t x1 = GetByte(data_ + 4,0,8);
+    uint32_t x0 = GetByte(data_ + 3,0,8);
+    uint32_t x1 = GetByte(data_ + 4,0,8);
     x0<<=8;
     x1<<=0;
     x0|=x1;
-    double ret = x0 * 1.0000000000 + 0.0000000000;
+    uint16_t ret = x0;
+    // double ret = x0 * 1.0000000000 + 0.0000000000;
     SteerPositionL_ = ret;
   }
 }
-double Steer::SteerPositionL(){
+uint16_t Steer::SteerPositionL(){
   return SteerPositionL_;
 }
 
 void Steer::UpdateSteerPosition(){
-  SteerPosition_ = SteerPositionH_ * 65535 +  SteerPositionL_;
+  // SteerPosition_ = SteerPositionH_ * 65535 +  SteerPositionL_;
+  int32_t result = (static_cast<int32_t>(SteerPositionH_)<<16) | SteerPositionL_;
+  SteerPosition_ = result/8800.0;
 }
 
 double Steer::SteerPosition(){

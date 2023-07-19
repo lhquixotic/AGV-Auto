@@ -5,8 +5,10 @@ rfid_signal_topic_name: /drivers/rfid/signal
 
 magnetic_signal_topic_name: /perception/magnetic
 
+chassis_state_topic_name: /chassis_state
+
 # Publisher
 control_command_topic_name: /control_cmd
 
 # control parameters
-node_rate: 50   # [Herz]
+node_rate: 25   # [Herz]

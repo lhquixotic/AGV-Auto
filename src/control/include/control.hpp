@@ -5,6 +5,7 @@
 #include "common_msgs/SerialMsg.h"
 #include "common_msgs/RemoteControl.h"
 #include "common_msgs/MagneticSignal.h"
+#include "common_msgs/ChassisState.h"
 
 // #include "nav_msgs/Odometry.h"
 
@@ -13,6 +14,7 @@
 
 #include "std_msgs/String.h"
 #include "pid.hpp"
+#include <vector>
 
 namespace ns_control {
 
@@ -37,6 +39,7 @@ class Control {
   void setRemoteControl(const common_msgs::RemoteControl &msg);
   void setRfidSignal(const common_msgs::SerialMsg &msg);
   void setMagneticSignal(const common_msgs::MagneticSignal &msg);
+  void setChassisState(const common_msgs::ChassisState &msg);
 
   void setPidParameters(const Pid_para &msg);
   void setControlParameters(const Para &msg);
@@ -64,7 +67,7 @@ class Control {
   common_msgs::SerialMsg rfid_signal;
   int rfid_stop;
   common_msgs::MagneticSignal magnetic_signal;
-
+  common_msgs::ChassisState chassis_state;
 
   // for start-stop state machine
   bool auto_control_enable;
@@ -79,7 +82,14 @@ class Control {
   PID pid_controller;
   Pid_para pid_para;
   Para control_para;
-  
+
+  double ini_wheel_angle;
+  double cur_wheel_angle; 
+
+  int loop_number;
+
+  // for magnetic memory
+  std::vector<int> magnetic_buffer = std::vector<int>(5,8);
   // methods
 };
 }

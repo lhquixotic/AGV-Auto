@@ -26,7 +26,7 @@ void Canparse::Parse(can_msgs::Frame f) {
 
   case 0x042:
     magnetic.Update(f.data.c_array());
-    ROS_INFO("[CAN parse] Magnetic received.");
+    // ROS_INFO("[CAN parse] Magnetic received.");
     break;
 
   case 0x002:// Steer
@@ -74,7 +74,7 @@ void Canparse::runAlgorithm() {
   bool steer_data_recved = steer.SteerDataRecved();
   if (steer_data_recved){
     chassis_state.real_steer_angle = steer.SteerPosition();
-    ROS_INFO_STREAM("[CanParse] Steer angle received: " << chassis_state.real_steer_angle);
+    // ROS_INFO_STREAM("[CanParse] Steer angle received: " << chassis_state.real_steer_angle);
   }
   // ROS_INFO_STREAM();
 }

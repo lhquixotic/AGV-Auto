@@ -27,22 +27,19 @@ class ControlHandle {
   ros::Subscriber remoteControlSubscriber_;
   ros::Subscriber rfidSignalSubscriber_;
   ros::Subscriber magneticSignalSubscriber_;
+  ros::Subscriber chassisStateSubscriber_;
 
   ros::Publisher controlCommandPublisher_;
-
-  // void stopFlagCallback(const common_msgs::StopDecision &msg);
-  // void finalWaypointsCallback(const autoware_msgs::Lane &msg);
-  // void vehicleDynamicStateCallback(const common_msgs::VehicleDynamicState &msg); 
-  // void v2vInfoCallback(const common_msgs::V2V &msg);
-  // void utmPoseCallback(const nav_msgs::Odometry &msg);
 
   void remoteControlCallback(const common_msgs::RemoteControl &msg);
   void rfidSignalCallback(const common_msgs::SerialMsg &msg);
   void magneticSignalCallback(const common_msgs::MagneticSignal &msg);
+  void chassisStateCallback(const common_msgs::ChassisState &msg);
 
   std::string remote_control_topic_name_;
   std::string rfid_signal_topic_name_;
   std::string magnetic_signal_topic_name_;
+  std::string chassis_state_topic_name_;
 
   std::string control_command_topic_name_;
 

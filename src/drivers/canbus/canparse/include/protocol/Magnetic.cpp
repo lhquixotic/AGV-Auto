@@ -21,7 +21,7 @@ void Magnetic::Update(uint8_t *data){
    {data_[i] = data[i];
     // if(i>5) std::cout << data[i];
    }
-  std::cout << std::endl;
+  // std::cout << std::endl;
   UpdateMagneticDataH();
   UpdateMagneticDataL();
 }

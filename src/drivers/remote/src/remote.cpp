@@ -29,7 +29,7 @@ void Remote::runAlgorithm() {
     }
     bool XOR_check = (checksum == remote_signals.data[34]);
     if ((XOR_check) && (remote_signals.data[0] == 0x0f)){
-      ROS_INFO("[Remote] mode: %d",remote_signals.data[9]);
+      ROS_DEBUG("[Remote] mode: %d",remote_signals.data[9]);
       int raw_mode = remote_signals.data[9] / 2;
       // delete oldest data
       buffer.erase(buffer.begin());
