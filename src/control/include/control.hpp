@@ -24,6 +24,8 @@ struct Para{
   int  longitudinal_mode; // 1:constant speed, 2: planned speed, 3: desired distance
   double desired_speed;
   double desired_distance;
+  double max_steer_angle;
+  int max_magnetic_missing_time;
 };
 
 class Control {
@@ -41,7 +43,8 @@ class Control {
   void setMagneticSignal(const common_msgs::MagneticSignal &msg);
   void setChassisState(const common_msgs::ChassisState &msg);
 
-  void setPidParameters(const Pid_para &msg);
+  void setMagnetPidParameters(const Pid_para &msg);
+  void setAnglePidParameters(const Pid_para &msg);
   void setControlParameters(const Para &msg);
 
 
@@ -79,8 +82,10 @@ class Control {
   int kept_rfid_stop;
   int kept_rfid_value;
 
-  PID pid_controller;
-  Pid_para pid_para;
+  PID magnet_pid_controller;
+  PID angle_pid_controller;
+  Pid_para magnet_error_pid_para;
+  Pid_para angle_error_pid_para;
   Para control_para;
 
   double ini_wheel_angle;
@@ -89,7 +94,9 @@ class Control {
   int loop_number;
 
   // for magnetic memory
-  std::vector<int> magnetic_buffer = std::vector<int>(5,8);
+  // std::vector<int> magnetic_buffer = std::vector<int>(5,8);
+  int kept_magnetic_loc;
+  int magnetic_missing_time;
   // methods
 };
 }

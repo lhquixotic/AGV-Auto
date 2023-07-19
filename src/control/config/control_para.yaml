@@ -1,7 +1,11 @@
-pid:
+magnet_error_pid:
   kp: 0.6
-  ki: 0.00
-  kd: 0.00
+  ki: 0.0
+  kd: 0.0
+angle_error_pid:
+  kp: 0.6
+  ki: 0.0
+  kd: 0.0
 pure_pursuit:
   mode: fixed  # 1) [fixed] lookahead distance 2) [variable] k_pre * v
   lookahead_distance: 4.0 # [m]
@@ -12,3 +16,5 @@ control_switch:
 longitudinal_mode: 1 # 1: constant speed 2: planned speed 3: desired distance
 desired_speed: 0.5 # [-1,1]
 desired_distance: 5 # m
+max_steer_angle: 40.0 
+max_magnetic_missing_time: 50 # /25s

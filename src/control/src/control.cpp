@@ -7,13 +7,16 @@ namespace ns_control
 {
   // Constructor
   Control::Control(ros::NodeHandle &nh) : nh_(nh),
-                                          pid_controller(1.0, 0.0, 0.0){
+                                          magnet_pid_controller(1.0, 0.0, 0.0),
+                                          angle_pid_controller(1.0,0.0,0.0){
                                             is_initialized = false;
                                             auto_control_enable = false;
                                             rfid_stop=0;
                                             kept_rfid_value = 0;
                                             kept_rfid_stop = 0;
                                             loop_number = 0;
+                                            kept_magnetic_loc = 99;
+                                            magnetic_missing_time = 0;
                                           };
 
   // Getters
@@ -38,11 +41,18 @@ namespace ns_control
     chassis_state = msg;
   }
 
-  void Control::setPidParameters(const Pid_para &msg){
-    pid_para = msg;
-    pid_controller.kp = pid_para.kp;
-    pid_controller.ki = pid_para.ki;
-    pid_controller.kd = pid_para.kd;
+  void Control::setMagnetPidParameters(const Pid_para &msg){
+    magnet_error_pid_para = msg;
+    magnet_pid_controller.kp = magnet_error_pid_para.kp;
+    magnet_pid_controller.ki = magnet_error_pid_para.ki;
+    magnet_pid_controller.kd = magnet_error_pid_para.kd;
+  }
+
+  void Control::setAnglePidParameters(const Pid_para &msg){
+    angle_error_pid_para = msg;
+    angle_pid_controller.kp = angle_error_pid_para.kp;
+    angle_pid_controller.ki = angle_error_pid_para.ki;
+    angle_pid_controller.kd = angle_error_pid_para.kd;
   }
 
   void Control::setControlParameters(const Para &msg){
@@ -116,6 +126,8 @@ namespace ns_control
         is_initialized = false;
         auto_control_enable = false;
         kept_rfid_value = 0;
+        kept_magnetic_loc = 99;
+        magnetic_missing_time = 0;
         break;
       
       case 2: // automatic control mode
@@ -128,16 +140,32 @@ namespace ns_control
         // if(!auto_control_enable)ROS_WARN("STOP");
         cur_wheel_angle = chassis_state.real_steer_angle - ini_wheel_angle;
         control_cmd.control_mode = 2;
-        if((!magneticSignalFlag)||(magnetic_signal.intensity == 0)||(!auto_control_enable)){
+        if((!magneticSignalFlag)||((magnetic_signal.intensity == 0)&&(kept_magnetic_loc==99))||(!auto_control_enable)){
+          // if no magnetic signal recved || current and kept intensity is zero || auto control disabled
           // if(!magneticSignalFlag){ROS_WARN("[Control] Stop because no magnetic signal received.");}
           // if(magnetic_signal.intensity == 0){ROS_WARN("[Control] Stop because magnetic intensity is 0.");}
           // if(!auto_control_enable){ROS_INFO("[Control] Stop because rfid is detected.");}
           control_cmd.linear_velocity = 0;
           control_cmd.steering_angle = 0;
         }else{
-          double desired_angle = 10*pid_controller.outputSignal(magnetic_signal.middle_loc,magnetic_signal.current_loc);
+
+          // Get current reference magnetic location
+          int cur_magnetic_loc;
+          if (magnetic_signal.intensity == 0){
+            // current intensity is zero but kept intensity is not zero
+            cur_magnetic_loc = kept_magnetic_loc;
+            magnetic_missing_time ++;
+            if (magnetic_missing_time >= control_para.max_magnetic_missing_time){auto_control_enable=false;}
+          }else{
+            // current intensity is not zero
+            cur_magnetic_loc = magnetic_signal.current_loc;
+            kept_magnetic_loc = cur_magnetic_loc;
+          }
+
+          // Use current reference magnetic location for steering
+          double desired_angle = 10*magnet_pid_controller.outputSignal(magnetic_signal.middle_loc,cur_magnetic_loc);
           desired_angle = clamp(desired_angle,-40.0,40.0);          
-          control_cmd.steering_angle = -pid_controller.outputSignal(desired_angle,cur_wheel_angle);
+          control_cmd.steering_angle = -angle_pid_controller.outputSignal(desired_angle,cur_wheel_angle);
           // left +, current > middle -
           control_cmd.linear_velocity = control_para.desired_speed; // TODO:calculate the control value
           if(loop_number%25==0){

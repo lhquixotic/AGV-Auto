@@ -33,6 +33,8 @@ class Remote {
   int buffer_size;
   int loop_number;
 
+  std::vector<int> steer_buffer = std::vector<int> (5,0);
+  std::vector<int> drive_buffer = std::vector<int> (5,0);
 };
 }
 

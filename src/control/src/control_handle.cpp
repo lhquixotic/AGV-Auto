@@ -11,7 +11,8 @@ ControlHandle::ControlHandle(ros::NodeHandle &nodeHandle) :
     control_(nodeHandle) {
   ROS_INFO("Constructing Handle");
   loadParameters();
-  control_.setPidParameters(pid_para_);
+  control_.setMagnetPidParameters(magnet_error_pid_para_);
+  control_.setAnglePidParameters(angle_error_pid_para_);
   control_.setControlParameters(control_para_);
   // control_mode_ = control_para_.longitudinal_mode; 
   // 1: constant speed 2: planned sped, 3: desired distance
@@ -63,14 +64,20 @@ void ControlHandle::loadParameters() {
   nodeHandle_.param<int>("longitudinal_mode",control_para_.longitudinal_mode,1);
   nodeHandle_.param<double>("desired_speed",control_para_.desired_speed,5.0);
   nodeHandle_.param<double>("desired_distance",control_para_.desired_distance,5.0);
+  nodeHandle_.param<double>("max_steer_angle",control_para_.max_steer_angle,25.0);
+  nodeHandle_.param<int>("max_magnetic_missing_time",control_para_.max_magnetic_missing_time,50);
   ROS_INFO_STREAM("Longitudinal control enable: "<<control_para_.longitudinal_control_switch
                   << "; Lateral control enable: "<<control_para_.lateral_control_switch);
               
   // PID parameters
-  nodeHandle_.param<double>("pid/kp", pid_para_.kp, 1.0);
-  nodeHandle_.param<double>("pid/kd", pid_para_.kd, 0.0);
-  nodeHandle_.param<double>("pid/ki", pid_para_.ki, 0.0);
-  ROS_INFO_STREAM("kp: " << pid_para_.kp << ", ki: " << pid_para_.ki << ", kd: " << pid_para_.kd);
+  nodeHandle_.param<double>("magnet_error_pid/kp", magnet_error_pid_para_.kp, 1.0);
+  nodeHandle_.param<double>("magnet_error_pid/kd", magnet_error_pid_para_.kd, 0.0);
+  nodeHandle_.param<double>("magnet_error_pid/ki", magnet_error_pid_para_.ki, 0.0);
+  ROS_INFO_STREAM("[magnet pid] kp: " << magnet_error_pid_para_.kp << ", ki: " << magnet_error_pid_para_.ki << ", kd: " << magnet_error_pid_para_.kd);
+  nodeHandle_.param<double>("angle_error_pid/kp", angle_error_pid_para_.kp, 1.0);
+  nodeHandle_.param<double>("angle_error_pid/kd", angle_error_pid_para_.kd, 0.0);
+  nodeHandle_.param<double>("angle_error_pid/ki", angle_error_pid_para_.ki, 0.0);
+  ROS_INFO_STREAM("[angle pid] kp: " << angle_error_pid_para_.kp << ", ki: " << angle_error_pid_para_.ki << ", kd: " << angle_error_pid_para_.kd);
 }
 
 void ControlHandle::subscribeToTopics() {

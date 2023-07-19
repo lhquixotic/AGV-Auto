@@ -31,12 +31,14 @@ void Remote::runAlgorithm() {
     if ((XOR_check) && (remote_signals.data[0] == 0x0f)){
       ROS_DEBUG("[Remote] mode: %d",remote_signals.data[9]);
       int raw_mode = remote_signals.data[9] / 2;
+      /*  filter mode data   */
       // delete oldest data
       buffer.erase(buffer.begin());
       // add current data
       buffer.push_back(raw_mode);
       // get max data in buffer as mode
       int mode = *std::max_element(buffer.begin(),buffer.end());
+      remote_control.mode = mode;
 
       int l_up_h = remote_signals.data[5]; // front most: 0x069f - 0x0400 - 0x0160
       int l_up_l = remote_signals.data[6];
@@ -52,22 +54,20 @@ void Remote::runAlgorithm() {
       int r_up = r_up_h * 255 + r_up_l - 0x0400;
       int r_lf = r_lf_h * 255 + r_lf_l - 0x0400;
 
+      /* Filter steer and drive data */
       float factor = 1.0 / (0x069f-0x0400);
+      drive_buffer.erase(drive_buffer.begin());
+      drive_buffer.push_back(r_up);
+      int filtered_r_up = *std::min_element(drive_buffer.begin(),drive_buffer.end());
+      remote_control.accel = -factor * filtered_r_up;
 
-      remote_control.mode = mode;
-      remote_control.accel = -factor * r_up;
-      remote_control.steer = -factor * l_lf;
+      steer_buffer.erase(steer_buffer.begin());
+      steer_buffer.push_back(l_lf);
+      int filtered_l_lf = *std::min_element(steer_buffer.begin(),steer_buffer.end());
+      remote_control.steer = -factor * filtered_l_lf;
 
-      // ROS_INFO_STREAM("[Remote] Control mode: " << mode << ", go forward value: " << std::fixed << std::setprecision(2) << - factor * r_up << ", turn left steer: " << -factor * l_lf);
-      
-      // for(int i=0;i<signal_len;i++){
-        
-      //   // std::cout << std::hex << (remote_signals.data[i] && 0xff) << " ";
-      //   // ROS_INFO_STREAM(std::hex << (remote_signals.data[i] && 0xff) << " ");
-      // }
-      // std::cout << std::endl;
      }
-   }//FIXME:add code you want to execute.
+   }
 
   }
 }
