@@ -1,6 +1,6 @@
 #include "MotorControl.h" 
 MotorControl::MotorControl(){
-  id_ = 0x8;
+  id_ = 0x0f3b0101;
   dlc_ = 8;
   is_extended_ = 1;
   is_error_ = 0;
@@ -36,10 +36,10 @@ void MotorControl::Set_p_Motor1SpeedCon(double Motor1SpeedCon){
   int x = (Motor1SpeedCon - 0.000000) / 1.000000;
   uint8_t x0 = x & RANG_MASK_1_L[7];
   x >>= 8;
-  SetByte(data_ + 0,0,8,x0);
+  SetByte(data_ + 1,0,8,x0);
   uint8_t x1 = x & RANG_MASK_1_L[7];
   x >>= 8;
-  SetByte(data_ + 1,0,8,x1);
+  SetByte(data_ + 0,0,8,x1);
 }
 /******************
 signalname: Motor2SpeedCon;
@@ -60,8 +60,8 @@ void MotorControl::Set_p_Motor2SpeedCon(double Motor2SpeedCon){
   int x = (Motor2SpeedCon - 0.000000) / 1.000000;
   uint8_t x0 = x & RANG_MASK_1_L[7];
   x >>= 8;
-  SetByte(data_ + 4,0,8,x0);
+  SetByte(data_ + 5,0,8,x0);
   uint8_t x1 = x & RANG_MASK_1_L[7];
   x >>= 8;
-  SetByte(data_ + 5,0,8,x1);
+  SetByte(data_ + 4,0,8,x1);
 }

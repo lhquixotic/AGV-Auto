@@ -71,6 +71,8 @@ class Cansend {
   // common_msgs::ChassisControl chassis_control_cmd;
   autoware_msgs::ControlCommandStamped ccs;
   
+  void sendSteerReq(double steer_cmd,int device_id);
+
   Para para;
   int loop_number;
   int steer_send_times;

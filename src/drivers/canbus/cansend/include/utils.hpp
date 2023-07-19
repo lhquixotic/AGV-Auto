@@ -5,3 +5,5 @@
 
 double deadband(double input, double threshold);
 double clamp(double input, double minVal, double maxVal);
+
+#endif //UTILS_HPP

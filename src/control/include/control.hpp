@@ -69,6 +69,8 @@ class Control {
   // for start-stop state machine
   bool auto_control_enable;
   void updateStateMachine();
+  void updateRfid();
+
   bool is_initialized;
   int kept_remote_mode;
   int kept_rfid_stop;

@@ -1,6 +1,8 @@
 #include <ros/ros.h>
 #include "canparse.hpp"
 #include <sstream>
+#include <bitset>
+
 namespace ns_canparse {
 // Constructor
 Canparse::Canparse(ros::NodeHandle &nh) : nh_(nh) {
@@ -9,10 +11,11 @@ Canparse::Canparse(ros::NodeHandle &nh) : nh_(nh) {
 
 // Getters
 common_msgs::MagneticSignal Canparse::getMagneticSignal(){return magnetic_signal;}
+common_msgs::ChassisState Canparse::getChassisState(){return chassis_state;}
 
 // Setters
 void Canparse::Parse(can_msgs::Frame f) {
-  ROS_INFO("frame id: %X",f.id);
+  // ROS_INFO("frame id: %X",f.id);
   switch (f.id)
   {
   case 0x650:
@@ -23,8 +26,13 @@ void Canparse::Parse(can_msgs::Frame f) {
 
   case 0x042:
     magnetic.Update(f.data.c_array());
+    ROS_INFO("[CAN parse] Magnetic received.");
     break;
 
+  case 0x002:// Steer
+    steer.Update(f.data.c_array());
+    break;
+  
   default:
     break;
   }
@@ -35,7 +43,11 @@ void Canparse::runAlgorithm() {
   // read data
   uint8_t magnetic_data_h = magnetic.MagneticDataH();
   uint8_t magnetic_data_l = magnetic.MagneticDataL();
+  // ROS_INFO("[Magnetic] data_h: %d, data_l: %d", magnetic_data_h, magnetic_data_l);
   uint16_t magnetic_data = (magnetic_data_h << 8) | magnetic_data_l;
+  // uint16_t binary_data = magnetic_data;
+  // std::bitset<16> binaryNumber(binary_data);
+  // ROS_INFO_STREAM("[Magnetic] Origin data is " << std::hex << magnetic_data);
   int number_of_1 = 0;
   int sum_of_1 = 0;
 
@@ -57,5 +69,13 @@ void Canparse::runAlgorithm() {
   }else{
     magnetic_signal.current_loc = sum_of_1/number_of_1;
   }
+  
+  // Steer data
+  bool steer_data_recved = steer.SteerDataRecved();
+  if (steer_data_recved){
+    chassis_state.real_steer_angle = steer.SteerPosition();
+    ROS_INFO_STREAM("[CanParse] Steer angle received: " << chassis_state.real_steer_angle);
+  }
+  // ROS_INFO_STREAM();
 }
 }

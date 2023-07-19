@@ -1,7 +1,7 @@
 pid:
   kp: 0.5
-  ki: 0.05
-  kd: 0.001
+  ki: 0.00
+  kd: 0.00
 pure_pursuit:
   mode: fixed  # 1) [fixed] lookahead distance 2) [variable] k_pre * v
   lookahead_distance: 4.0 # [m]

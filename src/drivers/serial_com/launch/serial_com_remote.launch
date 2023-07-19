@@ -1,11 +1,11 @@
 <launch>
-    <arg name="port" default="/dev/ttyTHS1"/>
+    <arg name="port" default="/dev/ttyTHS0"/>
     <arg name="baud" default="115200"/>
     <arg name="rate" default="50"/>
     <arg name="name" default="/drivers/remote/signals"/>
     <arg name="device" default="remote"/>
 
-    <node name="serial_com_node" pkg="serial_com" type="serial_com" output="screen">
+    <node name="serial_com_remote_node" pkg="serial_com" type="serial_com" output="screen">
         <param name="port" value="$(arg port)"/>
         <param name="baud" value="$(arg baud)"/>
         <param name="node_rate" value="$(arg rate)"/>

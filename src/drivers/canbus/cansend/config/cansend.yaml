@@ -1,15 +1,17 @@
 chassis_control_topic_name: /control_cmd
 
-cansend_topic_name: /sent_messages
+cansend_topic_name: /sent_messages_can0
 
-node_rate: 50   # [Herz]
+cansend_can1_topic_name: /sent_messages_can1
+
+node_rate: 25   # [Herz]
 
 cansend_para:
   send_mode: 1 # 0 for test and 1 for autonomous driving
   test_steer_angle: -1
-  test_motor_input: 0 # [-1,1], test_motor_rpm = test_motor_input * max_motor_rpm
-  motor_max_rpm: 1000
+  test_motor_input: 0.1 # [-1,1], test_motor_rpm = test_motor_input * max_motor_rpm
+  motor_max_rpm: 1200
   motor_dead_input: 0.1
   steer_max_angle: 45
-  steer_dead_input: 0.1
+  steer_dead_input: 0.5
   

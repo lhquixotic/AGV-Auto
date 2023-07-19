@@ -1,4 +1,6 @@
 #include "Magnetic.h"
+#include <iostream>
+
 Magnetic::Magnetic(){
   id_ = 0x42;
   dlc_ = 8;
@@ -14,7 +16,12 @@ void Magnetic::Reset(){
   MagneticDataL_=0;
 }
 void Magnetic::Update(uint8_t *data){
-  for(int i=0;i<dlc_;i++) data_[i] = data[i];
+  // std::cout <<"[0x042] ";
+  for(int i=0;i<dlc_;i++) 
+   {data_[i] = data[i];
+    // if(i>5) std::cout << data[i];
+   }
+  std::cout << std::endl;
   UpdateMagneticDataH();
   UpdateMagneticDataL();
 }

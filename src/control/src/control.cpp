@@ -9,7 +9,9 @@ namespace ns_control
                                           pid_controller(1.0, 0.0, 0.0){
                                             is_initialized = false;
                                             auto_control_enable = false;
+                                            rfid_stop=0;
                                             kept_rfid_value = 0;
+                                            kept_rfid_stop = 0;
                                           };
 
   // Getters
@@ -42,27 +44,41 @@ namespace ns_control
     control_para = msg;
   }
 
+  void Control::updateRfid(){
+    // Update RFID stop
+    // 如果接收到17位长度的报文，为RFID的有效报文，此时读取第7位寄存，如果先前
+    // 寄存数据与当前读取数据不一致，且当前数据不为0；则出发stop。
+    int signal_len = rfid_signal.length;
+    if(signal_len == 17){//valid message
+      int rfid_value = rfid_signal.data[7];
+      // ROS_INFO_STREAM("RFID Read, data: "<<rfid_value);
+      if ((rfid_value != kept_rfid_value) && (rfid_value != 0)){
+        // ROS_INFO_STREAM("[Control] rfid value: "<<rfid_value<<", kept_rfid_value: "<<kept_rfid_value);
+        rfid_stop = 1;
+      }else{
+        rfid_stop = 0;
+      }
+      kept_rfid_value = rfid_value;
+    }
+  }
+
   void Control::updateStateMachine(){
-    // Initialization
     if (!is_initialized){
-      // initialization
-      kept_remote_mode = remote_control.mode;
-      kept_rfid_stop = rfid_stop;
+      // Initialization (when 1->2)
+      kept_remote_mode = 2;
+      kept_rfid_stop = 0;
       is_initialized = true;
       auto_control_enable = true;
     }else{
       // Update state machine
       if ((kept_rfid_stop==0)&&(rfid_stop==1)){
+        // ROS_INFO("[Control] Stop because rfid is detected.");
         auto_control_enable = false;
       }
-      if ((kept_remote_mode==2)&&(remote_control.mode==3)){
-        auto_control_enable = false;
-      }
-      if ((kept_remote_mode==3)&&(remote_control.mode==2)){
+      if (kept_remote_mode==3){
         auto_control_enable = true;
       }
       // Update the kept values
-      kept_remote_mode = remote_control.mode;
       kept_rfid_stop = rfid_stop;
     }
   }
@@ -80,19 +96,7 @@ namespace ns_control
 
     if (remoteControlFlag){
       // ROS_INFO_STREAM("control mode: "<<remote_control.mode);
-      // Update RFID stop
-      // 如果接收到17位长度的报文，为RFID的有效报文，此时读取第7位寄存，如果先前
-      // 寄存数据与当前读取数据不一致，且当前数据不为0；则出发stop。
-      int signal_len = rfid_signal.length;
-      if(signal_len == 17){//valid message
-        int rfid_value = rfid_signal.data[7];
-        if ((rfid_value != kept_rfid_value) && (rfid_value != 0)){
-          rfid_stop = 1;
-        }else{
-          rfid_stop = 0;
-        }
-      }
-
+      ROS_INFO("Remote control mode: %d",remote_control.mode);
       // Switch remote control mode
       switch (remote_control.mode)
       {
@@ -105,30 +109,43 @@ namespace ns_control
         break;
       
       case 2: // automatic control mode
+        
         // update the state machine
         updateStateMachine();
-
+        // update rfid signal
+        updateRfid();
+        // ROS_INFO("[Control] kept_rfid_value: %d, kept_rfid_stop: %d, rfid_stop: %d", kept_rfid_value,kept_rfid_stop,rfid_stop);
+        if(!auto_control_enable)ROS_WARN("STOP");
         control_cmd.control_mode = 2;
         if((!magneticSignalFlag)||(magnetic_signal.intensity == 0)||(!auto_control_enable)){
-          if(!magneticSignalFlag){ROS_WARN("[Control] Stop because no magnetic signal received.")};
-          if(magnetic_signal.intensity == 0){ROS_WARN("[Control] Stop because magnetic intensity is 0.")};
-          if(!auto_control_enable){ROSINFO("[Control] Stop because rfid is detected.")};
+          // if(!magneticSignalFlag){ROS_WARN("[Control] Stop because no magnetic signal received.");}
+          // if(magnetic_signal.intensity == 0){ROS_WARN("[Control] Stop because magnetic intensity is 0.");}
+          if(!auto_control_enable){ROS_INFO("[Control] Stop because rfid is detected.");}
           control_cmd.linear_velocity = 0;
           control_cmd.steering_angle = 0;
         }else{
           control_cmd.steering_angle = pid_controller.outputSignal(magnetic_signal.middle_loc,magnetic_signal.current_loc);
+          ROS_INFO("[Control] Current magnetic loc: %d, steer angle: %f",magnetic_signal.current_loc,control_cmd.steering_angle);
+          // left +, current > middle -
           control_cmd.linear_velocity = control_para.desired_speed; // TODO:calculate the control value
         }
         break;
 
-      case 3: // step forward control mode
-        updateStateMachine();
+      case 3: // Locked mode
+        ROS_INFO("[Control] Lock mode.");
+        control_cmd.linear_velocity = 0;
+        control_cmd.steering_angle = 0;
         break;
       
-      default: // 
+      default: // No such control mode
         ROS_WARN("[Control] WARN: Remote control set wrong control mode.");
         break;
       }
+      // Update kept value
+      kept_remote_mode = remote_control.mode;
+      
+
+      // Switch for longitufinal and lateral control
       if(!control_para.longitudinal_control_switch){//disable longitudianl control
         ROS_INFO("[Control] Disable longitudinal control!");
         control_cmd.linear_velocity = 0;

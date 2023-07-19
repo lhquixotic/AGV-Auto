@@ -25,11 +25,13 @@ class CansendHandle {
   ros::NodeHandle nodeHandle_;
   ros::Subscriber chassisControlSubscriber_;
   ros::Publisher cansendStatePublisher_;
+  ros::Publisher cansendCan1Publisher_;
 
   void chassisControlCallback(const autoware_msgs::ControlCommandStamped &msg);
 
   std::string chassis_control_topic_name_;
   std::string cansend_topic_name_;
+  std::string cansend_can1_topic_name_;
 
   int node_rate_;
 

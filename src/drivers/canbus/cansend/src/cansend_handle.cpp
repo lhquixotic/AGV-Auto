@@ -33,6 +33,7 @@ CansendHandle::CansendHandle(ros::NodeHandle &nodeHandle) :
   cansend_.setParameters(para_);
   subscribeToTopics();
   publishToTopics();
+   ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Info);
 }
 
 // Getters
@@ -52,16 +53,21 @@ void CansendHandle::loadParameters() {
                                       "/sent_messages")) {
     ROS_WARN_STREAM("Did not load cansend_topic_name. Standard value is: " << cansend_topic_name_);
   }
+  if (!nodeHandle_.param<std::string>("cansend_can1_topic_name",
+                                      cansend_can1_topic_name_,
+                                      "/sent_messages_can1")) {
+    ROS_WARN_STREAM("Did not load cansend_can1_topic_name. Standard value is: " << cansend_can1_topic_name_);
+  }
   if (!nodeHandle_.param("node_rate", node_rate_, 1)) {
     ROS_WARN_STREAM("Did not load node_rate. Standard value is: " << node_rate_);
   }
   nodeHandle_.param<int>("cansend_para/send_mode",para_.send_mode,0);
   nodeHandle_.param<int>("cansend_para/test_steer_angle",para_.test_steer_angle,0);
   nodeHandle_.param<double>("cansend_para/test_motor_input",para_.test_motor_input,0);
-  nodeHandle_.param<double>("cansend_para/motor_max_rpm",para_.setup_steer_speed,1000);
-  nodeHandle_.param<double>("cansend_para/motor_dead_input",para_.setup_steer_speed,0.1);
-  nodeHandle_.param<double>("cansend_para/steer_max_angle",para_.setup_steer_speed,45);
-  nodeHandle_.param<double>("cansend_para/steer_dead_input",para_.setup_steer_speed,0.1);
+  nodeHandle_.param<double>("cansend_para/motor_max_rpm",para_.motor_max_rpm,1000);
+  nodeHandle_.param<double>("cansend_para/motor_dead_input",para_.motor_dead_input,0.1);
+  nodeHandle_.param<double>("cansend_para/steer_max_angle",para_.steer_max_angle,45);
+  nodeHandle_.param<double>("cansend_para/steer_dead_input",para_.steer_dead_input,0.1);
   ROS_INFO_STREAM("[Cansend] Para: test_steer_angle" << para_.test_steer_angle);
 }
 
@@ -74,6 +80,7 @@ void CansendHandle::subscribeToTopics() {
 void CansendHandle::publishToTopics() {
   ROS_INFO("publish to topics");
   cansendStatePublisher_ = nodeHandle_.advertise<can_msgs::Frame>(cansend_topic_name_, 100);
+  cansendCan1Publisher_ = nodeHandle_.advertise<can_msgs::Frame>(cansend_can1_topic_name_, 100);
 }
 
 void CansendHandle::run() {
@@ -90,8 +97,7 @@ void CansendHandle::sendMsg() {
   // cansendStatePublisher_.publish(cansend_.getFrame(id_0x0C040B2A));
   cansendStatePublisher_.publish(cansend_.getFrame(magnetic_req));
   cansendStatePublisher_.publish(cansend_.getFrame(steer_control));
-  cansendStatePublisher_.publish(cansend_.getFrame(motor_control));
-
+  cansendCan1Publisher_.publish(cansend_.getFrame(motor_control));
 }
 
 void CansendHandle::chassisControlCallback(const autoware_msgs::ControlCommandStamped &msg) {

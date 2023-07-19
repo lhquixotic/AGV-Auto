@@ -31,6 +31,11 @@ void CanparseHandle::loadParameters() {
                                       "/perception/magnetic")) {
     ROS_WARN_STREAM("Did not load magnetic_signal_topic_name_. Standard value is: " << magnetic_signal_topic_name_);
   }
+  if (!nodeHandle_.param<std::string>("chassis_state_topic_name",
+                                      chassis_state_topic_name_,
+                                      "/chassis_state")) {
+    ROS_WARN_STREAM("Did not load magnetic_signal_topic_name_. Standard value is: " << magnetic_signal_topic_name_);
+  }
   if (!nodeHandle_.param("node_rate", node_rate_, 1)) {
     ROS_WARN_STREAM("Did not load node_rate. Standard value is: " << node_rate_);
   }
@@ -45,6 +50,7 @@ void CanparseHandle::subscribeToTopics() {
 void CanparseHandle::publishToTopics() {
   ROS_INFO("publish to topics");
   magneticSignalPublisher_ = nodeHandle_.advertise<common_msgs::MagneticSignal>(magnetic_signal_topic_name_,1);
+  chassisStatePublisher_ = nodeHandle_.advertise<common_msgs::ChassisState>(chassis_state_topic_name_,1);
 }
 
 void CanparseHandle::run() {
@@ -58,6 +64,7 @@ void CanparseHandle::run() {
 
 void CanparseHandle::sendMsg() {
   magneticSignalPublisher_.publish(canparse_.getMagneticSignal());
+  chassisStatePublisher_.publish(canparse_.getChassisState());
 }
 
 void CanparseHandle::CanbusReceiveCallback(const can_msgs::Frame &f) {

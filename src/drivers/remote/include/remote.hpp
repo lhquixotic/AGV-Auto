@@ -3,7 +3,8 @@
 
 #include "common_msgs/RemoteControl.h"
 #include "common_msgs/SerialMsg.h"
-#include "std_msgs/String.h"
+#include <vector>
+#include <algorithm>
 
 namespace ns_remote {
 
@@ -27,7 +28,11 @@ class Remote {
 
   common_msgs::RemoteControl remote_control;
   common_msgs::SerialMsg remote_signals;
-;
+
+  std::vector<int> buffer = std::vector<int> (5,0);
+  int buffer_size;
+  int loop_number;
+
 };
 }
 

@@ -11,6 +11,7 @@ class Magnetic:public protocol{
     void UpdateMagneticDataH();
     double MagneticDataL();
     void UpdateMagneticDataL();
+
   private:
     // double MagneticCmd_;
     double MagneticDataH_;

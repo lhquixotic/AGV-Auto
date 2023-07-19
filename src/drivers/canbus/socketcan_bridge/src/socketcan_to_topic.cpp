@@ -53,7 +53,7 @@ namespace socketcan_bridge
       can::DriverInterfaceSharedPtr driver)
     {
       can_topic_ = nh->advertise<can_msgs::Frame>("received_messages",
-                                                  nh_param->param("received_messages_queue_size", 10));
+                                                  nh_param->param("received_messages_queue_size", 1000));
       driver_ = driver;
     };
 

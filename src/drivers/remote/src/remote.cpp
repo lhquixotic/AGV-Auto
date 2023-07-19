@@ -5,7 +5,7 @@
 namespace ns_remote {
 // Constructor
 Remote::Remote(ros::NodeHandle &nh) : nh_(nh) {
-
+  buffer_size = buffer.size();
 };//FIXME:load config params.
 
 // Getters
@@ -29,7 +29,14 @@ void Remote::runAlgorithm() {
     }
     bool XOR_check = (checksum == remote_signals.data[34]);
     if ((XOR_check) && (remote_signals.data[0] == 0x0f)){
-      int mode = remote_signals.data[9] / 2;
+      ROS_INFO("[Remote] mode: %d",remote_signals.data[9]);
+      int raw_mode = remote_signals.data[9] / 2;
+      // delete oldest data
+      buffer.erase(buffer.begin());
+      // add current data
+      buffer.push_back(raw_mode);
+      // get max data in buffer as mode
+      int mode = *std::max_element(buffer.begin(),buffer.end());
 
       int l_up_h = remote_signals.data[5]; // front most: 0x069f - 0x0400 - 0x0160
       int l_up_l = remote_signals.data[6];
