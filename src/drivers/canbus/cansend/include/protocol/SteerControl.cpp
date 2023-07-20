@@ -50,19 +50,33 @@ void SteerControl::setNullMsg(){
 }
 
 void SteerControl::sendReadReq(bool is_high, int wheel_id){
-  // Read steer angle message
-  // ID: 0x01 left wheel
-  // [7 bytes return]
-  // Read low byte: 01 03 60 2D 00 01 0A 03
-  // Read high byte: 01 03 60 2C 00 01 5B C3
-  // [9 bytes return]
-  // Read low byte: 01 03 60 2D 00 02 4A 02
-  uint8_t low_byte_msg[] = {0x01,0x03,0x60,0x2D,0x00,0x02,0x4a,0x02};
-  uint8_t high_byte_msg[] = {0x01,0x03,0x60,0x2c,0x00,0x01,0x5b,0xc3};
+    // Read steer angle message
+    // ID: 0x01 left wheel
+    // [7 bytes return]
+    // Read high byte: 01 03 60 2C 00 01 5B C3
+    // 
+    // [9 bytes return]
+    // Read low byte: 01 03 60 2D 00 02 4A 02
+    // 
+    // ID: 0x02 right wheel
+    // [7 bytes return]
+    // Read high byte: 02 03 60 2C 00 01 5B F0
+    // 
+    // [9 bytes return]
+    // Read low byte: 02 03 60 2D 00 02 4A 31
+  uint8_t id_1_low_byte_msg[] = {0x01,0x03,0x60,0x2D,0x00,0x02,0x4a,0x02};
+  uint8_t id_1_high_byte_msg[] = {0x01,0x03,0x60,0x2c,0x00,0x01,0x5b,0xc3};
+  uint8_t id_2_low_byte_msg[] = {0x02,0x03,0x60,0x2d,0x00,0x02,0x4a,0x31};
+  uint8_t id_2_high_byte_msg[] = {0x02,0x03,0x60,0x2c,0x00,0x01,0x5b,0xf0};
   if (wheel_id==1){
     for(int i=0; i<dlc_; i++){
-      if (is_high) data_[i] = high_byte_msg[i];
-      else data_[i] = low_byte_msg[i];
+      if (is_high) data_[i] = id_1_high_byte_msg[i];
+      else data_[i] = id_1_low_byte_msg[i];
+    }
+  }else{
+    if(wheel_id==2){
+      if (is_high) data_[i] = id_2_high_byte_msg[i];
+      else data_[i] = id_2_low_byte_msg[i];
     }
   }
 }

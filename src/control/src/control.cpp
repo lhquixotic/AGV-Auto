@@ -164,7 +164,7 @@ namespace ns_control
 
           // Use current reference magnetic location for steering
           double desired_angle = 10*magnet_pid_controller.outputSignal(magnetic_signal.middle_loc,cur_magnetic_loc);
-          desired_angle = clamp(desired_angle,-40.0,40.0);          
+          desired_angle = clamp(desired_angle,-control_para.max_steer_angle,control_para.max_steer_angle);          
           control_cmd.steering_angle = -angle_pid_controller.outputSignal(desired_angle,cur_wheel_angle);
           // left +, current > middle -
           control_cmd.linear_velocity = control_para.desired_speed; // TODO:calculate the control value
