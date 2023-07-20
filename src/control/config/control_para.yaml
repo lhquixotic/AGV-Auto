@@ -1,9 +1,5 @@
 magnet_error_pid:
-  kp: 0.6
-  ki: 0.0
-  kd: 0.0
-angle_error_pid:
-  kp: 0.6
+  kp: 6.0
   ki: 0.0
   kd: 0.0
 pure_pursuit:
@@ -14,7 +10,7 @@ control_switch:
   longitudinal: true # Start: true; Shutdown: false
   lateral: true
 longitudinal_mode: 1 # 1: constant speed 2: planned speed 3: desired distance
-desired_speed: 0.5 # [-1,1]
+desired_speed: 20 # [-1,1]
 desired_distance: 5 # m
 max_steer_angle: 40.0 
-max_magnetic_missing_time: 50 # /25s
+max_magnetic_missing_time: 500 # /25s

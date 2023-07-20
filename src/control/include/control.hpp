@@ -10,7 +10,7 @@
 // #include "nav_msgs/Odometry.h"
 
 // #include "common_msgs/ControlCmd.h"
-#include "autoware_msgs/ControlCommandStamped.h"
+#include "common_msgs/ControlCommandStamped.h"
 
 #include "std_msgs/String.h"
 #include "pid.hpp"
@@ -35,7 +35,7 @@ class Control {
   Control(ros::NodeHandle &nh);
 
   // Getters
-  autoware_msgs::ControlCommandStamped getControlCommand();
+  common_msgs::ControlCommandStamped getControlCommand();
 
   // Setters
   void setRemoteControl(const common_msgs::RemoteControl &msg);
@@ -44,7 +44,6 @@ class Control {
   void setChassisState(const common_msgs::ChassisState &msg);
 
   void setMagnetPidParameters(const Pid_para &msg);
-  void setAnglePidParameters(const Pid_para &msg);
   void setControlParameters(const Para &msg);
 
 
@@ -63,8 +62,8 @@ class Control {
 
   ros::NodeHandle &nh_;
 
-  autoware_msgs::ControlCommand control_cmd;
-  autoware_msgs::ControlCommandStamped ccs;
+  common_msgs::ControlCommand control_cmd;
+  common_msgs::ControlCommandStamped ccs;
 
   common_msgs::RemoteControl remote_control;
   common_msgs::SerialMsg rfid_signal;
@@ -83,13 +82,12 @@ class Control {
   int kept_rfid_value;
 
   PID magnet_pid_controller;
-  PID angle_pid_controller;
   Pid_para magnet_error_pid_para;
-  Pid_para angle_error_pid_para;
+  // Pid_para angle_error_pid_para;
   Para control_para;
 
-  double ini_wheel_angle;
-  double cur_wheel_angle; 
+  // double ini_wheel_angle;
+  // double cur_wheel_angle; 
 
   int loop_number;
 

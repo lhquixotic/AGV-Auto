@@ -6,7 +6,9 @@
 namespace ns_canparse {
 // Constructor
 Canparse::Canparse(ros::NodeHandle &nh) : nh_(nh) {
-
+  kept_left_steer_recved = false;
+  kept_right_steer_recved = false;
+  loop_number = 0;
 };
 
 // Getters
@@ -71,11 +73,26 @@ void Canparse::runAlgorithm() {
   }
   
   // Steer data
-  bool steer_data_recved = steer.SteerDataRecved();
-  if (steer_data_recved){
-    chassis_state.real_steer_angle = steer.SteerPosition();
-    // ROS_INFO_STREAM("[CanParse] Steer angle received: " << chassis_state.real_steer_angle);
+  bool left_steer_data_recved = steer.LeftSteerDataRecved();
+  bool right_steer_data_recved = steer.RightSteerDataRecved();
+  if (left_steer_data_recved){
+    chassis_state.real_steer_angle_left = steer.LeftSteerPosition();
+    // ROS_INFO("[CanParse] Left steer angle received: %f", chassis_state.real_steer_angle_left);
+    if(!kept_left_steer_recved){ROS_INFO("[CanParse] Left steer angle received: %f", chassis_state.real_steer_angle_right);kept_left_steer_recved=true;}
+    
+  }
+  if (right_steer_data_recved){
+    chassis_state.real_steer_angle_right = steer.RightSteerPosition();
+    // ROS_INFO("[CanParse] Right steer angle received: %f", chassis_state.real_steer_angle_right);
+    if(!kept_right_steer_recved){ROS_INFO("[CanParse] Right steer angle received: %f", chassis_state.real_steer_angle_right);kept_right_steer_recved=true;}
   }
   // ROS_INFO_STREAM();
+  if(loop_number%25==0){
+    if(left_steer_data_recved && right_steer_data_recved){
+      ROS_INFO("[CanParse] right angle: %f, left angle: %f",chassis_state.real_steer_angle_right+122.8,chassis_state.real_steer_angle_left-0.8);
+    }
+    }
+  loop_number ++;
 }
 }
+// Steer initial value: right -122.8, left 0.8;

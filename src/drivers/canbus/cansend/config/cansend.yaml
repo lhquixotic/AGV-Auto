@@ -1,5 +1,7 @@
 chassis_control_topic_name: /control_cmd
 
+chassis_state_topic_name: /chassis_state
+
 cansend_topic_name: /sent_messages_can0
 
 cansend_can1_topic_name: /sent_messages_can1
@@ -13,5 +15,13 @@ cansend_para:
   motor_max_rpm: 2400
   motor_dead_input: 0.48
   steer_max_angle: 45
-  steer_dead_input: 0.3
+  steer_dead_input: 0.2
+  motor_manual_rpm: 2000
+
+angle_error_pid:
+  kp: 0.03
+  ki: 0.0
+  kd: 0.0
+
+
   

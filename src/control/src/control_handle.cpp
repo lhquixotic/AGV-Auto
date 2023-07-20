@@ -12,7 +12,6 @@ ControlHandle::ControlHandle(ros::NodeHandle &nodeHandle) :
   ROS_INFO("Constructing Handle");
   loadParameters();
   control_.setMagnetPidParameters(magnet_error_pid_para_);
-  control_.setAnglePidParameters(angle_error_pid_para_);
   control_.setControlParameters(control_para_);
   // control_mode_ = control_para_.longitudinal_mode; 
   // 1: constant speed 2: planned sped, 3: desired distance
@@ -74,10 +73,10 @@ void ControlHandle::loadParameters() {
   nodeHandle_.param<double>("magnet_error_pid/kd", magnet_error_pid_para_.kd, 0.0);
   nodeHandle_.param<double>("magnet_error_pid/ki", magnet_error_pid_para_.ki, 0.0);
   ROS_INFO_STREAM("[magnet pid] kp: " << magnet_error_pid_para_.kp << ", ki: " << magnet_error_pid_para_.ki << ", kd: " << magnet_error_pid_para_.kd);
-  nodeHandle_.param<double>("angle_error_pid/kp", angle_error_pid_para_.kp, 1.0);
-  nodeHandle_.param<double>("angle_error_pid/kd", angle_error_pid_para_.kd, 0.0);
-  nodeHandle_.param<double>("angle_error_pid/ki", angle_error_pid_para_.ki, 0.0);
-  ROS_INFO_STREAM("[angle pid] kp: " << angle_error_pid_para_.kp << ", ki: " << angle_error_pid_para_.ki << ", kd: " << angle_error_pid_para_.kd);
+  // nodeHandle_.param<double>("angle_error_pid/kp", angle_error_pid_para_.kp, 1.0);
+  // nodeHandle_.param<double>("angle_error_pid/kd", angle_error_pid_para_.kd, 0.0);
+  // nodeHandle_.param<double>("angle_error_pid/ki", angle_error_pid_para_.ki, 0.0);
+  // ROS_INFO_STREAM("[angle pid] kp: " << angle_error_pid_para_.kp << ", ki: " << angle_error_pid_para_.ki << ", kd: " << angle_error_pid_para_.kd);
 }
 
 void ControlHandle::subscribeToTopics() {
@@ -94,7 +93,7 @@ void ControlHandle::subscribeToTopics() {
 
 void ControlHandle::publishToTopics() {
   ROS_INFO("publish to topics");
-  controlCommandPublisher_ = nodeHandle_.advertise<autoware_msgs::ControlCommandStamped>(control_command_topic_name_, 1);
+  controlCommandPublisher_ = nodeHandle_.advertise<common_msgs::ControlCommandStamped>(control_command_topic_name_, 1);
 }  
 
 void ControlHandle::run() {
@@ -103,7 +102,7 @@ void ControlHandle::run() {
 }
 
 void ControlHandle::sendMsg() {
-  autoware_msgs::ControlCommandStamped control_command = control_.getControlCommand();
+  common_msgs::ControlCommandStamped control_command = control_.getControlCommand();
   controlCommandPublisher_.publish(control_command);
 }
 // Callbacks

@@ -24,12 +24,16 @@ class CansendHandle {
  private:
   ros::NodeHandle nodeHandle_;
   ros::Subscriber chassisControlSubscriber_;
+  ros::Subscriber chassisStateSubscriber_;
+
   ros::Publisher cansendStatePublisher_;
   ros::Publisher cansendCan1Publisher_;
 
-  void chassisControlCallback(const autoware_msgs::ControlCommandStamped &msg);
+  void chassisControlCallback(const common_msgs::ControlCommandStamped &msg);
+  void chassisStateCallback(const common_msgs::ChassisState &msg);
 
   std::string chassis_control_topic_name_;
+  std::string chassis_state_topic_name_;
   std::string cansend_topic_name_;
   std::string cansend_can1_topic_name_;
 
@@ -37,6 +41,7 @@ class CansendHandle {
 
   Cansend cansend_;
   Para para_;
+  Pid_para angle_error_pid_para_;
 
 };
 }

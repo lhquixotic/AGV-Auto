@@ -30,10 +30,11 @@ CansendHandle::CansendHandle(ros::NodeHandle &nodeHandle) :
     cansend_(nodeHandle) {
   ROS_INFO("Constructing Handle");
   loadParameters();
+  cansend_.setAnglePidParameters(angle_error_pid_para_);
   cansend_.setParameters(para_);
   subscribeToTopics();
   publishToTopics();
-   ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Info);
+  ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Info);
 }
 
 // Getters
@@ -47,6 +48,12 @@ void CansendHandle::loadParameters() {
                                       "/chassis/control_cmd")) {
     ROS_WARN_STREAM(
         "Did not load chassis_control_topic_name. Standard value is: " << chassis_control_topic_name_);
+  }
+  if (!nodeHandle_.param<std::string>("chassis_state_topic_name",
+                                      chassis_state_topic_name_,
+                                      "/chassis_state")) {
+    ROS_WARN_STREAM(
+        "Did not load chassis_state_topic_name. Standard value is: " << chassis_state_topic_name_);
   }
   if (!nodeHandle_.param<std::string>("cansend_topic_name",
                                       cansend_topic_name_,
@@ -65,16 +72,25 @@ void CansendHandle::loadParameters() {
   nodeHandle_.param<int>("cansend_para/test_steer_angle",para_.test_steer_angle,0);
   nodeHandle_.param<double>("cansend_para/test_motor_input",para_.test_motor_input,0);
   nodeHandle_.param<double>("cansend_para/motor_max_rpm",para_.motor_max_rpm,1000);
+  nodeHandle_.param<double>("cansend_para/motor_manual_rpm",para_.motor_manual_rpm,1000);
   nodeHandle_.param<double>("cansend_para/motor_dead_input",para_.motor_dead_input,0.1);
   nodeHandle_.param<double>("cansend_para/steer_max_angle",para_.steer_max_angle,45);
   nodeHandle_.param<double>("cansend_para/steer_dead_input",para_.steer_dead_input,0.1);
   ROS_INFO_STREAM("[Cansend] Para: test_steer_angle" << para_.test_steer_angle);
+  
+  nodeHandle_.param<double>("angle_error_pid/kp", angle_error_pid_para_.kp, 1.0);
+  nodeHandle_.param<double>("angle_error_pid/kd", angle_error_pid_para_.kd, 0.0);
+  nodeHandle_.param<double>("angle_error_pid/ki", angle_error_pid_para_.ki, 0.0);
+  ROS_INFO_STREAM("[angle pid] kp: " << angle_error_pid_para_.kp << ", ki: " << angle_error_pid_para_.ki << ", kd: " << angle_error_pid_para_.kd);
+
 }
 
 void CansendHandle::subscribeToTopics() {
   ROS_INFO("subscribe to topics");
   chassisControlSubscriber_ =
       nodeHandle_.subscribe(chassis_control_topic_name_, 1, &CansendHandle::chassisControlCallback, this);
+  chassisStateSubscriber_ = 
+      nodeHandle_.subscribe(chassis_state_topic_name_, 1, &CansendHandle::chassisStateCallback, this);
 }
 
 void CansendHandle::publishToTopics() {
@@ -100,7 +116,11 @@ void CansendHandle::sendMsg() {
   cansendCan1Publisher_.publish(cansend_.getFrame(motor_control));
 }
 
-void CansendHandle::chassisControlCallback(const autoware_msgs::ControlCommandStamped &msg) {
+void CansendHandle::chassisControlCallback(const common_msgs::ControlCommandStamped &msg) {
   cansend_.setChassisControl(msg);
+}
+
+void CansendHandle::chassisStateCallback(const common_msgs::ChassisState &msg) {
+  cansend_.setChassisState(msg);
 }
 }

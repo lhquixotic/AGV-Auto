@@ -23,7 +23,10 @@
 #include "std_msgs/String.h"
 #include "can_msgs/Frame.h"
 // #include "common_msgs/ChassisControl.h"
-#include "autoware_msgs/ControlCommandStamped.h"
+#include "common_msgs/ControlCommandStamped.h"
+#include "common_msgs/ChassisState.h"
+#include "pid.hpp"
+#include "calculate.hpp"
 
 #include "MagneticReq.h"
 #include "SteerControl.h"
@@ -45,6 +48,7 @@ struct Para{
   double motor_dead_input;
   double steer_max_angle;
   double steer_dead_input;
+  double motor_manual_rpm;
 };
 
 class Cansend {
@@ -59,8 +63,10 @@ class Cansend {
 
   // Setters
   // void setChassisControl(common_msgs::ChassisControl msg);
-  void setChassisControl(autoware_msgs::ControlCommandStamped msg);
+  void setChassisControl(common_msgs::ControlCommandStamped msg);
+  void setChassisState(common_msgs::ChassisState msg);
   void setParameters(const Para &msg);
+  void setAnglePidParameters(const Pid_para &msg);
 
   void runAlgorithm();
 
@@ -69,13 +75,30 @@ class Cansend {
   ros::NodeHandle &nh_;
 
   // common_msgs::ChassisControl chassis_control_cmd;
-  autoware_msgs::ControlCommandStamped ccs;
+  common_msgs::ControlCommandStamped ccs;
+  common_msgs::ChassisState chassis_state;
   
   void sendSteerReq(double steer_cmd,int device_id);
 
   Para para;
+  Pid_para angle_error_pid_para;
+  
   int loop_number;
   int steer_send_times;
+
+  // memorize mode
+  int kept_remote_mode;
+
+  PID angle_pid_controller;
+
+  VehicleDynamicCal veh_dyn_cal;
+
+  // steer wheel angle variable
+  double ini_left_angle;
+  double cur_left_angle;
+  double ini_right_angle;
+  double cur_right_angle; 
+
 };
 }
 

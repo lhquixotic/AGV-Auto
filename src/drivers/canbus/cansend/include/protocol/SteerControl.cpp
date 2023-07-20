@@ -75,8 +75,10 @@ void SteerControl::sendReadReq(bool is_high, int wheel_id){
     }
   }else{
     if(wheel_id==2){
-      if (is_high) data_[i] = id_2_high_byte_msg[i];
-      else data_[i] = id_2_low_byte_msg[i];
+      for(int i=0; i<dlc_; i++){
+        if (is_high) data_[i] = id_2_high_byte_msg[i];
+        else data_[i] = id_2_low_byte_msg[i];
+      }
     }
   }
 }

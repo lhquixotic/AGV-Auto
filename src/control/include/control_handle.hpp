@@ -49,7 +49,6 @@ class ControlHandle {
 
   Para control_para_;
   Pid_para magnet_error_pid_para_;
-  Pid_para angle_error_pid_para_;
 
   Control control_;
 

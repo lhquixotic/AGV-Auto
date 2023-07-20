@@ -7,8 +7,7 @@ namespace ns_control
 {
   // Constructor
   Control::Control(ros::NodeHandle &nh) : nh_(nh),
-                                          magnet_pid_controller(1.0, 0.0, 0.0),
-                                          angle_pid_controller(1.0,0.0,0.0){
+                                          magnet_pid_controller(1.0, 0.0, 0.0){
                                             is_initialized = false;
                                             auto_control_enable = false;
                                             rfid_stop=0;
@@ -20,7 +19,7 @@ namespace ns_control
                                           };
 
   // Getters
-  autoware_msgs::ControlCommandStamped Control::getControlCommand() { 
+  common_msgs::ControlCommandStamped Control::getControlCommand() { 
     ccs.cmd = control_cmd;
     ccs.header.frame_id = "vehicle";
     ccs.header.stamp = ros::Time::now();
@@ -46,13 +45,6 @@ namespace ns_control
     magnet_pid_controller.kp = magnet_error_pid_para.kp;
     magnet_pid_controller.ki = magnet_error_pid_para.ki;
     magnet_pid_controller.kd = magnet_error_pid_para.kd;
-  }
-
-  void Control::setAnglePidParameters(const Pid_para &msg){
-    angle_error_pid_para = msg;
-    angle_pid_controller.kp = angle_error_pid_para.kp;
-    angle_pid_controller.ki = angle_error_pid_para.ki;
-    angle_pid_controller.kd = angle_error_pid_para.kd;
   }
 
   void Control::setControlParameters(const Para &msg){
@@ -85,7 +77,7 @@ namespace ns_control
       kept_rfid_stop = 0;
       is_initialized = true;
       auto_control_enable = true;
-      ini_wheel_angle = chassis_state.real_steer_angle;
+      // ini_wheel_angle = chassis_state.real_steer_angle;
     }else{
       // Update state machine
       if ((kept_rfid_stop==0)&&(rfid_stop==1)){
@@ -138,7 +130,7 @@ namespace ns_control
         updateRfid();
         // ROS_INFO("[Control] kept_rfid_value: %d, kept_rfid_stop: %d, rfid_stop: %d", kept_rfid_value,kept_rfid_stop,rfid_stop);
         // if(!auto_control_enable)ROS_WARN("STOP");
-        cur_wheel_angle = chassis_state.real_steer_angle - ini_wheel_angle;
+        // cur_wheel_angle = chassis_state.real_steer_angle - ini_wheel_angle;
         control_cmd.control_mode = 2;
         if((!magneticSignalFlag)||((magnetic_signal.intensity == 0)&&(kept_magnetic_loc==99))||(!auto_control_enable)){
           // if no magnetic signal recved || current and kept intensity is zero || auto control disabled
@@ -163,14 +155,21 @@ namespace ns_control
           }
 
           // Use current reference magnetic location for steering
-          double desired_angle = 10*magnet_pid_controller.outputSignal(magnetic_signal.middle_loc,cur_magnetic_loc);
+          double desired_angle = magnet_pid_controller.outputSignal(magnetic_signal.middle_loc,cur_magnetic_loc);
           desired_angle = clamp(desired_angle,-control_para.max_steer_angle,control_para.max_steer_angle);          
-          control_cmd.steering_angle = -angle_pid_controller.outputSignal(desired_angle,cur_wheel_angle);
-          // left +, current > middle -
+
+          control_cmd.steering_angle = desired_angle;
+
+          // left +, current > middle - 
+          
+          // -angle_pid_controller.outputSignal(desired_angle,cur_wheel_angle);
+          
+          // TODO(ZKL): calculate desired left and right motor whlspd
           control_cmd.linear_velocity = control_para.desired_speed; // TODO:calculate the control value
+          
           if(loop_number%25==0){
-            ROS_INFO("[Control] Magnetic loc: %d, desired angle: %f, current_angle: %f, steer cmd: %f",
-            magnetic_signal.current_loc,desired_angle, cur_wheel_angle, control_cmd.steering_angle);}
+            ROS_INFO("[Control] Magnetic loc: %d, desired angle: %f",
+            magnetic_signal.current_loc,desired_angle);}
         }
         break;
 

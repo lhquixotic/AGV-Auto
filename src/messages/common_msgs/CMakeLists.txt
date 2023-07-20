@@ -28,6 +28,8 @@ add_message_files(DIRECTORY msg
     SerialMsg.msg
     RemoteControl.msg
     MagneticSignal.msg
+    ControlCommandStamped.msg
+    ControlCommand.msg
 )
 
 generate_messages(

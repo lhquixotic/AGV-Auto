@@ -35,6 +35,11 @@ class Canparse {
   common_msgs::ChassisState chassis_state;
   common_msgs::MagneticSignal magnetic_signal;
 
+  bool kept_left_steer_recved;
+  bool kept_right_steer_recved;
+
+  int loop_number;
+
 };
 }
 
