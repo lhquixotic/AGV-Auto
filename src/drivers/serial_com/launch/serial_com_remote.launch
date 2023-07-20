@@ -1,7 +1,7 @@
 <launch>
-    <arg name="port" default="/dev/ttyUSB5"/>
+    <arg name="port" default="/dev/ttyTHS0"/>
     <arg name="baud" default="115200"/>
-    <arg name="rate" default="50"/>
+    <arg name="rate" default="25"/>
     <arg name="name" default="/drivers/remote/signals"/>
     <arg name="device" default="remote"/>
 
