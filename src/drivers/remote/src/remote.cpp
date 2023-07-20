@@ -56,16 +56,23 @@ void Remote::runAlgorithm() {
 
       /* Filter steer and drive data */
       float factor = 1.0 / (0x069f-0x0400);
-      drive_buffer.erase(drive_buffer.begin());
-      drive_buffer.push_back(r_up);
-      int filtered_r_up = *std::min_element(drive_buffer.begin(),drive_buffer.end());
-      remote_control.accel = -factor * filtered_r_up;
+      // float raw_accel = -factor
 
-      steer_buffer.erase(steer_buffer.begin());
-      steer_buffer.push_back(l_lf);
-      int filtered_l_lf = *std::min_element(steer_buffer.begin(),steer_buffer.end());
-      remote_control.steer = -factor * filtered_l_lf;
+      // drive_buffer.erase(drive_buffer.begin());
+      // drive_buffer.push_back(r_up);
+      // int filtered_r_up = *std::min_element(drive_buffer.begin(),drive_buffer.end());
+      // remote_control.accel = -factor * filtered_r_up;
 
+      // steer_buffer.erase(steer_buffer.begin());
+      // steer_buffer.push_back(l_lf);
+      // int filtered_l_lf = *std::min_element(steer_buffer.begin(),steer_buffer.end());
+      // remote_control.steer = -factor * filtered_l_lf;
+
+
+      // No filter version
+      remote_control.accel = -factor * r_up;
+      remote_control.steer = -factor * l_lf;
+      
      }
    }
 

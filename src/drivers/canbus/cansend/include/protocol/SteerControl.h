@@ -22,9 +22,16 @@ class SteerControl:public protocol{
     // Read steer angle message
     // ID: 0x01 left wheel
     // [7 bytes return]
-    // Read low byte: 01 03 60 2D 00 01 0A 03
     // Read high byte: 01 03 60 2C 00 01 5B C3
+    // 
     // [9 bytes return]
     // Read low byte: 01 03 60 2D 00 02 4A 02
+    // 
+    // ID: 0x02 right wheel
+    // [7 bytes return]
+    // Read high byte: 02 03 60 2C 00 01 5B F0
+    // 
+    // [9 bytes return]
+    // Read low byte: 02 03 60 2D 00 02 4A 31
 
 };
