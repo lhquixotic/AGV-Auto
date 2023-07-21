@@ -1,5 +1,5 @@
 magnet_error_pid:
-  kp: 6.0
+  kp: 4.0
   ki: 0.0
   kd: 0.0
 pure_pursuit:
