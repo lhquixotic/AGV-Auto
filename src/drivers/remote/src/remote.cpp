@@ -37,7 +37,18 @@ void Remote::runAlgorithm() {
       // add current data
       buffer.push_back(raw_mode);
       // get max data in buffer as mode
-      int mode = *std::max_element(buffer.begin(),buffer.end());
+      int mode = 0;
+      // char flag_byte = remote_signals.data[33];
+      // int flag_bit = (remote_signals.data[33] & 0x20);
+      // ROS_INFO("FLAG: %x",remote_signals.data[33]);
+      if (remote_signals.data[33] != 0)
+      {
+        mode = 0;
+      }
+      else{
+        mode = *std::max_element(buffer.begin(),buffer.end());
+      }
+      // int mode = *std::max_element(buffer.begin(),buffer.end());
       remote_control.mode = mode;
 
       int l_up_h = remote_signals.data[5]; // front most: 0x069f - 0x0400 - 0x0160
@@ -70,8 +81,18 @@ void Remote::runAlgorithm() {
 
 
       // No filter version
+
       remote_control.accel = -factor * r_up;
       remote_control.steer = -factor * l_lf;
+
+      // Filter abnormal value
+      if (std::abs(remote_control.accel) > 1.05){remote_control.accel = 0;}
+      if (std::abs(remote_control.steer) > 1.05){remote_control.steer = 0;}
+
+      // remote_control.accel = -factor * r_up;
+      // remote_control.steer = -factor * l_lf;
+
+      // ROS_INFO("ve:%f; ang:%f", remote_control.accel, remote_control.steer);
       
      }
    }

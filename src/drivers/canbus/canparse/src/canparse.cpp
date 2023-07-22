@@ -89,10 +89,10 @@ void Canparse::runAlgorithm() {
   // ROS_INFO_STREAM();
   if(loop_number%25==0){
     if(left_steer_data_recved && right_steer_data_recved){
-      ROS_INFO("[CanParse] right angle: %f, left angle: %f",chassis_state.real_steer_angle_right+122.8,chassis_state.real_steer_angle_left-0.8);
+      ROS_INFO("[CanParse] right angle: %f, left angle: %f",chassis_state.real_steer_angle_right+127,chassis_state.real_steer_angle_left-0.8);
     }
     }
   loop_number ++;
 }
 }
-// Steer initial value: right -122.8, left 0.8;
+// Steer initial value: right -127, left 0.8;

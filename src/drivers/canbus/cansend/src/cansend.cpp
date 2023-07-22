@@ -158,7 +158,7 @@ void Cansend::runAlgorithm() {
 
       double desired_speed = clamp(ccs.cmd.linear_velocity,-1.0,1.0);
       desired_speed = deadband(desired_speed,para.motor_dead_input);
-
+      
       // int motor_rpm = desired_speed * para.motor_max_rpm;
       int motor_rpm = desired_speed * para.motor_manual_rpm;
       desired_motor_rpm_l = motor_rpm;
@@ -228,11 +228,17 @@ void Cansend::runAlgorithm() {
           // Get desired speed
           double desired_speed = clamp(ccs.cmd.linear_velocity,-1.0,30.0);
           desired_speed = deadband(desired_speed,3);
+          
+          // FIXME(LHQ): deisred rpm is manual rpm
+          // desired_motor_rpm_l = veh_dyn_cal.calculate_whlspd(desired_speed,desired_angle,true);
+          // desired_motor_rpm_r = veh_dyn_cal.calculate_whlspd(desired_speed,desired_angle,false);
 
-          desired_motor_rpm_l = veh_dyn_cal.calculate_whlspd(desired_speed,desired_angle,true);
-          desired_motor_rpm_r = veh_dyn_cal.calculate_whlspd(desired_speed,desired_angle,false);
-          ROS_INFO("desired angle: %f, R: %f, l: %f, r: %f",desired_angle,veh_dyn_cal.R,desired_motor_rpm_l,desired_motor_rpm_r);
+          desired_motor_rpm_l = para.motor_manual_rpm;
+          desired_motor_rpm_r = para.motor_manual_rpm;
+
+          // ROS_INFO("desired angle: %f, R: %f, l: %f, r: %f",desired_angle,veh_dyn_cal.R,desired_motor_rpm_l,desired_motor_rpm_r);
       }else{
+          // Lock mode
           steer_control->setNullMsg();
           desired_motor_rpm_l = 0;
           desired_motor_rpm_r = 0;

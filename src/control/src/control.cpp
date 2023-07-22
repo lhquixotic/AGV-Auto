@@ -115,6 +115,7 @@ namespace ns_control
         control_cmd.control_mode = 1;
         control_cmd.linear_velocity = remote_control.accel;
         control_cmd.steering_angle = remote_control.steer;
+        // ROS_INFO("ve:%f; ang:%f", control_cmd.linear_velocity, control_cmd.steering_angle);
         is_initialized = false;
         auto_control_enable = false;
         kept_rfid_value = 0;
@@ -164,7 +165,7 @@ namespace ns_control
           
           // -angle_pid_controller.outputSignal(desired_angle,cur_wheel_angle);
           
-          // TODO(ZKL): calculate desired left and right motor whlspd
+          // Driving
           control_cmd.linear_velocity = control_para.desired_speed; // TODO:calculate the control value
           
           if(loop_number%25==0){
