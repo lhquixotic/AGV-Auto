@@ -8,8 +8,6 @@ set(PROJECT_DEPS
   std_msgs
   common_msgs
   nav_msgs
-  autoware_msgs
-  libwaypoint_follower
   )
 
 find_package(catkin REQUIRED COMPONENTS
@@ -18,8 +16,6 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   common_msgs
   nav_msgs
-  autoware_msgs
-  libwaypoint_follower
   )
 
 catkin_package(
@@ -41,7 +37,6 @@ add_executable(${PROJECT_NAME}
   src/control.cpp
   src/main.cpp
   src/pid.cpp
-  src/pure_pursuit.cpp
   src/utils.cpp
   )
 
