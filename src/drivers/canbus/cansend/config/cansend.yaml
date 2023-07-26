@@ -12,14 +12,15 @@ cansend_para:
   send_mode: 1 # 0 for test and 1 for autonomous driving
   test_steer_angle: -1
   test_motor_input: 0.1 # [-1,1], test_motor_rpm = test_motor_input * max_motor_rpm
-  motor_max_rpm: 2400
+  motor_max_rpm: 2000
   motor_dead_input: 0.48
   steer_max_angle: 45
   steer_dead_input: 0.2
-  motor_manual_rpm: 2000
+  motor_manual_rpm: 1000
+  motor_auto_rpm: 800
 
 angle_error_pid:
-  kp: 0.02
+  kp: 0.04
   ki: 0.0
   kd: 0.0
 

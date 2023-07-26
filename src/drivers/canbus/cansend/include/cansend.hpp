@@ -49,6 +49,7 @@ struct Para{
   double steer_max_angle;
   double steer_dead_input;
   double motor_manual_rpm;
+  double motor_auto_rpm;
 };
 
 class Cansend {

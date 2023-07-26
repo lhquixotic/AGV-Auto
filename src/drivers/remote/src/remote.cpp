@@ -38,6 +38,7 @@ void Remote::runAlgorithm() {
       buffer.push_back(raw_mode);
       // get max data in buffer as mode
       int mode = *std::max_element(buffer.begin(),buffer.end());
+      if(remote_signals.data[33]!=0) mode=0;
       remote_control.mode = mode;
 
       int l_up_h = remote_signals.data[5]; // front most: 0x069f - 0x0400 - 0x0160
@@ -72,6 +73,9 @@ void Remote::runAlgorithm() {
       // No filter version
       remote_control.accel = -factor * r_up;
       remote_control.steer = -factor * l_lf;
+
+      if (std::abs(remote_control.accel)>1.05) remote_control.accel = 0;
+      if (std::abs(remote_control.steer)>1.05) remote_control.steer = 0;
       
      }
    }

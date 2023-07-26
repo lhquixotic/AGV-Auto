@@ -35,7 +35,7 @@ namespace socketcan_bridge
       can::DriverInterfaceSharedPtr driver)
     {
       std::string to_socket_topic_name = nh_param->param<std::string>("to_socket_topic_name","/sent_messages_can0");
-      can_topic_ = nh->subscribe<can_msgs::Frame>(to_socket_topic_name, nh_param->param("sent_messages_queue_size", 100),
+      can_topic_ = nh->subscribe<can_msgs::Frame>(to_socket_topic_name, nh_param->param("sent_messages_queue_size", 1000),
                     std::bind(&TopicToSocketCAN::msgCallback, this, std::placeholders::_1));
       driver_ = driver;
     };

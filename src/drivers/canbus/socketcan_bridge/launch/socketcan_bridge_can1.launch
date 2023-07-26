@@ -1,5 +1,5 @@
 <launch>
-    <arg name="can_device" default="can1"/>
+    <arg name="can_device" default="can0"/>
     <arg name="to_socket_topic_name" default="/sent_messages_can1"/>
     <node name="socketcan_bridge_can1_node" pkg="socketcan_bridge" type="socketcan_bridge_node" output="screen" respawn="true">
         <param name="can_device" value="$(arg can_device)"/>
