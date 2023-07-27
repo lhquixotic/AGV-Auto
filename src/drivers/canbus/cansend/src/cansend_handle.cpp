@@ -89,7 +89,7 @@ void CansendHandle::run() {
 }
 
 void CansendHandle::sendMsg() {
-  cansendStatePublisher_.publish(cansend_.getFrame(magnetic_req));
+  // cansendStatePublisher_.publish(cansend_.getFrame(magnetic_req));
   cansendStatePublisher_.publish(cansend_.getFrame(motor_control));
   cansendStatePublisher_.publish(cansend_.getFrame(steer_control));  
 }

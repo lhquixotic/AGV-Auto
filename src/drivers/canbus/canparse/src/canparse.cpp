@@ -31,6 +31,11 @@ void Canparse::Parse(can_msgs::Frame f) {
     // ROS_INFO("[CAN parse] Magnetic received.");
     break;
 
+  case 0x04:
+    magnetic.Update(f.data.c_array());
+    // ROS_INFO("[CAN parse] Magnetic received.");
+    break;
+
   case 0x002:// Steer
     steer.Update(f.data.c_array());
     break;
