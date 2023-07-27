@@ -1,0 +1,8 @@
+prefix=/home/nvidia/AGV-Auto/install
+
+Name: remote
+Description: Description of remote
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
