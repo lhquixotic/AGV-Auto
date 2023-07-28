@@ -7,11 +7,16 @@ class SteerControl:public protocol{
     virtual ~SteerControl()=default;
     virtual void Update(uint8_t *data) override;
     void Reset() override;
-    void sendBackZeroReq();
+    void sendBackZeroReq(int wheel_id);
     void sendLeftReq(int wheel_id);
     void sendRightReq(int wheel_id); 
     void setNullMsg();
     void sendReadReq(bool is_high, int wheel_id);
+
+    void setHDataSteerReq(int wheel_id, uint16_t steer_angle_h);
+    void setLDataSteerReq(int wheel_id, uint16_t steer_angle_l);
+    void setConductSteer(int wheel_id);
+
     // left + right - ID:0x01 [left wheel]
     // left : 01 06 60 02 00 10 37 c6
     // right: 01 06 60 02 00 11 f6 06

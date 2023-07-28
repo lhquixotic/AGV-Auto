@@ -9,8 +9,8 @@ cansend_can1_topic_name: /sent_messages_can1
 node_rate: 25   # [Herz]
 
 cansend_para:
-  send_mode: 1 # 0 for test and 1 for autonomous driving
-  test_steer_angle: -1
+  send_mode: 0 # 0 for test and 1 for autonomous driving
+  test_steer_angle: 0
   test_motor_input: 0.1 # [-1,1], test_motor_rpm = test_motor_input * max_motor_rpm
   motor_max_rpm: 2000
   motor_dead_input: 0.48

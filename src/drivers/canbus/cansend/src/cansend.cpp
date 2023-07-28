@@ -22,6 +22,9 @@ Cansend::Cansend(ros::NodeHandle &nh) : nh_(nh) ,
   ini_right_angle = 0;
   cur_right_angle = 0;
   kept_remote_mode = 1;
+  steer_control->sendBackZeroReq(1);
+  steer_control->sendBackZeroReq(2);
+
 };
 
 Cansend::~Cansend(){
@@ -69,20 +72,30 @@ void Cansend::runAlgorithm() {
   // ROS_WARN_STREAM("steer: "<<steer_send_times);
   if(para.send_mode == 0){
     // Test steer
-    if(steer_send_times>0){//left +
-      steer_send_times = steer_send_times - 1;
-      steer_control->sendLeftReq(loop_number%2);
-      // ROS_INFO("left turn");
-    }else{
-      if (steer_send_times<0){//right - 
-        steer_send_times = steer_send_times + 1;
-        steer_control->sendRightReq(loop_number%2);
-        // ROS_INFO("right turn");
-      }else{
-        steer_control->setNullMsg();
-        // no operation
-      }
+    // calculate desired value
+    double des_steer_l = para.test_steer_angle;
+    double des_steer_r = para.test_steer_angle;
+    int32_t left_steer_value = 25000 + des_steer_l * 8664;
+    uint16_t left_steer_angle_h = (left_steer_value & 0xffff0000) >> 16;
+    uint16_t left_steer_angle_l = left_steer_value & 0x0000ffff; 
+
+    int32_t right_steer_value = 25000 + des_steer_r * 8664;
+    uint16_t right_steer_angle_h = (right_steer_value & 0xffff0000) >> 16;
+    uint16_t right_steer_angle_l = right_steer_value & 0x0000ffff;
+
+    // ROS_INFO_STREAM("right_value:" << std::hex << right_steer_value << ", left_value: " <<  left_steer_value);
+
+    int loop_flag = loop_number % 6;
+    switch (loop_flag){
+      case 0: steer_control->setHDataSteerReq(1,left_steer_angle_h); break;
+      case 1: steer_control->setLDataSteerReq(1,left_steer_angle_l); break;
+      case 2: steer_control->setConductSteer(1); break;
+      case 3: steer_control->setHDataSteerReq(2, right_steer_angle_h); break;
+      case 4: steer_control->setLDataSteerReq(2, right_steer_angle_l); break;
+      case 5: steer_control->setConductSteer(2); break;
+      default: break;
     }
+
     // Test drive
     double drive_cmd = clamp(para.test_motor_input,-1.0,1.0);
     drive_cmd = deadband(drive_cmd,para.motor_dead_input);
