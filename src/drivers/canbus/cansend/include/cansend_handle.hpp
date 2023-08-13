@@ -43,6 +43,8 @@ class CansendHandle {
   Para para_;
   Pid_para angle_error_pid_para_;
 
+  int loop_number;
+
 };
 }
 

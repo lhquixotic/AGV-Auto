@@ -1,0 +1,1 @@
+echo 'nvidia' | sudo -S apt-get install ros-melodic-serial ros-melodic-nmea-msgs cutecom

@@ -1,0 +1,14 @@
+(cl:in-package common_msgs-msg)
+(cl:export '(HEADER-VAL
+          HEADER
+          REAL_ACC_PEDAL-VAL
+          REAL_ACC_PEDAL
+          REAL_BRAKE_PEDAL-VAL
+          REAL_BRAKE_PEDAL
+          REAL_STEER_ANGLE_LEFT-VAL
+          REAL_STEER_ANGLE_LEFT
+          REAL_STEER_ANGLE_RIGHT-VAL
+          REAL_STEER_ANGLE_RIGHT
+          VEHICLE_LON_ACCELERATION-VAL
+          VEHICLE_LON_ACCELERATION
+))

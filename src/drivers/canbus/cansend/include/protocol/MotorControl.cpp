@@ -1,6 +1,6 @@
 #include "MotorControl.h" 
 MotorControl::MotorControl(){
-  id_ = 0x0f3b0101;
+  id_ = 0x0f3b0101; //0f3b0101
   dlc_ = 8;
   is_extended_ = 1;
   is_error_ = 0;

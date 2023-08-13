@@ -44,6 +44,83 @@ void SteerControl::sendRightReq(int wheel_id){
    
 }
 
+void SteerControl::sendBackZeroReq(int wheel_id){
+  uint8_t msg_1[] = {0x01,0x06,0x60,0x02,0x00,0x10,0x37,0xc6};
+  uint8_t msg_2[] = {0x02,0x06,0x60,0x02,0x00,0x10,0x37,0xf5};
+
+  for(int i=0;i<dlc_;i++) {
+    if(wheel_id == 1) data_[i] = msg_1[i];
+    else data_[i] = msg_2[i];
+  }
+}
+
+void SteerControl::setHDataSteerReq(int wheel_id, uint16_t steer_angle_h){
+  uint8_t data_l = steer_angle_h & 0x00ff;
+  uint8_t data_h = (steer_angle_h & 0xff00) >> 8;  
+  uint8_t sent_cmd[] = {uint16_t(wheel_id), 0x06, 0x62, 0x09, data_h, data_l, 0x00, 0x00};
+  //  Update CRC
+  unsigned int crc = 0xffff;
+	unsigned char i,j;
+	for(j=0;j<6;j++)
+	{
+		crc = crc ^ sent_cmd[j];
+		for(i=0;i<8;i++){
+			if((crc & 0x0001) == 1){
+				crc >>= 1;
+				crc ^= 0xa001;
+			}else{
+				crc >>= 1;
+			}
+		}
+	}
+	sent_cmd[6] = crc & 0x00ff;
+	sent_cmd[7] = (crc & 0xff00) >> 8;
+  
+  // Update sent msg
+  for(int i=0;i<dlc_;i++) {
+    data_[i] = sent_cmd[i];
+  }
+}
+
+void SteerControl::setLDataSteerReq(int wheel_id, uint16_t steer_angle_l){
+  uint8_t data_l = steer_angle_l & 0x00ff;
+  uint8_t data_h = (steer_angle_l & 0xff00) >> 8;  
+  uint8_t sent_cmd[] = {uint16_t(wheel_id), 0x06, 0x62, 0x0a, data_h, data_l, 0x00, 0x00};
+  //  Update CRC
+  unsigned int crc = 0xffff;
+	unsigned char i,j;
+	for(j=0;j<6;j++)
+	{
+		crc = crc ^ sent_cmd[j];
+		for(i=0;i<8;i++){
+			if((crc & 0x0001) == 1){
+				crc >>= 1;
+				crc ^= 0xa001;
+			}else{
+				crc >>= 1;
+			}
+		}
+	}
+	sent_cmd[6] = crc & 0x00ff;
+	sent_cmd[7] = (crc & 0xff00) >> 8;
+  
+  // Update sent msg
+  for(int i=0;i<dlc_;i++) {
+    data_[i] = sent_cmd[i];
+  }
+}
+
+
+void SteerControl::setConductSteer(int wheel_id){
+  uint8_t left_conduct[] = {0x01,0x06,0x60,0x02,0x00,0x11,0xf6,0x06};
+  uint8_t right_conduct[] = {0x02,0x06,0x60,0x02,0x00,0x11,0xf6,0x35};
+  for(int i=0;i<dlc_;i++) {
+    if(wheel_id == 1) data_[i] = left_conduct[i];
+    else data_[i] = right_conduct[i];
+  }
+}
+
+
 void SteerControl::setNullMsg(){
   uint8_t right_msg[]={0x00,0x00,0x00,0x00,0x00,0x0,0x0,0x0};
   for(int i=0;i<dlc_;i++) data_[i] = right_msg[i];
