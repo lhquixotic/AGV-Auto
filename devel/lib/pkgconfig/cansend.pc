@@ -1,8 +1,0 @@
-prefix=/home/nvidia/AGV-Auto/devel
-
-Name: cansend
-Description: Description of cansend
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

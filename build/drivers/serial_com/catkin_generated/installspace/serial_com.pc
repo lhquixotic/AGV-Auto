@@ -1,8 +1,0 @@
-prefix=/home/nvidia/AGV-Auto/install
-
-Name: serial_com
-Description: Description of serial_com
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 
