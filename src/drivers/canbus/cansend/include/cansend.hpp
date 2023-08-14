@@ -80,6 +80,7 @@ class Cansend {
   common_msgs::ChassisState chassis_state;
   
   void sendSteerReq(double steer_cmd,int device_id);
+  void sendSteerInfo(double des_steer_l, double des_steer_r);
 
   Para para;
   Pid_para angle_error_pid_para;
