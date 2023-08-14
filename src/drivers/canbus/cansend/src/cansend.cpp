@@ -75,7 +75,7 @@ void Cansend::runAlgorithm() {
     // calculate desired value
     double des_steer_l = para.test_steer_angle;
     double des_steer_r = para.test_steer_angle;
-    int32_t left_steer_value = 25000 + des_steer_l * 8664;
+    int32_t left_steer_value = -16000 + des_steer_l * 8664;
     uint16_t left_steer_angle_h = (left_steer_value & 0xffff0000) >> 16;
     uint16_t left_steer_angle_l = left_steer_value & 0x0000ffff; 
 
