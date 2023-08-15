@@ -80,6 +80,17 @@ install/local/fast: preinstall/fast
 	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
 .PHONY : install/local/fast
 
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
+
 # Special rule for the target install
 install: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
@@ -102,17 +113,6 @@ list_install_components/fast: list_install_components
 
 .PHONY : list_install_components/fast
 
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
-
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
@@ -123,6 +123,17 @@ rebuild_cache:
 rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
+
+# Special rule for the target test
+test:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
+	/usr/bin/ctest --force-new-ctest-process $(ARGS)
+.PHONY : test
+
+# Special rule for the target test
+test/fast: test
+
+.PHONY : test/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -157,34 +168,139 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-drivers/canbus/socketcan_interface/CMakeFiles/socketcan_dump.dir/rule:
-	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_interface/CMakeFiles/socketcan_dump.dir/rule
-.PHONY : drivers/canbus/socketcan_interface/CMakeFiles/socketcan_dump.dir/rule
+drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_dispatcher.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_dispatcher.dir/rule
+.PHONY : drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_dispatcher.dir/rule
 
 # Convenience name for target.
-socketcan_dump: drivers/canbus/socketcan_interface/CMakeFiles/socketcan_dump.dir/rule
+run_tests_socketcan_interface_gtest_socketcan_interface-test_dispatcher: drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_dispatcher.dir/rule
 
-.PHONY : socketcan_dump
+.PHONY : run_tests_socketcan_interface_gtest_socketcan_interface-test_dispatcher
 
 # fast build rule for target.
-socketcan_dump/fast:
-	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/socketcan_dump.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/socketcan_dump.dir/build
-.PHONY : socketcan_dump/fast
+run_tests_socketcan_interface_gtest_socketcan_interface-test_dispatcher/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_dispatcher.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_dispatcher.dir/build
+.PHONY : run_tests_socketcan_interface_gtest_socketcan_interface-test_dispatcher/fast
 
 # Convenience name for target.
-drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface_string.dir/rule:
-	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface_string.dir/rule
-.PHONY : drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface_string.dir/rule
+drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_filter.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_filter.dir/rule
+.PHONY : drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_filter.dir/rule
 
 # Convenience name for target.
-socketcan_interface_string: drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface_string.dir/rule
+_run_tests_socketcan_interface_gtest_socketcan_interface-test_filter: drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_filter.dir/rule
 
-.PHONY : socketcan_interface_string
+.PHONY : _run_tests_socketcan_interface_gtest_socketcan_interface-test_filter
 
 # fast build rule for target.
-socketcan_interface_string/fast:
-	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface_string.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface_string.dir/build
-.PHONY : socketcan_interface_string/fast
+_run_tests_socketcan_interface_gtest_socketcan_interface-test_filter/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_filter.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_filter.dir/build
+.PHONY : _run_tests_socketcan_interface_gtest_socketcan_interface-test_filter/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_dispatcher.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_dispatcher.dir/rule
+.PHONY : drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_dispatcher.dir/rule
+
+# Convenience name for target.
+_run_tests_socketcan_interface_gtest_socketcan_interface-test_dispatcher: drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_dispatcher.dir/rule
+
+.PHONY : _run_tests_socketcan_interface_gtest_socketcan_interface-test_dispatcher
+
+# fast build rule for target.
+_run_tests_socketcan_interface_gtest_socketcan_interface-test_dispatcher/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_dispatcher.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_dispatcher.dir/build
+.PHONY : _run_tests_socketcan_interface_gtest_socketcan_interface-test_dispatcher/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_filter.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_filter.dir/rule
+.PHONY : drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_filter.dir/rule
+
+# Convenience name for target.
+run_tests_socketcan_interface_gtest_socketcan_interface-test_filter: drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_filter.dir/rule
+
+.PHONY : run_tests_socketcan_interface_gtest_socketcan_interface-test_filter
+
+# fast build rule for target.
+run_tests_socketcan_interface_gtest_socketcan_interface-test_filter/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_filter.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_filter.dir/build
+.PHONY : run_tests_socketcan_interface_gtest_socketcan_interface-test_filter/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_string.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_string.dir/rule
+.PHONY : drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_string.dir/rule
+
+# Convenience name for target.
+_run_tests_socketcan_interface_gtest_socketcan_interface-test_string: drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_string.dir/rule
+
+.PHONY : _run_tests_socketcan_interface_gtest_socketcan_interface-test_string
+
+# fast build rule for target.
+_run_tests_socketcan_interface_gtest_socketcan_interface-test_string/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_string.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_string.dir/build
+.PHONY : _run_tests_socketcan_interface_gtest_socketcan_interface-test_string/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_string.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_string.dir/rule
+.PHONY : drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_string.dir/rule
+
+# Convenience name for target.
+run_tests_socketcan_interface_gtest_socketcan_interface-test_string: drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_string.dir/rule
+
+.PHONY : run_tests_socketcan_interface_gtest_socketcan_interface-test_string
+
+# fast build rule for target.
+run_tests_socketcan_interface_gtest_socketcan_interface-test_string/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_string.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_string.dir/build
+.PHONY : run_tests_socketcan_interface_gtest_socketcan_interface-test_string/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface.dir/rule
+.PHONY : drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface.dir/rule
+
+# Convenience name for target.
+run_tests_socketcan_interface: drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface.dir/rule
+
+.PHONY : run_tests_socketcan_interface
+
+# fast build rule for target.
+run_tests_socketcan_interface/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface.dir/build
+.PHONY : run_tests_socketcan_interface/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_delegates.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_delegates.dir/rule
+.PHONY : drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_delegates.dir/rule
+
+# Convenience name for target.
+_run_tests_socketcan_interface_gtest_socketcan_interface-test_delegates: drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_delegates.dir/rule
+
+.PHONY : _run_tests_socketcan_interface_gtest_socketcan_interface-test_delegates
+
+# fast build rule for target.
+_run_tests_socketcan_interface_gtest_socketcan_interface-test_delegates/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_delegates.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_delegates.dir/build
+.PHONY : _run_tests_socketcan_interface_gtest_socketcan_interface-test_delegates/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_settings.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_settings.dir/rule
+.PHONY : drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_settings.dir/rule
+
+# Convenience name for target.
+_run_tests_socketcan_interface_gtest_socketcan_interface-test_settings: drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_settings.dir/rule
+
+.PHONY : _run_tests_socketcan_interface_gtest_socketcan_interface-test_settings
+
+# fast build rule for target.
+_run_tests_socketcan_interface_gtest_socketcan_interface-test_settings/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_settings.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_settings.dir/build
+.PHONY : _run_tests_socketcan_interface_gtest_socketcan_interface-test_settings/fast
 
 # Convenience name for target.
 drivers/canbus/socketcan_interface/CMakeFiles/socketcan_bcm.dir/rule:
@@ -202,6 +318,51 @@ socketcan_bcm/fast:
 .PHONY : socketcan_bcm/fast
 
 # Convenience name for target.
+drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_dummy_interface.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_dummy_interface.dir/rule
+.PHONY : drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_dummy_interface.dir/rule
+
+# Convenience name for target.
+socketcan_interface-test_dummy_interface: drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_dummy_interface.dir/rule
+
+.PHONY : socketcan_interface-test_dummy_interface
+
+# fast build rule for target.
+socketcan_interface-test_dummy_interface/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_dummy_interface.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_dummy_interface.dir/build
+.PHONY : socketcan_interface-test_dummy_interface/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_delegates.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_delegates.dir/rule
+.PHONY : drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_delegates.dir/rule
+
+# Convenience name for target.
+run_tests_socketcan_interface_gtest_socketcan_interface-test_delegates: drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_delegates.dir/rule
+
+.PHONY : run_tests_socketcan_interface_gtest_socketcan_interface-test_delegates
+
+# fast build rule for target.
+run_tests_socketcan_interface_gtest_socketcan_interface-test_delegates/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_delegates.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_delegates.dir/build
+.PHONY : run_tests_socketcan_interface_gtest_socketcan_interface-test_delegates/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_settings.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_settings.dir/rule
+.PHONY : drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_settings.dir/rule
+
+# Convenience name for target.
+run_tests_socketcan_interface_gtest_socketcan_interface-test_settings: drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_settings.dir/rule
+
+.PHONY : run_tests_socketcan_interface_gtest_socketcan_interface-test_settings
+
+# fast build rule for target.
+run_tests_socketcan_interface_gtest_socketcan_interface-test_settings/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_settings.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_settings.dir/build
+.PHONY : run_tests_socketcan_interface_gtest_socketcan_interface-test_settings/fast
+
+# Convenience name for target.
 drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface_plugin.dir/rule:
 	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface_plugin.dir/rule
 .PHONY : drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface_plugin.dir/rule
@@ -215,6 +376,201 @@ socketcan_interface_plugin: drivers/canbus/socketcan_interface/CMakeFiles/socket
 socketcan_interface_plugin/fast:
 	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface_plugin.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface_plugin.dir/build
 .PHONY : socketcan_interface_plugin/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface_string.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface_string.dir/rule
+.PHONY : drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface_string.dir/rule
+
+# Convenience name for target.
+socketcan_interface_string: drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface_string.dir/rule
+
+.PHONY : socketcan_interface_string
+
+# fast build rule for target.
+socketcan_interface_string/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface_string.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface_string.dir/build
+.PHONY : socketcan_interface_string/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_interface/CMakeFiles/socketcan_dump.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_interface/CMakeFiles/socketcan_dump.dir/rule
+.PHONY : drivers/canbus/socketcan_interface/CMakeFiles/socketcan_dump.dir/rule
+
+# Convenience name for target.
+socketcan_dump: drivers/canbus/socketcan_interface/CMakeFiles/socketcan_dump.dir/rule
+
+.PHONY : socketcan_dump
+
+# fast build rule for target.
+socketcan_dump/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/socketcan_dump.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/socketcan_dump.dir/build
+.PHONY : socketcan_dump/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface.dir/rule
+.PHONY : drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface.dir/rule
+
+# Convenience name for target.
+_run_tests_socketcan_interface: drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface.dir/rule
+
+.PHONY : _run_tests_socketcan_interface
+
+# fast build rule for target.
+_run_tests_socketcan_interface/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface.dir/build
+.PHONY : _run_tests_socketcan_interface/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_dispatcher.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_dispatcher.dir/rule
+.PHONY : drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_dispatcher.dir/rule
+
+# Convenience name for target.
+socketcan_interface-test_dispatcher: drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_dispatcher.dir/rule
+
+.PHONY : socketcan_interface-test_dispatcher
+
+# fast build rule for target.
+socketcan_interface-test_dispatcher/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_dispatcher.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_dispatcher.dir/build
+.PHONY : socketcan_interface-test_dispatcher/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_dummy_interface.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_dummy_interface.dir/rule
+.PHONY : drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_dummy_interface.dir/rule
+
+# Convenience name for target.
+run_tests_socketcan_interface_gtest_socketcan_interface-test_dummy_interface: drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_dummy_interface.dir/rule
+
+.PHONY : run_tests_socketcan_interface_gtest_socketcan_interface-test_dummy_interface
+
+# fast build rule for target.
+run_tests_socketcan_interface_gtest_socketcan_interface-test_dummy_interface/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_dummy_interface.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest_socketcan_interface-test_dummy_interface.dir/build
+.PHONY : run_tests_socketcan_interface_gtest_socketcan_interface-test_dummy_interface/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest.dir/rule
+.PHONY : drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest.dir/rule
+
+# Convenience name for target.
+run_tests_socketcan_interface_gtest: drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest.dir/rule
+
+.PHONY : run_tests_socketcan_interface_gtest
+
+# fast build rule for target.
+run_tests_socketcan_interface_gtest/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/run_tests_socketcan_interface_gtest.dir/build
+.PHONY : run_tests_socketcan_interface_gtest/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_settings.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_settings.dir/rule
+.PHONY : drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_settings.dir/rule
+
+# Convenience name for target.
+socketcan_interface-test_settings: drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_settings.dir/rule
+
+.PHONY : socketcan_interface-test_settings
+
+# fast build rule for target.
+socketcan_interface-test_settings/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_settings.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_settings.dir/build
+.PHONY : socketcan_interface-test_settings/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_filter.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_filter.dir/rule
+.PHONY : drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_filter.dir/rule
+
+# Convenience name for target.
+socketcan_interface-test_filter: drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_filter.dir/rule
+
+.PHONY : socketcan_interface-test_filter
+
+# fast build rule for target.
+socketcan_interface-test_filter/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_filter.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_filter.dir/build
+.PHONY : socketcan_interface-test_filter/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_string.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_string.dir/rule
+.PHONY : drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_string.dir/rule
+
+# Convenience name for target.
+socketcan_interface-test_string: drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_string.dir/rule
+
+.PHONY : socketcan_interface-test_string
+
+# fast build rule for target.
+socketcan_interface-test_string/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_string.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_string.dir/build
+.PHONY : socketcan_interface-test_string/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest.dir/rule
+.PHONY : drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest.dir/rule
+
+# Convenience name for target.
+_run_tests_socketcan_interface_gtest: drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest.dir/rule
+
+.PHONY : _run_tests_socketcan_interface_gtest
+
+# fast build rule for target.
+_run_tests_socketcan_interface_gtest/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest.dir/build
+.PHONY : _run_tests_socketcan_interface_gtest/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_dummy_interface.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_dummy_interface.dir/rule
+.PHONY : drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_dummy_interface.dir/rule
+
+# Convenience name for target.
+_run_tests_socketcan_interface_gtest_socketcan_interface-test_dummy_interface: drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_dummy_interface.dir/rule
+
+.PHONY : _run_tests_socketcan_interface_gtest_socketcan_interface-test_dummy_interface
+
+# fast build rule for target.
+_run_tests_socketcan_interface_gtest_socketcan_interface-test_dummy_interface/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_dummy_interface.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/_run_tests_socketcan_interface_gtest_socketcan_interface-test_dummy_interface.dir/build
+.PHONY : _run_tests_socketcan_interface_gtest_socketcan_interface-test_dummy_interface/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_interface/CMakeFiles/clean_test_results_socketcan_interface.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_interface/CMakeFiles/clean_test_results_socketcan_interface.dir/rule
+.PHONY : drivers/canbus/socketcan_interface/CMakeFiles/clean_test_results_socketcan_interface.dir/rule
+
+# Convenience name for target.
+clean_test_results_socketcan_interface: drivers/canbus/socketcan_interface/CMakeFiles/clean_test_results_socketcan_interface.dir/rule
+
+.PHONY : clean_test_results_socketcan_interface
+
+# fast build rule for target.
+clean_test_results_socketcan_interface/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/clean_test_results_socketcan_interface.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/clean_test_results_socketcan_interface.dir/build
+.PHONY : clean_test_results_socketcan_interface/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_delegates.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_delegates.dir/rule
+.PHONY : drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_delegates.dir/rule
+
+# Convenience name for target.
+socketcan_interface-test_delegates: drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_delegates.dir/rule
+
+.PHONY : socketcan_interface-test_delegates
+
+# fast build rule for target.
+socketcan_interface-test_delegates/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_delegates.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_delegates.dir/build
+.PHONY : socketcan_interface-test_delegates/fast
 
 src/canbcm.o: src/canbcm.cpp.o
 
@@ -324,6 +680,168 @@ src/string.cpp.s:
 	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface_string.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface_string.dir/src/string.cpp.s
 .PHONY : src/string.cpp.s
 
+test/test_delegates.o: test/test_delegates.cpp.o
+
+.PHONY : test/test_delegates.o
+
+# target to build an object file
+test/test_delegates.cpp.o:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_delegates.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_delegates.dir/test/test_delegates.cpp.o
+.PHONY : test/test_delegates.cpp.o
+
+test/test_delegates.i: test/test_delegates.cpp.i
+
+.PHONY : test/test_delegates.i
+
+# target to preprocess a source file
+test/test_delegates.cpp.i:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_delegates.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_delegates.dir/test/test_delegates.cpp.i
+.PHONY : test/test_delegates.cpp.i
+
+test/test_delegates.s: test/test_delegates.cpp.s
+
+.PHONY : test/test_delegates.s
+
+# target to generate assembly for a file
+test/test_delegates.cpp.s:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_delegates.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_delegates.dir/test/test_delegates.cpp.s
+.PHONY : test/test_delegates.cpp.s
+
+test/test_dispatcher.o: test/test_dispatcher.cpp.o
+
+.PHONY : test/test_dispatcher.o
+
+# target to build an object file
+test/test_dispatcher.cpp.o:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_dispatcher.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_dispatcher.dir/test/test_dispatcher.cpp.o
+.PHONY : test/test_dispatcher.cpp.o
+
+test/test_dispatcher.i: test/test_dispatcher.cpp.i
+
+.PHONY : test/test_dispatcher.i
+
+# target to preprocess a source file
+test/test_dispatcher.cpp.i:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_dispatcher.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_dispatcher.dir/test/test_dispatcher.cpp.i
+.PHONY : test/test_dispatcher.cpp.i
+
+test/test_dispatcher.s: test/test_dispatcher.cpp.s
+
+.PHONY : test/test_dispatcher.s
+
+# target to generate assembly for a file
+test/test_dispatcher.cpp.s:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_dispatcher.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_dispatcher.dir/test/test_dispatcher.cpp.s
+.PHONY : test/test_dispatcher.cpp.s
+
+test/test_dummy_interface.o: test/test_dummy_interface.cpp.o
+
+.PHONY : test/test_dummy_interface.o
+
+# target to build an object file
+test/test_dummy_interface.cpp.o:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_dummy_interface.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_dummy_interface.dir/test/test_dummy_interface.cpp.o
+.PHONY : test/test_dummy_interface.cpp.o
+
+test/test_dummy_interface.i: test/test_dummy_interface.cpp.i
+
+.PHONY : test/test_dummy_interface.i
+
+# target to preprocess a source file
+test/test_dummy_interface.cpp.i:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_dummy_interface.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_dummy_interface.dir/test/test_dummy_interface.cpp.i
+.PHONY : test/test_dummy_interface.cpp.i
+
+test/test_dummy_interface.s: test/test_dummy_interface.cpp.s
+
+.PHONY : test/test_dummy_interface.s
+
+# target to generate assembly for a file
+test/test_dummy_interface.cpp.s:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_dummy_interface.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_dummy_interface.dir/test/test_dummy_interface.cpp.s
+.PHONY : test/test_dummy_interface.cpp.s
+
+test/test_filter.o: test/test_filter.cpp.o
+
+.PHONY : test/test_filter.o
+
+# target to build an object file
+test/test_filter.cpp.o:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_filter.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_filter.dir/test/test_filter.cpp.o
+.PHONY : test/test_filter.cpp.o
+
+test/test_filter.i: test/test_filter.cpp.i
+
+.PHONY : test/test_filter.i
+
+# target to preprocess a source file
+test/test_filter.cpp.i:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_filter.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_filter.dir/test/test_filter.cpp.i
+.PHONY : test/test_filter.cpp.i
+
+test/test_filter.s: test/test_filter.cpp.s
+
+.PHONY : test/test_filter.s
+
+# target to generate assembly for a file
+test/test_filter.cpp.s:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_filter.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_filter.dir/test/test_filter.cpp.s
+.PHONY : test/test_filter.cpp.s
+
+test/test_settings.o: test/test_settings.cpp.o
+
+.PHONY : test/test_settings.o
+
+# target to build an object file
+test/test_settings.cpp.o:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_settings.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_settings.dir/test/test_settings.cpp.o
+.PHONY : test/test_settings.cpp.o
+
+test/test_settings.i: test/test_settings.cpp.i
+
+.PHONY : test/test_settings.i
+
+# target to preprocess a source file
+test/test_settings.cpp.i:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_settings.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_settings.dir/test/test_settings.cpp.i
+.PHONY : test/test_settings.cpp.i
+
+test/test_settings.s: test/test_settings.cpp.s
+
+.PHONY : test/test_settings.s
+
+# target to generate assembly for a file
+test/test_settings.cpp.s:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_settings.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_settings.dir/test/test_settings.cpp.s
+.PHONY : test/test_settings.cpp.s
+
+test/test_string.o: test/test_string.cpp.o
+
+.PHONY : test/test_string.o
+
+# target to build an object file
+test/test_string.cpp.o:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_string.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_string.dir/test/test_string.cpp.o
+.PHONY : test/test_string.cpp.o
+
+test/test_string.i: test/test_string.cpp.i
+
+.PHONY : test/test_string.i
+
+# target to preprocess a source file
+test/test_string.cpp.i:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_string.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_string.dir/test/test_string.cpp.i
+.PHONY : test/test_string.cpp.i
+
+test/test_string.s: test/test_string.cpp.s
+
+.PHONY : test/test_string.s
+
+# target to generate assembly for a file
+test/test_string.cpp.s:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_string.dir/build.make drivers/canbus/socketcan_interface/CMakeFiles/socketcan_interface-test_string.dir/test/test_string.cpp.s
+.PHONY : test/test_string.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -332,14 +850,38 @@ help:
 	@echo "... depend"
 	@echo "... install/strip"
 	@echo "... install/local"
-	@echo "... install"
-	@echo "... list_install_components"
 	@echo "... edit_cache"
-	@echo "... socketcan_dump"
-	@echo "... socketcan_interface_string"
+	@echo "... run_tests_socketcan_interface_gtest_socketcan_interface-test_dispatcher"
+	@echo "... _run_tests_socketcan_interface_gtest_socketcan_interface-test_filter"
+	@echo "... install"
+	@echo "... _run_tests_socketcan_interface_gtest_socketcan_interface-test_dispatcher"
+	@echo "... run_tests_socketcan_interface_gtest_socketcan_interface-test_filter"
+	@echo "... list_install_components"
+	@echo "... _run_tests_socketcan_interface_gtest_socketcan_interface-test_string"
+	@echo "... run_tests_socketcan_interface_gtest_socketcan_interface-test_string"
+	@echo "... run_tests_socketcan_interface"
+	@echo "... _run_tests_socketcan_interface_gtest_socketcan_interface-test_delegates"
+	@echo "... _run_tests_socketcan_interface_gtest_socketcan_interface-test_settings"
 	@echo "... socketcan_bcm"
-	@echo "... socketcan_interface_plugin"
 	@echo "... rebuild_cache"
+	@echo "... socketcan_interface-test_dummy_interface"
+	@echo "... run_tests_socketcan_interface_gtest_socketcan_interface-test_delegates"
+	@echo "... run_tests_socketcan_interface_gtest_socketcan_interface-test_settings"
+	@echo "... socketcan_interface_plugin"
+	@echo "... socketcan_interface_string"
+	@echo "... socketcan_dump"
+	@echo "... test"
+	@echo "... _run_tests_socketcan_interface"
+	@echo "... socketcan_interface-test_dispatcher"
+	@echo "... run_tests_socketcan_interface_gtest_socketcan_interface-test_dummy_interface"
+	@echo "... run_tests_socketcan_interface_gtest"
+	@echo "... socketcan_interface-test_settings"
+	@echo "... socketcan_interface-test_filter"
+	@echo "... socketcan_interface-test_string"
+	@echo "... _run_tests_socketcan_interface_gtest"
+	@echo "... _run_tests_socketcan_interface_gtest_socketcan_interface-test_dummy_interface"
+	@echo "... clean_test_results_socketcan_interface"
+	@echo "... socketcan_interface-test_delegates"
 	@echo "... src/canbcm.o"
 	@echo "... src/canbcm.i"
 	@echo "... src/canbcm.s"
@@ -352,6 +894,24 @@ help:
 	@echo "... src/string.o"
 	@echo "... src/string.i"
 	@echo "... src/string.s"
+	@echo "... test/test_delegates.o"
+	@echo "... test/test_delegates.i"
+	@echo "... test/test_delegates.s"
+	@echo "... test/test_dispatcher.o"
+	@echo "... test/test_dispatcher.i"
+	@echo "... test/test_dispatcher.s"
+	@echo "... test/test_dummy_interface.o"
+	@echo "... test/test_dummy_interface.i"
+	@echo "... test/test_dummy_interface.s"
+	@echo "... test/test_filter.o"
+	@echo "... test/test_filter.i"
+	@echo "... test/test_filter.s"
+	@echo "... test/test_settings.o"
+	@echo "... test/test_settings.i"
+	@echo "... test/test_settings.s"
+	@echo "... test/test_string.o"
+	@echo "... test/test_string.i"
+	@echo "... test/test_string.s"
 .PHONY : help
 
 

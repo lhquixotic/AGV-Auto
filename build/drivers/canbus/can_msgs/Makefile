@@ -124,6 +124,17 @@ install/fast: preinstall/fast
 	/usr/bin/cmake -P cmake_install.cmake
 .PHONY : install/fast
 
+# Special rule for the target test
+test:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
+	/usr/bin/ctest --force-new-ctest-process $(ARGS)
+.PHONY : test
+
+# Special rule for the target test
+test/fast: test
+
+.PHONY : test/fast
+
 # The main all target
 all: cmake_check_build_system
 	cd /home/nvidia/AGV-Auto/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/nvidia/AGV-Auto/build/CMakeFiles /home/nvidia/AGV-Auto/build/drivers/canbus/can_msgs/CMakeFiles/progress.marks
@@ -172,36 +183,6 @@ can_msgs_genpy/fast:
 .PHONY : can_msgs_genpy/fast
 
 # Convenience name for target.
-drivers/canbus/can_msgs/CMakeFiles/can_msgs_generate_messages.dir/rule:
-	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/can_msgs/CMakeFiles/can_msgs_generate_messages.dir/rule
-.PHONY : drivers/canbus/can_msgs/CMakeFiles/can_msgs_generate_messages.dir/rule
-
-# Convenience name for target.
-can_msgs_generate_messages: drivers/canbus/can_msgs/CMakeFiles/can_msgs_generate_messages.dir/rule
-
-.PHONY : can_msgs_generate_messages
-
-# fast build rule for target.
-can_msgs_generate_messages/fast:
-	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/can_msgs/CMakeFiles/can_msgs_generate_messages.dir/build.make drivers/canbus/can_msgs/CMakeFiles/can_msgs_generate_messages.dir/build
-.PHONY : can_msgs_generate_messages/fast
-
-# Convenience name for target.
-drivers/canbus/can_msgs/CMakeFiles/can_msgs_genlisp.dir/rule:
-	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/can_msgs/CMakeFiles/can_msgs_genlisp.dir/rule
-.PHONY : drivers/canbus/can_msgs/CMakeFiles/can_msgs_genlisp.dir/rule
-
-# Convenience name for target.
-can_msgs_genlisp: drivers/canbus/can_msgs/CMakeFiles/can_msgs_genlisp.dir/rule
-
-.PHONY : can_msgs_genlisp
-
-# fast build rule for target.
-can_msgs_genlisp/fast:
-	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/can_msgs/CMakeFiles/can_msgs_genlisp.dir/build.make drivers/canbus/can_msgs/CMakeFiles/can_msgs_genlisp.dir/build
-.PHONY : can_msgs_genlisp/fast
-
-# Convenience name for target.
 drivers/canbus/can_msgs/CMakeFiles/can_msgs_geneus.dir/rule:
 	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/can_msgs/CMakeFiles/can_msgs_geneus.dir/rule
 .PHONY : drivers/canbus/can_msgs/CMakeFiles/can_msgs_geneus.dir/rule
@@ -215,6 +196,66 @@ can_msgs_geneus: drivers/canbus/can_msgs/CMakeFiles/can_msgs_geneus.dir/rule
 can_msgs_geneus/fast:
 	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/can_msgs/CMakeFiles/can_msgs_geneus.dir/build.make drivers/canbus/can_msgs/CMakeFiles/can_msgs_geneus.dir/build
 .PHONY : can_msgs_geneus/fast
+
+# Convenience name for target.
+drivers/canbus/can_msgs/CMakeFiles/std_msgs_generate_messages_eus.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/can_msgs/CMakeFiles/std_msgs_generate_messages_eus.dir/rule
+.PHONY : drivers/canbus/can_msgs/CMakeFiles/std_msgs_generate_messages_eus.dir/rule
+
+# Convenience name for target.
+std_msgs_generate_messages_eus: drivers/canbus/can_msgs/CMakeFiles/std_msgs_generate_messages_eus.dir/rule
+
+.PHONY : std_msgs_generate_messages_eus
+
+# fast build rule for target.
+std_msgs_generate_messages_eus/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/can_msgs/CMakeFiles/std_msgs_generate_messages_eus.dir/build.make drivers/canbus/can_msgs/CMakeFiles/std_msgs_generate_messages_eus.dir/build
+.PHONY : std_msgs_generate_messages_eus/fast
+
+# Convenience name for target.
+drivers/canbus/can_msgs/CMakeFiles/can_msgs_generate_messages_py.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/can_msgs/CMakeFiles/can_msgs_generate_messages_py.dir/rule
+.PHONY : drivers/canbus/can_msgs/CMakeFiles/can_msgs_generate_messages_py.dir/rule
+
+# Convenience name for target.
+can_msgs_generate_messages_py: drivers/canbus/can_msgs/CMakeFiles/can_msgs_generate_messages_py.dir/rule
+
+.PHONY : can_msgs_generate_messages_py
+
+# fast build rule for target.
+can_msgs_generate_messages_py/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/can_msgs/CMakeFiles/can_msgs_generate_messages_py.dir/build.make drivers/canbus/can_msgs/CMakeFiles/can_msgs_generate_messages_py.dir/build
+.PHONY : can_msgs_generate_messages_py/fast
+
+# Convenience name for target.
+drivers/canbus/can_msgs/CMakeFiles/_catkin_empty_exported_target.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/can_msgs/CMakeFiles/_catkin_empty_exported_target.dir/rule
+.PHONY : drivers/canbus/can_msgs/CMakeFiles/_catkin_empty_exported_target.dir/rule
+
+# Convenience name for target.
+_catkin_empty_exported_target: drivers/canbus/can_msgs/CMakeFiles/_catkin_empty_exported_target.dir/rule
+
+.PHONY : _catkin_empty_exported_target
+
+# fast build rule for target.
+_catkin_empty_exported_target/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/can_msgs/CMakeFiles/_catkin_empty_exported_target.dir/build.make drivers/canbus/can_msgs/CMakeFiles/_catkin_empty_exported_target.dir/build
+.PHONY : _catkin_empty_exported_target/fast
+
+# Convenience name for target.
+drivers/canbus/can_msgs/CMakeFiles/_can_msgs_generate_messages_check_deps_Frame.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/can_msgs/CMakeFiles/_can_msgs_generate_messages_check_deps_Frame.dir/rule
+.PHONY : drivers/canbus/can_msgs/CMakeFiles/_can_msgs_generate_messages_check_deps_Frame.dir/rule
+
+# Convenience name for target.
+_can_msgs_generate_messages_check_deps_Frame: drivers/canbus/can_msgs/CMakeFiles/_can_msgs_generate_messages_check_deps_Frame.dir/rule
+
+.PHONY : _can_msgs_generate_messages_check_deps_Frame
+
+# fast build rule for target.
+_can_msgs_generate_messages_check_deps_Frame/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/can_msgs/CMakeFiles/_can_msgs_generate_messages_check_deps_Frame.dir/build.make drivers/canbus/can_msgs/CMakeFiles/_can_msgs_generate_messages_check_deps_Frame.dir/build
+.PHONY : _can_msgs_generate_messages_check_deps_Frame/fast
 
 # Convenience name for target.
 drivers/canbus/can_msgs/CMakeFiles/std_msgs_generate_messages_nodejs.dir/rule:
@@ -307,34 +348,34 @@ std_msgs_generate_messages_cpp/fast:
 .PHONY : std_msgs_generate_messages_cpp/fast
 
 # Convenience name for target.
-drivers/canbus/can_msgs/CMakeFiles/std_msgs_generate_messages_eus.dir/rule:
-	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/can_msgs/CMakeFiles/std_msgs_generate_messages_eus.dir/rule
-.PHONY : drivers/canbus/can_msgs/CMakeFiles/std_msgs_generate_messages_eus.dir/rule
+drivers/canbus/can_msgs/CMakeFiles/can_msgs_generate_messages.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/can_msgs/CMakeFiles/can_msgs_generate_messages.dir/rule
+.PHONY : drivers/canbus/can_msgs/CMakeFiles/can_msgs_generate_messages.dir/rule
 
 # Convenience name for target.
-std_msgs_generate_messages_eus: drivers/canbus/can_msgs/CMakeFiles/std_msgs_generate_messages_eus.dir/rule
+can_msgs_generate_messages: drivers/canbus/can_msgs/CMakeFiles/can_msgs_generate_messages.dir/rule
 
-.PHONY : std_msgs_generate_messages_eus
+.PHONY : can_msgs_generate_messages
 
 # fast build rule for target.
-std_msgs_generate_messages_eus/fast:
-	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/can_msgs/CMakeFiles/std_msgs_generate_messages_eus.dir/build.make drivers/canbus/can_msgs/CMakeFiles/std_msgs_generate_messages_eus.dir/build
-.PHONY : std_msgs_generate_messages_eus/fast
+can_msgs_generate_messages/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/can_msgs/CMakeFiles/can_msgs_generate_messages.dir/build.make drivers/canbus/can_msgs/CMakeFiles/can_msgs_generate_messages.dir/build
+.PHONY : can_msgs_generate_messages/fast
 
 # Convenience name for target.
-drivers/canbus/can_msgs/CMakeFiles/_can_msgs_generate_messages_check_deps_Frame.dir/rule:
-	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/can_msgs/CMakeFiles/_can_msgs_generate_messages_check_deps_Frame.dir/rule
-.PHONY : drivers/canbus/can_msgs/CMakeFiles/_can_msgs_generate_messages_check_deps_Frame.dir/rule
+drivers/canbus/can_msgs/CMakeFiles/can_msgs_genlisp.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/can_msgs/CMakeFiles/can_msgs_genlisp.dir/rule
+.PHONY : drivers/canbus/can_msgs/CMakeFiles/can_msgs_genlisp.dir/rule
 
 # Convenience name for target.
-_can_msgs_generate_messages_check_deps_Frame: drivers/canbus/can_msgs/CMakeFiles/_can_msgs_generate_messages_check_deps_Frame.dir/rule
+can_msgs_genlisp: drivers/canbus/can_msgs/CMakeFiles/can_msgs_genlisp.dir/rule
 
-.PHONY : _can_msgs_generate_messages_check_deps_Frame
+.PHONY : can_msgs_genlisp
 
 # fast build rule for target.
-_can_msgs_generate_messages_check_deps_Frame/fast:
-	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/can_msgs/CMakeFiles/_can_msgs_generate_messages_check_deps_Frame.dir/build.make drivers/canbus/can_msgs/CMakeFiles/_can_msgs_generate_messages_check_deps_Frame.dir/build
-.PHONY : _can_msgs_generate_messages_check_deps_Frame/fast
+can_msgs_genlisp/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/can_msgs/CMakeFiles/can_msgs_genlisp.dir/build.make drivers/canbus/can_msgs/CMakeFiles/can_msgs_genlisp.dir/build
+.PHONY : can_msgs_genlisp/fast
 
 # Convenience name for target.
 drivers/canbus/can_msgs/CMakeFiles/can_msgs_generate_messages_eus.dir/rule:
@@ -396,21 +437,6 @@ can_msgs_gennodejs/fast:
 	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/can_msgs/CMakeFiles/can_msgs_gennodejs.dir/build.make drivers/canbus/can_msgs/CMakeFiles/can_msgs_gennodejs.dir/build
 .PHONY : can_msgs_gennodejs/fast
 
-# Convenience name for target.
-drivers/canbus/can_msgs/CMakeFiles/can_msgs_generate_messages_py.dir/rule:
-	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/can_msgs/CMakeFiles/can_msgs_generate_messages_py.dir/rule
-.PHONY : drivers/canbus/can_msgs/CMakeFiles/can_msgs_generate_messages_py.dir/rule
-
-# Convenience name for target.
-can_msgs_generate_messages_py: drivers/canbus/can_msgs/CMakeFiles/can_msgs_generate_messages_py.dir/rule
-
-.PHONY : can_msgs_generate_messages_py
-
-# fast build rule for target.
-can_msgs_generate_messages_py/fast:
-	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/can_msgs/CMakeFiles/can_msgs_generate_messages_py.dir/build.make drivers/canbus/can_msgs/CMakeFiles/can_msgs_generate_messages_py.dir/build
-.PHONY : can_msgs_generate_messages_py/fast
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -424,22 +450,24 @@ help:
 	@echo "... edit_cache"
 	@echo "... install"
 	@echo "... can_msgs_genpy"
-	@echo "... can_msgs_generate_messages"
-	@echo "... can_msgs_genlisp"
 	@echo "... can_msgs_geneus"
+	@echo "... std_msgs_generate_messages_eus"
+	@echo "... can_msgs_generate_messages_py"
+	@echo "... _catkin_empty_exported_target"
+	@echo "... test"
+	@echo "... _can_msgs_generate_messages_check_deps_Frame"
 	@echo "... std_msgs_generate_messages_nodejs"
 	@echo "... std_msgs_generate_messages_py"
 	@echo "... can_msgs_generate_messages_cpp"
 	@echo "... can_msgs_generate_messages_lisp"
 	@echo "... std_msgs_generate_messages_lisp"
 	@echo "... std_msgs_generate_messages_cpp"
-	@echo "... std_msgs_generate_messages_eus"
-	@echo "... _can_msgs_generate_messages_check_deps_Frame"
+	@echo "... can_msgs_generate_messages"
+	@echo "... can_msgs_genlisp"
 	@echo "... can_msgs_generate_messages_eus"
 	@echo "... can_msgs_gencpp"
 	@echo "... can_msgs_generate_messages_nodejs"
 	@echo "... can_msgs_gennodejs"
-	@echo "... can_msgs_generate_messages_py"
 .PHONY : help
 
 

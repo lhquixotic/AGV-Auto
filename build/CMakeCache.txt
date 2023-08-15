@@ -26,9 +26,6 @@ BUILD_GTEST:BOOL=OFF
 //Build shared libraries (DLLs).
 BUILD_SHARED_LIBS:BOOL=ON
 
-//Use OpenMP
-BUILD_WITH_OPENMP:BOOL=OFF
-
 //Boost atomic library (debug)
 Boost_ATOMIC_LIBRARY_DEBUG:FILEPATH=/usr/lib/aarch64-linux-gnu/libboost_atomic.so
 
@@ -78,7 +75,7 @@ CATKIN_BLACKLIST_PACKAGES:STRING=
 CATKIN_DEVEL_PREFIX:PATH=/home/nvidia/AGV-Auto/devel
 
 //Catkin enable testing
-CATKIN_ENABLE_TESTING:BOOL=False
+CATKIN_ENABLE_TESTING:BOOL=ON
 
 //Catkin skip testing
 CATKIN_SKIP_TESTING:BOOL=OFF
@@ -95,7 +92,7 @@ CMAKE_AR:FILEPATH=/usr/bin/ar
 
 //Choose the type of build, options are: None(CMAKE_CXX_FLAGS or
 // CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel.
-CMAKE_BUILD_TYPE:STRING=Release
+CMAKE_BUILD_TYPE:STRING=
 
 //Enable/Disable color output during build.
 CMAKE_COLOR_MAKEFILE:BOOL=ON
@@ -314,9 +311,6 @@ RT_LIBRARY:FILEPATH=/usr/lib/aarch64-linux-gnu/librt.so
 //Enable debian style python package layout
 SETUPTOOLS_DEB_LAYOUT:BOOL=ON
 
-//Set user wait point in startup (for debug)
-SET_USER_BREAK_AT_STARTUP:BOOL=OFF
-
 //Name of the computer/site where compile is being run
 SITE:STRING=nvidia-desktop
 
@@ -341,20 +335,8 @@ _gtest_INCLUDES:FILEPATH=/usr/include/gtest/gtest.h
 //Path to a file.
 _gtest_SOURCES:FILEPATH=/usr/src/gtest/src/gtest.cc
 
-//Path to a file.
-_path_name:FILEPATH=/home/nvidia/AGV-Auto/src/realsense-ros/realsense2_description/tests
-
-//The directory containing a CMake configuration file for actionlib.
-actionlib_DIR:PATH=/opt/ros/melodic/share/actionlib/cmake
-
 //The directory containing a CMake configuration file for actionlib_msgs.
 actionlib_msgs_DIR:PATH=/opt/ros/melodic/share/actionlib_msgs/cmake
-
-//The directory containing a CMake configuration file for bond.
-bond_DIR:PATH=/opt/ros/melodic/share/bond/cmake
-
-//The directory containing a CMake configuration file for bondcpp.
-bondcpp_DIR:PATH=/opt/ros/melodic/share/bondcpp/cmake
 
 //Value Computed by CMake
 can_msgs_BINARY_DIR:STATIC=/home/nvidia/AGV-Auto/build/drivers/canbus/can_msgs
@@ -406,18 +388,6 @@ cpp_common_DIR:PATH=/opt/ros/melodic/share/cpp_common/cmake
 
 //The directory containing a CMake configuration file for cv_bridge.
 cv_bridge_DIR:PATH=/opt/ros/melodic/share/cv_bridge/cmake
-
-//The directory containing a CMake configuration file for ddynamic_reconfigure.
-ddynamic_reconfigure_DIR:PATH=/opt/ros/melodic/share/ddynamic_reconfigure/cmake
-
-//The directory containing a CMake configuration file for diagnostic_msgs.
-diagnostic_msgs_DIR:PATH=/opt/ros/melodic/share/diagnostic_msgs/cmake
-
-//The directory containing a CMake configuration file for diagnostic_updater.
-diagnostic_updater_DIR:PATH=/opt/ros/melodic/share/diagnostic_updater/cmake
-
-//The directory containing a CMake configuration file for dynamic_reconfigure.
-dynamic_reconfigure_DIR:PATH=/opt/ros/melodic/share/dynamic_reconfigure/cmake
 
 //The directory containing a CMake configuration file for gencpp.
 gencpp_DIR:PATH=/opt/ros/melodic/share/gencpp/cmake
@@ -489,14 +459,8 @@ gtest_hide_internal_symbols:BOOL=OFF
 //Dependencies for the target
 gtest_main_LIB_DEPENDS:STATIC=general;-lpthread;general;gtest;
 
-//The directory containing a CMake configuration file for image_transport.
-image_transport_DIR:PATH=/opt/ros/melodic/share/image_transport/cmake
-
 //Path to a library.
-lib:FILEPATH=/opt/ros/melodic/lib/libdiagnostic_updater.so
-
-//The directory containing a CMake configuration file for message_filters.
-message_filters_DIR:PATH=/opt/ros/melodic/share/message_filters/cmake
+lib:FILEPATH=/opt/ros/melodic/lib/libxmlrpcpp.so
 
 //The directory containing a CMake configuration file for message_generation.
 message_generation_DIR:PATH=/opt/ros/melodic/share/message_generation/cmake
@@ -509,30 +473,6 @@ nav_msgs_DIR:PATH=/opt/ros/melodic/share/nav_msgs/cmake
 
 //The directory containing a CMake configuration file for nmea_msgs.
 nmea_msgs_DIR:PATH=/opt/ros/melodic/share/nmea_msgs/cmake
-
-//The directory containing a CMake configuration file for nodelet.
-nodelet_DIR:PATH=/opt/ros/melodic/share/nodelet/cmake
-
-//The directory containing a CMake configuration file for pluginlib.
-pluginlib_DIR:PATH=/opt/ros/melodic/share/pluginlib/cmake
-
-//The directory containing a CMake configuration file for realsense2.
-realsense2_DIR:PATH=/opt/ros/melodic/lib/cmake/realsense2
-
-//Value Computed by CMake
-realsense2_camera_BINARY_DIR:STATIC=/home/nvidia/AGV-Auto/build/realsense-ros/realsense2_camera
-
-//Dependencies for the target
-realsense2_camera_LIB_DEPENDS:STATIC=general;realsense2::realsense2;general;/opt/ros/melodic/lib/libnodeletlib.so;general;/opt/ros/melodic/lib/libbondcpp.so;general;/usr/lib/aarch64-linux-gnu/libuuid.so;general;/opt/ros/melodic/lib/libcv_bridge.so;general;/usr/lib/aarch64-linux-gnu/libopencv_core.so.3.2.0;general;/usr/lib/aarch64-linux-gnu/libopencv_imgproc.so.3.2.0;general;/usr/lib/aarch64-linux-gnu/libopencv_imgcodecs.so.3.2.0;general;/opt/ros/melodic/lib/libimage_transport.so;general;/opt/ros/melodic/lib/libclass_loader.so;general;/usr/lib/libPocoFoundation.so;general;/usr/lib/aarch64-linux-gnu/libdl.so;general;/opt/ros/melodic/lib/libroslib.so;general;/opt/ros/melodic/lib/librospack.so;general;/usr/lib/aarch64-linux-gnu/libpython2.7.so;general;/usr/lib/aarch64-linux-gnu/libboost_program_options.so;general;/usr/lib/aarch64-linux-gnu/libtinyxml2.so;general;/opt/ros/melodic/lib/libtf.so;general;/opt/ros/melodic/lib/libtf2_ros.so;general;/opt/ros/melodic/lib/libactionlib.so;general;/opt/ros/melodic/lib/libmessage_filters.so;general;/opt/ros/melodic/lib/libtf2.so;general;/opt/ros/melodic/lib/libddynamic_reconfigure.so;general;/opt/ros/melodic/lib/libdynamic_reconfigure_config_init_mutex.so;general;/opt/ros/melodic/lib/libdiagnostic_updater.so;general;/opt/ros/melodic/lib/libroscpp.so;general;/usr/lib/aarch64-linux-gnu/libboost_filesystem.so;general;/opt/ros/melodic/lib/librosconsole.so;general;/opt/ros/melodic/lib/librosconsole_log4cxx.so;general;/opt/ros/melodic/lib/librosconsole_backend_interface.so;general;/usr/lib/aarch64-linux-gnu/liblog4cxx.so;general;/usr/lib/aarch64-linux-gnu/libboost_regex.so;general;/opt/ros/melodic/lib/libxmlrpcpp.so;general;/opt/ros/melodic/lib/libroscpp_serialization.so;general;/opt/ros/melodic/lib/librostime.so;general;/opt/ros/melodic/lib/libcpp_common.so;general;/usr/lib/aarch64-linux-gnu/libboost_system.so;general;/usr/lib/aarch64-linux-gnu/libboost_thread.so;general;/usr/lib/aarch64-linux-gnu/libboost_chrono.so;general;/usr/lib/aarch64-linux-gnu/libboost_date_time.so;general;/usr/lib/aarch64-linux-gnu/libboost_atomic.so;general;/usr/lib/aarch64-linux-gnu/libpthread.so;general;/usr/lib/aarch64-linux-gnu/libconsole_bridge.so.0.4;
-
-//Value Computed by CMake
-realsense2_camera_SOURCE_DIR:STATIC=/home/nvidia/AGV-Auto/src/realsense-ros/realsense2_camera
-
-//Value Computed by CMake
-realsense2_description_BINARY_DIR:STATIC=/home/nvidia/AGV-Auto/build/realsense-ros/realsense2_description
-
-//Value Computed by CMake
-realsense2_description_SOURCE_DIR:STATIC=/home/nvidia/AGV-Auto/src/realsense-ros/realsense2_description
 
 //Value Computed by CMake
 receiveprotocol_BINARY_DIR:STATIC=/home/nvidia/AGV-Auto/build/drivers/canbus/canparse/include/protocol
@@ -564,20 +504,11 @@ roscpp_serialization_DIR:PATH=/opt/ros/melodic/share/roscpp_serialization/cmake
 //The directory containing a CMake configuration file for roscpp_traits.
 roscpp_traits_DIR:PATH=/opt/ros/melodic/share/roscpp_traits/cmake
 
-//The directory containing a CMake configuration file for rosgraph.
-rosgraph_DIR:PATH=/opt/ros/melodic/share/rosgraph/cmake
-
 //The directory containing a CMake configuration file for rosgraph_msgs.
 rosgraph_msgs_DIR:PATH=/opt/ros/melodic/share/rosgraph_msgs/cmake
 
-//The directory containing a CMake configuration file for roslib.
-roslib_DIR:PATH=/opt/ros/melodic/share/roslib/cmake
-
 //The directory containing a CMake configuration file for roslint.
 roslint_DIR:PATH=/opt/ros/melodic/share/roslint/cmake
-
-//The directory containing a CMake configuration file for rospack.
-rospack_DIR:PATH=/opt/ros/melodic/share/rospack/cmake
 
 //The directory containing a CMake configuration file for rospy.
 rospy_DIR:PATH=/opt/ros/melodic/share/rospy/cmake
@@ -615,9 +546,6 @@ simple_lane_detection_BINARY_DIR:STATIC=/home/nvidia/AGV-Auto/build/simple_lane_
 //Value Computed by CMake
 simple_lane_detection_SOURCE_DIR:STATIC=/home/nvidia/AGV-Auto/src/simple_lane_detection
 
-//The directory containing a CMake configuration file for smclib.
-smclib_DIR:PATH=/opt/ros/melodic/share/smclib/cmake
-
 //Value Computed by CMake
 socketcan_bridge_BINARY_DIR:STATIC=/home/nvidia/AGV-Auto/build/drivers/canbus/socketcan_bridge
 
@@ -644,24 +572,6 @@ socketcan_to_topic_LIB_DEPENDS:STATIC=general;/opt/ros/melodic/lib/librosconsole
 
 //The directory containing a CMake configuration file for std_msgs.
 std_msgs_DIR:PATH=/opt/ros/melodic/share/std_msgs/cmake
-
-//The directory containing a CMake configuration file for std_srvs.
-std_srvs_DIR:PATH=/opt/ros/melodic/share/std_srvs/cmake
-
-//The directory containing a CMake configuration file for tf2.
-tf2_DIR:PATH=/opt/ros/melodic/share/tf2/cmake
-
-//The directory containing a CMake configuration file for tf2_msgs.
-tf2_msgs_DIR:PATH=/opt/ros/melodic/share/tf2_msgs/cmake
-
-//The directory containing a CMake configuration file for tf2_py.
-tf2_py_DIR:PATH=/opt/ros/melodic/share/tf2_py/cmake
-
-//The directory containing a CMake configuration file for tf2_ros.
-tf2_ros_DIR:PATH=/opt/ros/melodic/share/tf2_ros/cmake
-
-//The directory containing a CMake configuration file for tf.
-tf_DIR:PATH=/opt/ros/melodic/share/tf/cmake
 
 //Dependencies for the target
 topic_to_socketcan_LIB_DEPENDS:STATIC=general;/opt/ros/melodic/lib/librosconsole_bridge.so;general;/opt/ros/melodic/lib/libroscpp.so;general;/usr/lib/aarch64-linux-gnu/libboost_filesystem.so;general;/opt/ros/melodic/lib/librosconsole.so;general;/opt/ros/melodic/lib/librosconsole_log4cxx.so;general;/opt/ros/melodic/lib/librosconsole_backend_interface.so;general;/usr/lib/aarch64-linux-gnu/liblog4cxx.so;general;/usr/lib/aarch64-linux-gnu/libboost_regex.so;general;/opt/ros/melodic/lib/libroscpp_serialization.so;general;/opt/ros/melodic/lib/libxmlrpcpp.so;general;/opt/ros/melodic/lib/librostime.so;general;/opt/ros/melodic/lib/libcpp_common.so;general;socketcan_interface_string;general;/usr/lib/aarch64-linux-gnu/libboost_chrono.so;general;/usr/lib/aarch64-linux-gnu/libboost_system.so;general;/usr/lib/aarch64-linux-gnu/libboost_thread.so;general;/usr/lib/aarch64-linux-gnu/libboost_date_time.so;general;/usr/lib/aarch64-linux-gnu/libboost_atomic.so;general;/usr/lib/aarch64-linux-gnu/libpthread.so;general;/usr/lib/aarch64-linux-gnu/libconsole_bridge.so.0.4;
@@ -807,7 +717,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=15
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=16
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
@@ -851,7 +761,7 @@ CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 //Details about finding OpenCV
 FIND_PACKAGE_MESSAGE_DETAILS_OpenCV:INTERNAL=[/usr][v4.1.1()]
 //Details about finding PythonInterp
-FIND_PACKAGE_MESSAGE_DETAILS_PythonInterp:INTERNAL=[/usr/bin/python2][v2.7.17(2)]
+FIND_PACKAGE_MESSAGE_DETAILS_PythonInterp:INTERNAL=[/usr/bin/python2][v2.7.17()]
 //Details about finding Threads
 FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
 GMOCK_FROM_SOURCE_FOUND:INTERNAL=TRUE

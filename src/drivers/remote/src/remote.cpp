@@ -31,6 +31,7 @@ void Remote::runAlgorithm() {
     if ((XOR_check) && (remote_signals.data[0] == 0x0f)){
       ROS_DEBUG("[Remote] mode: %d",remote_signals.data[9]);
       int raw_mode = remote_signals.data[9] / 2;
+      if(remote_signals.data[33]!=0) raw_mode=0;
       /*  filter mode data   */
       // delete oldest data
       buffer.erase(buffer.begin());
@@ -38,7 +39,7 @@ void Remote::runAlgorithm() {
       buffer.push_back(raw_mode);
       // get max data in buffer as mode
       int mode = *std::max_element(buffer.begin(),buffer.end());
-      if(remote_signals.data[33]!=0) mode=0;
+      
       remote_control.mode = mode;
 
       int l_up_h = remote_signals.data[5]; // front most: 0x069f - 0x0400 - 0x0160

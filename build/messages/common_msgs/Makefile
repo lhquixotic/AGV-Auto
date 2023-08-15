@@ -113,6 +113,17 @@ install/local/fast: preinstall/fast
 	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
 .PHONY : install/local/fast
 
+# Special rule for the target test
+test:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
+	/usr/bin/ctest --force-new-ctest-process $(ARGS)
+.PHONY : test
+
+# Special rule for the target test
+test/fast: test
+
+.PHONY : test/fast
+
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
@@ -832,6 +843,7 @@ help:
 	@echo "... _common_msgs_generate_messages_check_deps_RemoteControl"
 	@echo "... common_msgs_generate_messages_eus"
 	@echo "... _common_msgs_generate_messages_check_deps_ChassisControl"
+	@echo "... test"
 	@echo "... common_msgs_generate_messages"
 	@echo "... _common_msgs_generate_messages_check_deps_MagneticSignal"
 	@echo "... edit_cache"

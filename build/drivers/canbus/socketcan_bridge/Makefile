@@ -68,6 +68,18 @@ install/strip/fast: preinstall/fast
 	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
 .PHONY : install/strip/fast
 
+# Special rule for the target install/local
+install/local: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local
+
+# Special rule for the target install/local
+install/local/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local/fast
+
 # Special rule for the target install
 install: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
@@ -80,6 +92,17 @@ install/fast: preinstall/fast
 	/usr/bin/cmake -P cmake_install.cmake
 .PHONY : install/fast
 
+# Special rule for the target test
+test:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
+	/usr/bin/ctest --force-new-ctest-process $(ARGS)
+.PHONY : test
+
+# Special rule for the target test
+test/fast: test
+
+.PHONY : test/fast
+
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
@@ -90,18 +113,6 @@ rebuild_cache:
 rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
-
-# Special rule for the target install/local
-install/local: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local
-
-# Special rule for the target install/local
-install/local/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local/fast
 
 # Special rule for the target list_install_components
 list_install_components:
@@ -157,49 +168,229 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic.dir/rule:
-	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic.dir/rule
-.PHONY : drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic.dir/rule
+drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_rostest_test_to_topic.test.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_rostest_test_to_topic.test.dir/rule
+.PHONY : drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_rostest_test_to_topic.test.dir/rule
 
 # Convenience name for target.
-socketcan_to_topic: drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic.dir/rule
+run_tests_socketcan_bridge_rostest_test_to_topic.test: drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_rostest_test_to_topic.test.dir/rule
 
-.PHONY : socketcan_to_topic
+.PHONY : run_tests_socketcan_bridge_rostest_test_to_topic.test
 
 # fast build rule for target.
-socketcan_to_topic/fast:
-	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic.dir/build
-.PHONY : socketcan_to_topic/fast
+run_tests_socketcan_bridge_rostest_test_to_topic.test/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_rostest_test_to_topic.test.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_rostest_test_to_topic.test.dir/build
+.PHONY : run_tests_socketcan_bridge_rostest_test_to_topic.test/fast
 
 # Convenience name for target.
-drivers/canbus/socketcan_bridge/CMakeFiles/topic_to_socketcan.dir/rule:
-	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_bridge/CMakeFiles/topic_to_socketcan.dir/rule
-.PHONY : drivers/canbus/socketcan_bridge/CMakeFiles/topic_to_socketcan.dir/rule
+drivers/canbus/socketcan_bridge/CMakeFiles/test_to_topic.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_bridge/CMakeFiles/test_to_topic.dir/rule
+.PHONY : drivers/canbus/socketcan_bridge/CMakeFiles/test_to_topic.dir/rule
 
 # Convenience name for target.
-topic_to_socketcan: drivers/canbus/socketcan_bridge/CMakeFiles/topic_to_socketcan.dir/rule
+test_to_topic: drivers/canbus/socketcan_bridge/CMakeFiles/test_to_topic.dir/rule
 
-.PHONY : topic_to_socketcan
+.PHONY : test_to_topic
 
 # fast build rule for target.
-topic_to_socketcan/fast:
-	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/topic_to_socketcan.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/topic_to_socketcan.dir/build
-.PHONY : topic_to_socketcan/fast
+test_to_topic/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/test_to_topic.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/test_to_topic.dir/build
+.PHONY : test_to_topic/fast
 
 # Convenience name for target.
-drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic_node.dir/rule:
-	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic_node.dir/rule
-.PHONY : drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic_node.dir/rule
+drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_rostest.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_rostest.dir/rule
+.PHONY : drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_rostest.dir/rule
 
 # Convenience name for target.
-socketcan_to_topic_node: drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic_node.dir/rule
+_run_tests_socketcan_bridge_rostest: drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_rostest.dir/rule
 
-.PHONY : socketcan_to_topic_node
+.PHONY : _run_tests_socketcan_bridge_rostest
 
 # fast build rule for target.
-socketcan_to_topic_node/fast:
-	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic_node.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic_node.dir/build
-.PHONY : socketcan_to_topic_node/fast
+_run_tests_socketcan_bridge_rostest/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_rostest.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_rostest.dir/build
+.PHONY : _run_tests_socketcan_bridge_rostest/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_bridge/CMakeFiles/test_to_socketcan.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_bridge/CMakeFiles/test_to_socketcan.dir/rule
+.PHONY : drivers/canbus/socketcan_bridge/CMakeFiles/test_to_socketcan.dir/rule
+
+# Convenience name for target.
+test_to_socketcan: drivers/canbus/socketcan_bridge/CMakeFiles/test_to_socketcan.dir/rule
+
+.PHONY : test_to_socketcan
+
+# fast build rule for target.
+test_to_socketcan/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/test_to_socketcan.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/test_to_socketcan.dir/build
+.PHONY : test_to_socketcan/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_rostest.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_rostest.dir/rule
+.PHONY : drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_rostest.dir/rule
+
+# Convenience name for target.
+run_tests_socketcan_bridge_rostest: drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_rostest.dir/rule
+
+.PHONY : run_tests_socketcan_bridge_rostest
+
+# fast build rule for target.
+run_tests_socketcan_bridge_rostest/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_rostest.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_rostest.dir/build
+.PHONY : run_tests_socketcan_bridge_rostest/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_gtest_test_conversion.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_gtest_test_conversion.dir/rule
+.PHONY : drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_gtest_test_conversion.dir/rule
+
+# Convenience name for target.
+run_tests_socketcan_bridge_gtest_test_conversion: drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_gtest_test_conversion.dir/rule
+
+.PHONY : run_tests_socketcan_bridge_gtest_test_conversion
+
+# fast build rule for target.
+run_tests_socketcan_bridge_gtest_test_conversion/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_gtest_test_conversion.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_gtest_test_conversion.dir/build
+.PHONY : run_tests_socketcan_bridge_gtest_test_conversion/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_rostest_test_to_topic.test.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_rostest_test_to_topic.test.dir/rule
+.PHONY : drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_rostest_test_to_topic.test.dir/rule
+
+# Convenience name for target.
+_run_tests_socketcan_bridge_rostest_test_to_topic.test: drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_rostest_test_to_topic.test.dir/rule
+
+.PHONY : _run_tests_socketcan_bridge_rostest_test_to_topic.test
+
+# fast build rule for target.
+_run_tests_socketcan_bridge_rostest_test_to_topic.test/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_rostest_test_to_topic.test.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_rostest_test_to_topic.test.dir/build
+.PHONY : _run_tests_socketcan_bridge_rostest_test_to_topic.test/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_bridge_node.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_bridge_node.dir/rule
+.PHONY : drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_bridge_node.dir/rule
+
+# Convenience name for target.
+socketcan_bridge_node: drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_bridge_node.dir/rule
+
+.PHONY : socketcan_bridge_node
+
+# fast build rule for target.
+socketcan_bridge_node/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_bridge_node.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_bridge_node.dir/build
+.PHONY : socketcan_bridge_node/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_gtest_test_conversion.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_gtest_test_conversion.dir/rule
+.PHONY : drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_gtest_test_conversion.dir/rule
+
+# Convenience name for target.
+_run_tests_socketcan_bridge_gtest_test_conversion: drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_gtest_test_conversion.dir/rule
+
+.PHONY : _run_tests_socketcan_bridge_gtest_test_conversion
+
+# fast build rule for target.
+_run_tests_socketcan_bridge_gtest_test_conversion/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_gtest_test_conversion.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_gtest_test_conversion.dir/build
+.PHONY : _run_tests_socketcan_bridge_gtest_test_conversion/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge.dir/rule
+.PHONY : drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge.dir/rule
+
+# Convenience name for target.
+_run_tests_socketcan_bridge: drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge.dir/rule
+
+.PHONY : _run_tests_socketcan_bridge
+
+# fast build rule for target.
+_run_tests_socketcan_bridge/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge.dir/build
+.PHONY : _run_tests_socketcan_bridge/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_bridge/CMakeFiles/roslint.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_bridge/CMakeFiles/roslint.dir/rule
+.PHONY : drivers/canbus/socketcan_bridge/CMakeFiles/roslint.dir/rule
+
+# Convenience name for target.
+roslint: drivers/canbus/socketcan_bridge/CMakeFiles/roslint.dir/rule
+
+.PHONY : roslint
+
+# fast build rule for target.
+roslint/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/roslint.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/roslint.dir/build
+.PHONY : roslint/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_rostest_test_to_socketcan.test.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_rostest_test_to_socketcan.test.dir/rule
+.PHONY : drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_rostest_test_to_socketcan.test.dir/rule
+
+# Convenience name for target.
+run_tests_socketcan_bridge_rostest_test_to_socketcan.test: drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_rostest_test_to_socketcan.test.dir/rule
+
+.PHONY : run_tests_socketcan_bridge_rostest_test_to_socketcan.test
+
+# fast build rule for target.
+run_tests_socketcan_bridge_rostest_test_to_socketcan.test/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_rostest_test_to_socketcan.test.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_rostest_test_to_socketcan.test.dir/build
+.PHONY : run_tests_socketcan_bridge_rostest_test_to_socketcan.test/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_gtest.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_gtest.dir/rule
+.PHONY : drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_gtest.dir/rule
+
+# Convenience name for target.
+_run_tests_socketcan_bridge_gtest: drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_gtest.dir/rule
+
+.PHONY : _run_tests_socketcan_bridge_gtest
+
+# fast build rule for target.
+_run_tests_socketcan_bridge_gtest/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_gtest.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_gtest.dir/build
+.PHONY : _run_tests_socketcan_bridge_gtest/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge.dir/rule
+.PHONY : drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge.dir/rule
+
+# Convenience name for target.
+run_tests_socketcan_bridge: drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge.dir/rule
+
+.PHONY : run_tests_socketcan_bridge
+
+# fast build rule for target.
+run_tests_socketcan_bridge/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge.dir/build
+.PHONY : run_tests_socketcan_bridge/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_roslint_package.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_roslint_package.dir/rule
+.PHONY : drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_roslint_package.dir/rule
+
+# Convenience name for target.
+run_tests_socketcan_bridge_roslint_package: drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_roslint_package.dir/rule
+
+.PHONY : run_tests_socketcan_bridge_roslint_package
+
+# fast build rule for target.
+run_tests_socketcan_bridge_roslint_package/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_roslint_package.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_roslint_package.dir/build
+.PHONY : run_tests_socketcan_bridge_roslint_package/fast
 
 # Convenience name for target.
 drivers/canbus/socketcan_bridge/CMakeFiles/topic_to_socketcan_node.dir/rule:
@@ -217,19 +408,169 @@ topic_to_socketcan_node/fast:
 .PHONY : topic_to_socketcan_node/fast
 
 # Convenience name for target.
-drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_bridge_node.dir/rule:
-	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_bridge_node.dir/rule
-.PHONY : drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_bridge_node.dir/rule
+drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic_node.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic_node.dir/rule
+.PHONY : drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic_node.dir/rule
 
 # Convenience name for target.
-socketcan_bridge_node: drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_bridge_node.dir/rule
+socketcan_to_topic_node: drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic_node.dir/rule
 
-.PHONY : socketcan_bridge_node
+.PHONY : socketcan_to_topic_node
 
 # fast build rule for target.
-socketcan_bridge_node/fast:
-	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_bridge_node.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_bridge_node.dir/build
-.PHONY : socketcan_bridge_node/fast
+socketcan_to_topic_node/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic_node.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic_node.dir/build
+.PHONY : socketcan_to_topic_node/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_bridge/CMakeFiles/topic_to_socketcan.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_bridge/CMakeFiles/topic_to_socketcan.dir/rule
+.PHONY : drivers/canbus/socketcan_bridge/CMakeFiles/topic_to_socketcan.dir/rule
+
+# Convenience name for target.
+topic_to_socketcan: drivers/canbus/socketcan_bridge/CMakeFiles/topic_to_socketcan.dir/rule
+
+.PHONY : topic_to_socketcan
+
+# fast build rule for target.
+topic_to_socketcan/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/topic_to_socketcan.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/topic_to_socketcan.dir/build
+.PHONY : topic_to_socketcan/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic.dir/rule
+.PHONY : drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic.dir/rule
+
+# Convenience name for target.
+socketcan_to_topic: drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic.dir/rule
+
+.PHONY : socketcan_to_topic
+
+# fast build rule for target.
+socketcan_to_topic/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic.dir/build
+.PHONY : socketcan_to_topic/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_gtest.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_gtest.dir/rule
+.PHONY : drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_gtest.dir/rule
+
+# Convenience name for target.
+run_tests_socketcan_bridge_gtest: drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_gtest.dir/rule
+
+.PHONY : run_tests_socketcan_bridge_gtest
+
+# fast build rule for target.
+run_tests_socketcan_bridge_gtest/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_gtest.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_gtest.dir/build
+.PHONY : run_tests_socketcan_bridge_gtest/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_bridge/CMakeFiles/roslint_socketcan_bridge.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_bridge/CMakeFiles/roslint_socketcan_bridge.dir/rule
+.PHONY : drivers/canbus/socketcan_bridge/CMakeFiles/roslint_socketcan_bridge.dir/rule
+
+# Convenience name for target.
+roslint_socketcan_bridge: drivers/canbus/socketcan_bridge/CMakeFiles/roslint_socketcan_bridge.dir/rule
+
+.PHONY : roslint_socketcan_bridge
+
+# fast build rule for target.
+roslint_socketcan_bridge/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/roslint_socketcan_bridge.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/roslint_socketcan_bridge.dir/build
+.PHONY : roslint_socketcan_bridge/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_roslint.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_roslint.dir/rule
+.PHONY : drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_roslint.dir/rule
+
+# Convenience name for target.
+_run_tests_socketcan_bridge_roslint: drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_roslint.dir/rule
+
+.PHONY : _run_tests_socketcan_bridge_roslint
+
+# fast build rule for target.
+_run_tests_socketcan_bridge_roslint/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_roslint.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_roslint.dir/build
+.PHONY : _run_tests_socketcan_bridge_roslint/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_rostest_test_to_socketcan.test.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_rostest_test_to_socketcan.test.dir/rule
+.PHONY : drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_rostest_test_to_socketcan.test.dir/rule
+
+# Convenience name for target.
+_run_tests_socketcan_bridge_rostest_test_to_socketcan.test: drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_rostest_test_to_socketcan.test.dir/rule
+
+.PHONY : _run_tests_socketcan_bridge_rostest_test_to_socketcan.test
+
+# fast build rule for target.
+_run_tests_socketcan_bridge_rostest_test_to_socketcan.test/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_rostest_test_to_socketcan.test.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_rostest_test_to_socketcan.test.dir/build
+.PHONY : _run_tests_socketcan_bridge_rostest_test_to_socketcan.test/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_roslint_package.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_roslint_package.dir/rule
+.PHONY : drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_roslint_package.dir/rule
+
+# Convenience name for target.
+_run_tests_socketcan_bridge_roslint_package: drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_roslint_package.dir/rule
+
+.PHONY : _run_tests_socketcan_bridge_roslint_package
+
+# fast build rule for target.
+_run_tests_socketcan_bridge_roslint_package/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_roslint_package.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/_run_tests_socketcan_bridge_roslint_package.dir/build
+.PHONY : _run_tests_socketcan_bridge_roslint_package/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_bridge/CMakeFiles/clean_test_results_socketcan_bridge.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_bridge/CMakeFiles/clean_test_results_socketcan_bridge.dir/rule
+.PHONY : drivers/canbus/socketcan_bridge/CMakeFiles/clean_test_results_socketcan_bridge.dir/rule
+
+# Convenience name for target.
+clean_test_results_socketcan_bridge: drivers/canbus/socketcan_bridge/CMakeFiles/clean_test_results_socketcan_bridge.dir/rule
+
+.PHONY : clean_test_results_socketcan_bridge
+
+# fast build rule for target.
+clean_test_results_socketcan_bridge/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/clean_test_results_socketcan_bridge.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/clean_test_results_socketcan_bridge.dir/build
+.PHONY : clean_test_results_socketcan_bridge/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_roslint.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_roslint.dir/rule
+.PHONY : drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_roslint.dir/rule
+
+# Convenience name for target.
+run_tests_socketcan_bridge_roslint: drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_roslint.dir/rule
+
+.PHONY : run_tests_socketcan_bridge_roslint
+
+# fast build rule for target.
+run_tests_socketcan_bridge_roslint/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_roslint.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/run_tests_socketcan_bridge_roslint.dir/build
+.PHONY : run_tests_socketcan_bridge_roslint/fast
+
+# Convenience name for target.
+drivers/canbus/socketcan_bridge/CMakeFiles/test_conversion.dir/rule:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f CMakeFiles/Makefile2 drivers/canbus/socketcan_bridge/CMakeFiles/test_conversion.dir/rule
+.PHONY : drivers/canbus/socketcan_bridge/CMakeFiles/test_conversion.dir/rule
+
+# Convenience name for target.
+test_conversion: drivers/canbus/socketcan_bridge/CMakeFiles/test_conversion.dir/rule
+
+.PHONY : test_conversion
+
+# fast build rule for target.
+test_conversion/fast:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/test_conversion.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/test_conversion.dir/build
+.PHONY : test_conversion/fast
 
 src/rosconsole_bridge.o: src/rosconsole_bridge.cpp.o
 
@@ -237,8 +578,8 @@ src/rosconsole_bridge.o: src/rosconsole_bridge.cpp.o
 
 # target to build an object file
 src/rosconsole_bridge.cpp.o:
-	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic.dir/src/rosconsole_bridge.cpp.o
 	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/topic_to_socketcan.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/topic_to_socketcan.dir/src/rosconsole_bridge.cpp.o
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic.dir/src/rosconsole_bridge.cpp.o
 .PHONY : src/rosconsole_bridge.cpp.o
 
 src/rosconsole_bridge.i: src/rosconsole_bridge.cpp.i
@@ -247,8 +588,8 @@ src/rosconsole_bridge.i: src/rosconsole_bridge.cpp.i
 
 # target to preprocess a source file
 src/rosconsole_bridge.cpp.i:
-	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic.dir/src/rosconsole_bridge.cpp.i
 	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/topic_to_socketcan.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/topic_to_socketcan.dir/src/rosconsole_bridge.cpp.i
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic.dir/src/rosconsole_bridge.cpp.i
 .PHONY : src/rosconsole_bridge.cpp.i
 
 src/rosconsole_bridge.s: src/rosconsole_bridge.cpp.s
@@ -257,8 +598,8 @@ src/rosconsole_bridge.s: src/rosconsole_bridge.cpp.s
 
 # target to generate assembly for a file
 src/rosconsole_bridge.cpp.s:
-	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic.dir/src/rosconsole_bridge.cpp.s
 	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/topic_to_socketcan.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/topic_to_socketcan.dir/src/rosconsole_bridge.cpp.s
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/socketcan_to_topic.dir/src/rosconsole_bridge.cpp.s
 .PHONY : src/rosconsole_bridge.cpp.s
 
 src/socketcan_bridge_node.o: src/socketcan_bridge_node.cpp.o
@@ -396,6 +737,87 @@ src/topic_to_socketcan_node.cpp.s:
 	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/topic_to_socketcan_node.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/topic_to_socketcan_node.dir/src/topic_to_socketcan_node.cpp.s
 .PHONY : src/topic_to_socketcan_node.cpp.s
 
+test/test_conversion.o: test/test_conversion.cpp.o
+
+.PHONY : test/test_conversion.o
+
+# target to build an object file
+test/test_conversion.cpp.o:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/test_conversion.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/test_conversion.dir/test/test_conversion.cpp.o
+.PHONY : test/test_conversion.cpp.o
+
+test/test_conversion.i: test/test_conversion.cpp.i
+
+.PHONY : test/test_conversion.i
+
+# target to preprocess a source file
+test/test_conversion.cpp.i:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/test_conversion.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/test_conversion.dir/test/test_conversion.cpp.i
+.PHONY : test/test_conversion.cpp.i
+
+test/test_conversion.s: test/test_conversion.cpp.s
+
+.PHONY : test/test_conversion.s
+
+# target to generate assembly for a file
+test/test_conversion.cpp.s:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/test_conversion.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/test_conversion.dir/test/test_conversion.cpp.s
+.PHONY : test/test_conversion.cpp.s
+
+test/to_socketcan_test.o: test/to_socketcan_test.cpp.o
+
+.PHONY : test/to_socketcan_test.o
+
+# target to build an object file
+test/to_socketcan_test.cpp.o:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/test_to_socketcan.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/test_to_socketcan.dir/test/to_socketcan_test.cpp.o
+.PHONY : test/to_socketcan_test.cpp.o
+
+test/to_socketcan_test.i: test/to_socketcan_test.cpp.i
+
+.PHONY : test/to_socketcan_test.i
+
+# target to preprocess a source file
+test/to_socketcan_test.cpp.i:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/test_to_socketcan.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/test_to_socketcan.dir/test/to_socketcan_test.cpp.i
+.PHONY : test/to_socketcan_test.cpp.i
+
+test/to_socketcan_test.s: test/to_socketcan_test.cpp.s
+
+.PHONY : test/to_socketcan_test.s
+
+# target to generate assembly for a file
+test/to_socketcan_test.cpp.s:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/test_to_socketcan.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/test_to_socketcan.dir/test/to_socketcan_test.cpp.s
+.PHONY : test/to_socketcan_test.cpp.s
+
+test/to_topic_test.o: test/to_topic_test.cpp.o
+
+.PHONY : test/to_topic_test.o
+
+# target to build an object file
+test/to_topic_test.cpp.o:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/test_to_topic.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/test_to_topic.dir/test/to_topic_test.cpp.o
+.PHONY : test/to_topic_test.cpp.o
+
+test/to_topic_test.i: test/to_topic_test.cpp.i
+
+.PHONY : test/to_topic_test.i
+
+# target to preprocess a source file
+test/to_topic_test.cpp.i:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/test_to_topic.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/test_to_topic.dir/test/to_topic_test.cpp.i
+.PHONY : test/to_topic_test.cpp.i
+
+test/to_topic_test.s: test/to_topic_test.cpp.s
+
+.PHONY : test/to_topic_test.s
+
+# target to generate assembly for a file
+test/to_topic_test.cpp.s:
+	cd /home/nvidia/AGV-Auto/build && $(MAKE) -f drivers/canbus/socketcan_bridge/CMakeFiles/test_to_topic.dir/build.make drivers/canbus/socketcan_bridge/CMakeFiles/test_to_topic.dir/test/to_topic_test.cpp.s
+.PHONY : test/to_topic_test.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -403,16 +825,39 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... install/strip"
-	@echo "... install"
-	@echo "... rebuild_cache"
 	@echo "... install/local"
-	@echo "... socketcan_to_topic"
-	@echo "... topic_to_socketcan"
-	@echo "... socketcan_to_topic_node"
-	@echo "... topic_to_socketcan_node"
-	@echo "... list_install_components"
+	@echo "... install"
+	@echo "... test"
+	@echo "... run_tests_socketcan_bridge_rostest_test_to_topic.test"
+	@echo "... test_to_topic"
+	@echo "... _run_tests_socketcan_bridge_rostest"
+	@echo "... test_to_socketcan"
+	@echo "... run_tests_socketcan_bridge_rostest"
+	@echo "... run_tests_socketcan_bridge_gtest_test_conversion"
+	@echo "... _run_tests_socketcan_bridge_rostest_test_to_topic.test"
 	@echo "... socketcan_bridge_node"
+	@echo "... _run_tests_socketcan_bridge_gtest_test_conversion"
+	@echo "... _run_tests_socketcan_bridge"
+	@echo "... roslint"
+	@echo "... run_tests_socketcan_bridge_rostest_test_to_socketcan.test"
+	@echo "... _run_tests_socketcan_bridge_gtest"
+	@echo "... run_tests_socketcan_bridge"
+	@echo "... run_tests_socketcan_bridge_roslint_package"
+	@echo "... rebuild_cache"
+	@echo "... topic_to_socketcan_node"
+	@echo "... socketcan_to_topic_node"
+	@echo "... topic_to_socketcan"
+	@echo "... socketcan_to_topic"
+	@echo "... list_install_components"
+	@echo "... run_tests_socketcan_bridge_gtest"
+	@echo "... roslint_socketcan_bridge"
+	@echo "... _run_tests_socketcan_bridge_roslint"
 	@echo "... edit_cache"
+	@echo "... _run_tests_socketcan_bridge_rostest_test_to_socketcan.test"
+	@echo "... _run_tests_socketcan_bridge_roslint_package"
+	@echo "... clean_test_results_socketcan_bridge"
+	@echo "... run_tests_socketcan_bridge_roslint"
+	@echo "... test_conversion"
 	@echo "... src/rosconsole_bridge.o"
 	@echo "... src/rosconsole_bridge.i"
 	@echo "... src/rosconsole_bridge.s"
@@ -431,6 +876,15 @@ help:
 	@echo "... src/topic_to_socketcan_node.o"
 	@echo "... src/topic_to_socketcan_node.i"
 	@echo "... src/topic_to_socketcan_node.s"
+	@echo "... test/test_conversion.o"
+	@echo "... test/test_conversion.i"
+	@echo "... test/test_conversion.s"
+	@echo "... test/to_socketcan_test.o"
+	@echo "... test/to_socketcan_test.i"
+	@echo "... test/to_socketcan_test.s"
+	@echo "... test/to_topic_test.o"
+	@echo "... test/to_topic_test.i"
+	@echo "... test/to_topic_test.s"
 .PHONY : help
 
 

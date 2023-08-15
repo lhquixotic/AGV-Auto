@@ -1,2 +1,2 @@
-control:drivers/canbus/can_msgs:drivers/canbus/canparse:drivers/canbus/cansend:drivers/canbus/socketcan_bridge:drivers/canbus/socketcan_interface:drivers/remote:drivers/serial_com:messages/common_msgs:realsense-ros/realsense2_camera:realsense-ros/realsense2_description:simple_lane_detection
+control:drivers/canbus/can_msgs:drivers/canbus/canparse:drivers/canbus/cansend:drivers/canbus/socketcan_bridge:drivers/canbus/socketcan_interface:drivers/remote:drivers/serial_com:messages/common_msgs:simple_lane_detection
 -DCATKIN_DEVEL_PREFIX=/home/nvidia/AGV-Auto/devel -DCMAKE_INSTALL_PREFIX=/home/nvidia/AGV-Auto/install -G Unix Makefiles

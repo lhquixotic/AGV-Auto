@@ -12,7 +12,7 @@ if(NOT DEFINED CMAKE_INSTALL_CONFIG_NAME)
     string(REGEX REPLACE "^[^A-Za-z0-9_]+" ""
            CMAKE_INSTALL_CONFIG_NAME "${BUILD_TYPE}")
   else()
-    set(CMAKE_INSTALL_CONFIG_NAME "Release")
+    set(CMAKE_INSTALL_CONFIG_NAME "")
   endif()
   message(STATUS "Install configuration: \"${CMAKE_INSTALL_CONFIG_NAME}\"")
 endif()
@@ -130,7 +130,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/nvidia/AGV-Auto/build/realsense-ros/realsense2_description/cmake_install.cmake")
+  include("/home/nvidia/AGV-Auto/build/gtest/cmake_install.cmake")
   include("/home/nvidia/AGV-Auto/build/drivers/canbus/can_msgs/cmake_install.cmake")
   include("/home/nvidia/AGV-Auto/build/messages/common_msgs/cmake_install.cmake")
   include("/home/nvidia/AGV-Auto/build/drivers/canbus/canparse/cmake_install.cmake")
@@ -141,7 +141,6 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("/home/nvidia/AGV-Auto/build/simple_lane_detection/cmake_install.cmake")
   include("/home/nvidia/AGV-Auto/build/drivers/canbus/socketcan_interface/cmake_install.cmake")
   include("/home/nvidia/AGV-Auto/build/drivers/canbus/socketcan_bridge/cmake_install.cmake")
-  include("/home/nvidia/AGV-Auto/build/realsense-ros/realsense2_camera/cmake_install.cmake")
 
 endif()
 
