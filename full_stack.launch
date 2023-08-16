@@ -5,7 +5,7 @@
     <include file = "$(find canparse)/launch/canparse.launch"></include>
     <include file = "$(find cansend)/launch/cansend.launch"></include>
     <include file = "$(find serial_com)/launch/serial_com_remote.launch"></include>
-    <!-- <include file = "$(find serial_com)/launch/serial_com_rfid.launch"></include> -->
+    <include file = "$(find serial_com)/launch/serial_com_rfid.launch"></include>
     <include file = "$(find remote)/launch/remote.launch"></include>
     <include file = "$(find control)/launch/control.launch"></include>
 </launch>
