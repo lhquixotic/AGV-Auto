@@ -14,3 +14,6 @@ desired_speed: 1
 desired_distance: 5 # m
 max_steer_angle: 40.0 
 max_magnetic_missing_time: 500 # /25s
+lane_mid_reference: 260
+visual_scale: 25
+enable_visual_control: true

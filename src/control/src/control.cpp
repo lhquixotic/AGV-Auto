@@ -16,6 +16,7 @@ namespace ns_control
                                             loop_number = 0;
                                             kept_magnetic_loc = 99;
                                             magnetic_missing_time = 0;
+                                            lane_error = 0;
                                           };
 
   // Getters
@@ -38,6 +39,11 @@ namespace ns_control
   }
   void Control::setChassisState(const common_msgs::ChassisState &msg){
     chassis_state = msg;
+  }
+  void Control::setLaneDetection(const simple_lane_detection::object &msg){
+    lane_detection = msg;
+    int lane_mid = msg.mid_cx_down;
+    lane_error = int((lane_mid - control_para.lane_mid_reference) / control_para.visual_scale);
   }
 
   void Control::setMagnetPidParameters(const Pid_para &msg){
@@ -133,7 +139,7 @@ namespace ns_control
         // if(!auto_control_enable)ROS_WARN("STOP");
         // cur_wheel_angle = chassis_state.real_steer_angle - ini_wheel_angle;
         control_cmd.control_mode = 2;
-        if((!magneticSignalFlag)||((magnetic_signal.intensity == 0)&&(kept_magnetic_loc==99))||(!auto_control_enable)){
+        if(((!magneticSignalFlag))||((magnetic_signal.intensity == 0)&&(kept_magnetic_loc==99))||(!auto_control_enable)){
           // if no magnetic signal recved || current and kept intensity is zero || auto control disabled
           // if(!magneticSignalFlag){ROS_WARN("[Control] Stop because no magnetic signal received.");}
           // if(magnetic_signal.intensity == 0){ROS_WARN("[Control] Stop because magnetic intensity is 0.");}
@@ -141,22 +147,33 @@ namespace ns_control
           control_cmd.linear_velocity = 0;
           control_cmd.steering_angle = 0;
         }else{
-
-          // Get current reference magnetic location
-          int cur_magnetic_loc;
-          if (magnetic_signal.intensity == 0){
-            // current intensity is zero but kept intensity is not zero
-            cur_magnetic_loc = kept_magnetic_loc;
-            magnetic_missing_time ++;
-            if (magnetic_missing_time >= control_para.max_magnetic_missing_time){auto_control_enable=false;}
-          }else{
-            // current intensity is not zero
-            cur_magnetic_loc = magnetic_signal.current_loc;
-            kept_magnetic_loc = cur_magnetic_loc;
+          int error_input = 0;
+          if (!control_para.enable_visual_control){
+            // ** Magnetic control
+            // Get current reference magnetic location
+            int cur_magnetic_loc;
+            if (magnetic_signal.intensity == 0){
+              // current intensity is zero but kept intensity is not zero
+              cur_magnetic_loc = kept_magnetic_loc;
+              magnetic_missing_time ++;
+              if (magnetic_missing_time >= control_para.max_magnetic_missing_time){auto_control_enable=false;}
+            }else{
+              // current intensity is not zero
+              cur_magnetic_loc = magnetic_signal.current_loc;
+              kept_magnetic_loc = cur_magnetic_loc;
+            }
+            error_input = magnetic_signal.middle_loc - cur_magnetic_loc; // error -, left turn
+            ROS_INFO_STREAM("[Visual] lane_error: "<< lane_error << ", magnet_error: " << error_input);
           }
-
+          else{
+          // ** Visual control 
+            if (laneDetectionFlag){
+              error_input =  lane_error;}
+            ROS_INFO_STREAM("[Visual] lane_error: "<< lane_error);
+          }
           // Use current reference magnetic location for steering
-          double desired_angle = magnet_pid_controller.outputSignal(magnetic_signal.middle_loc,cur_magnetic_loc);
+          double desired_angle = magnet_pid_controller.outputSignal(error_input,0);
+          
           desired_angle = clamp(desired_angle,-control_para.max_steer_angle,control_para.max_steer_angle);          
           control_cmd.steering_angle = desired_angle;
 

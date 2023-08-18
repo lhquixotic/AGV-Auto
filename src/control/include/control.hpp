@@ -15,6 +15,7 @@
 #include "std_msgs/String.h"
 #include "pid.hpp"
 #include <vector>
+#include "simple_lane_detection/object.h"
 
 namespace ns_control {
 
@@ -26,6 +27,9 @@ struct Para{
   double desired_distance;
   double max_steer_angle;
   int max_magnetic_missing_time;
+  int lane_mid_reference;
+  int visual_scale;
+  bool enable_visual_control;
 };
 
 class Control {
@@ -42,6 +46,7 @@ class Control {
   void setRfidSignal(const common_msgs::SerialMsg &msg);
   void setMagneticSignal(const common_msgs::MagneticSignal &msg);
   void setChassisState(const common_msgs::ChassisState &msg);
+  void setLaneDetection(const simple_lane_detection::object &msg);
 
   void setMagnetPidParameters(const Pid_para &msg);
   void setControlParameters(const Para &msg);
@@ -51,6 +56,7 @@ class Control {
   bool remoteControlFlag;
   bool rfidSignalFlag;
   bool magneticSignalFlag;
+  bool laneDetectionFlag;
 
   // Methods
   void runAlgorithm();
@@ -64,6 +70,7 @@ class Control {
 
   common_msgs::ControlCommand control_cmd;
   common_msgs::ControlCommandStamped ccs;
+  simple_lane_detection::object lane_detection;
 
   common_msgs::RemoteControl remote_control;
   common_msgs::SerialMsg rfid_signal;
@@ -80,6 +87,7 @@ class Control {
   int kept_remote_mode;
   int kept_rfid_stop;
   int kept_rfid_value;
+  int lane_error;
 
   PID magnet_pid_controller;
   Pid_para magnet_error_pid_para;

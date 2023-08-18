@@ -7,9 +7,9 @@ def do_canny(frame):
     # Converts frame to grayscale because we only need the luminance channel for detecting edges - less computationally expensive
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     # Applies a 5x5 gaussian blur with deviation of 0 to frame - not mandatory since Canny will do this for us
-    blur = cv2.GaussianBlur(gray, (5, 5), 0)
+    # blur = cv2.GaussianBlur(gray, (1, 1), 0)
     # Applies Canny edge detector with minVal of 50 and maxVal of 150
-    canny = cv2.Canny(blur, 50, 150)
+    canny = cv2.Canny(gray, 50, 100)
     return canny
 
 def do_segment(frame):
@@ -22,7 +22,7 @@ def do_segment(frame):
                         ])
     # Creates an image filled with zero intensities with the same dimensions as the frame
     mask = np.zeros_like(frame).astype(np.uint8)
-    mask[int(height*0.32):,:] = 255
+    mask[int(height*0.64):,:] = 255
     # Allows the mask to be filled with values of 1 and the other areas to be filled with values of 0
     # cv2.fillPoly(mask, polygons, 255)
     # A bitwise and operation between the mask and frame keeps only the triangular area of the frame
@@ -121,17 +121,4 @@ def calculate_coordinates(frame, parameters):
     # Sets final x-coordinate as (y2 - b) / m since y2 = mx2 + b
     x2 = int((y2 - intercept) / slope)
     return np.array([x1, y1, x2, y2])
-
-def visualize_lines(frame, lines):
-    # Creates an image filled with zero intensities with the same dimensions as the frame
-    lines_visualize = frame
-    # Checks if any lines are detected
-    if lines is not None:
-        for line in lines:
-            print(str(line))
-            sys.stdout.flush()
-            x1, y1, x2, y2 = line.reshape(4)
-            # Draws lines between two coordinates with green color and 5 thickness
-            cv2.line(lines_visualize, (x1, y1), (x2, y2), (0, 255, 0), 5)
-    return lines_visualize
 

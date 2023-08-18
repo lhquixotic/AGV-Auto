@@ -1,0 +1,7 @@
+<launch>
+    <node pkg="simple_lane_detection" type="ros_detector.py" name="ros_detector" output="screen">
+        <param name = "camera_x" value="0.0" type="double"/>
+        <param name = "camera_y" value="0.0" type="double"/>
+        <param name = "flag" value="1.0" type="double"/>
+    </node>
+</launch>

@@ -17,13 +17,16 @@ Cansend::Cansend(ros::NodeHandle &nh) : nh_(nh) ,
   
   loop_number = 0;
   steer_send_times = para.test_steer_angle;
-  ini_left_angle = 0;
-  cur_left_angle = 0;
-  ini_right_angle = 0;
-  cur_right_angle = 0;
+  // ini_left_angle = 0;
+  // cur_left_angle = 0;
+  // ini_right_angle = 0;
+  // cur_right_angle = 0;
   kept_remote_mode = 1;
+  manual_switch = 0;
   steer_control->sendBackZeroReq(1);
   steer_control->sendBackZeroReq(2);
+  desired_motor_rpm_r = 0;
+  desired_motor_rpm_l = 0;
   
   // std::ofstream dirStream("/sys/class/gpio/gpio392/value");
   // std::ifstream dirStream("/sys/devices/c2f0000.gpio/gpiochip1/gpio/gpio392/value");
@@ -98,6 +101,72 @@ void Cansend::sendSteerInfo(double des_steer_l, double des_steer_r){
   }
 }
 
+void Cansend::standStillControl(){
+  // [Lock] Still control
+  steer_control->setNullMsg();
+  desired_motor_rpm_l = 0;
+  desired_motor_rpm_r = 0;
+}
+
+void Cansend::manualControl(double desired_angle){
+  // Steer control
+  desired_angle = clamp(deadband(desired_angle,para.steer_dead_input),-1.0,1.0);
+  desired_angle = desired_angle * para.steer_max_angle;
+
+  double desired_angle_l = desired_angle;
+  double desired_angle_r = desired_angle;
+  desired_angle_l = clamp(veh_dyn_cal.calculate_angle(desired_angle,true),-para.steer_max_angle,para.steer_max_angle);
+  desired_angle_r = clamp(veh_dyn_cal.calculate_angle(desired_angle,false),-para.steer_max_angle,para.steer_max_angle);
+      
+  sendSteerInfo(desired_angle_l,desired_angle_r);
+
+  if (loop_number %25 == 0)
+    {ROS_INFO("[Steer] desired: %f, des_left: %f, des_right: %f",desired_angle, desired_angle_l,desired_angle_r);}
+
+  // Drive control
+  double desired_speed_remote = clamp(ccs.cmd.linear_velocity,-1.0,1.0);
+  desired_speed_remote = deadband(desired_speed_remote,para.motor_dead_input);
+
+  // No calculation
+  double desired_rpm = desired_speed_remote * para.motor_manual_rpm;
+  desired_motor_rpm_l = veh_dyn_cal.calculate_whlspd(desired_rpm,desired_angle,true);
+  desired_motor_rpm_r = veh_dyn_cal.calculate_whlspd(desired_rpm,desired_angle,false);
+
+  desired_motor_rpm_l = int(desired_motor_rpm_l);
+  desired_motor_rpm_r = int(desired_motor_rpm_r);
+
+  if (loop_number %25 == 0)
+    {ROS_INFO("[Motor] desired: %f, right motor: %d, left motor: %d",desired_rpm,desired_motor_rpm_r,desired_motor_rpm_l);}
+}
+
+void Cansend::automaticControl(double desired_angle){
+  // [Automatic] automatic control
+  /*  Steering for automatic mode  */
+  // Desired steering angle
+  double desired_angle_l = desired_angle;
+  double desired_angle_r = desired_angle;
+  desired_angle_l = clamp(veh_dyn_cal.calculate_angle(desired_angle,true),-para.steer_max_angle,para.steer_max_angle);
+  desired_angle_r = clamp(veh_dyn_cal.calculate_angle(desired_angle,false),-para.steer_max_angle,para.steer_max_angle);
+  
+  sendSteerInfo(desired_angle_l,desired_angle_r);
+  
+  if (loop_number %25 == 0)
+    {ROS_INFO("[Steer]desire: %f, des_left: %f, des_right: %f",desired_angle, desired_angle_l,desired_angle_r);}
+  
+  /* driving for automatic mode */
+  double desired_rpm = para.motor_auto_rpm;
+  desired_motor_rpm_l = int(veh_dyn_cal.calculate_whlspd(desired_rpm,desired_angle,true));
+  desired_motor_rpm_r = int(veh_dyn_cal.calculate_whlspd(desired_rpm,desired_angle,false));
+
+  if (ccs.cmd.linear_velocity == 0){
+    desired_motor_rpm_l = 0;
+    desired_motor_rpm_r = 0;
+  }
+
+  if (loop_number %25 == 0)
+    {ROS_INFO("[Motor] right motor: %d, left motor: %d",desired_motor_rpm_r,desired_motor_rpm_l);}
+}
+
 void Cansend::runAlgorithm() {
   // ROS_WARN_STREAM("steer: "<<steer_send_times);
   if(para.send_mode == 0){
@@ -116,77 +185,19 @@ void Cansend::runAlgorithm() {
 
   }else{
     // Autonomous driving mode
-    // steering
-    double desired_angle_remote = ccs.cmd.steering_angle;
+    double desired_angle = ccs.cmd.steering_angle;
     int remote_mode = ccs.cmd.control_mode;
-    int desired_motor_rpm_l;
-    int desired_motor_rpm_r;
 
-    if (remote_mode == 1){ // manual control
-      // Steer control
-      desired_angle = clamp(deadband(desired_angle,para.steer_dead_input),-1.0,1.0);
-      desired_angle = desired_angle * para.steer_max_angle;
-
-      double desired_angle_l = desired_angle;
-      double desired_angle_r = desired_angle;
-      desired_angle_l = clamp(veh_dyn_cal.calculate_angle(desired_angle,true),-para.steer_max_angle,para.steer_max_angle);
-      desired_angle_r = clamp(veh_dyn_cal.calculate_angle(desired_angle,false),-para.steer_max_angle,para.steer_max_angle);
-          
-      sendSteerInfo(desired_angle_l,desired_angle_r);
-
-      if (loop_number %25 == 0)
-        {ROS_INFO("[Steer] desired: %f, des_left: %f, des_right: %f",desired_angle, desired_angle_l,desired_angle_r);}
-
-      // Drive control
-      double desired_speed_remote = clamp(ccs.cmd.linear_velocity,-1.0,1.0);
-      desired_speed_remote = deadband(desired_speed_remote,para.motor_dead_input);
-
-      // No calculation
-      double desired_rpm = desired_speed_remote * para.motor_manual_rpm;
-      desired_motor_rpm_l = veh_dyn_cal.calculate_whlspd(desired_rpm,desired_angle,true);
-      desired_motor_rpm_r = veh_dyn_cal.calculate_whlspd(desired_rpm,desired_angle,false);
-
-      desired_motor_rpm_l = int(desired_motor_rpm_l);
-      desired_motor_rpm_r = int(desired_motor_rpm_r);
-
-      if (loop_number %25 == 0)
-        {ROS_INFO("[Motor] desired: %f, right motor: %d, left motor: %d",desired_rpm,desired_motor_rpm_r,desired_motor_rpm_l);}
-
-    }else{ // automatic control, need to read angle
-      if (remote_mode == 2){
-          /*  Steering for automatic mode  */
-          // Desired steering angle
-          double desired_angle_l = desired_angle;
-          double desired_angle_r = desired_angle;
-          desired_angle_l = clamp(veh_dyn_cal.calculate_angle(desired_angle,true),-para.steer_max_angle,para.steer_max_angle);
-          desired_angle_r = clamp(veh_dyn_cal.calculate_angle(desired_angle,false),-para.steer_max_angle,para.steer_max_angle);
-          
-          sendSteerInfo(desired_angle_l,desired_angle_r);
-          
-          if (loop_number %25 == 0)
-            {ROS_INFO("[Steer]desire: %f, des_left: %f, des_right: %f",desired_angle, desired_angle_l,desired_angle_r);}
-          
-          /* driving for automatic mode */
-          double desired_rpm = para.motor_auto_rpm;
-          desired_motor_rpm_l = int(veh_dyn_cal.calculate_whlspd(desired_rpm,desired_angle,true));
-          desired_motor_rpm_r = int(veh_dyn_cal.calculate_whlspd(desired_rpm,desired_angle,false));
-
-          if (ccs.cmd.linear_velocity == 0){
-            desired_motor_rpm_l = 0;
-            desired_motor_rpm_r = 0;
-          }
-
-          if (loop_number %25 == 0)
-            {ROS_INFO("[Motor] right motor: %d, left motor: %d",desired_motor_rpm_r,desired_motor_rpm_l);}
-
-      }else{
-          // Lock mode
-          steer_control->setNullMsg();
-          desired_motor_rpm_l = 0;
-          desired_motor_rpm_r = 0;
-      };
-       
+    // Mode selection
+    if (remote_mode == 3) standStillControl(); 
+    else{
+      if ((remote_mode == 1)) manualControl(desired_angle);
+      else{
+        if(remote_mode == 2) automaticControl(desired_angle);
+      }
     }
+
+    // Motor control
     desired_motor_rpm_l = clamp(desired_motor_rpm_l,-para.motor_max_rpm,para.motor_max_rpm);
     desired_motor_rpm_r = clamp(desired_motor_rpm_r,-para.motor_max_rpm,para.motor_max_rpm);
     
@@ -198,10 +209,12 @@ void Cansend::runAlgorithm() {
     if(loop_number%50 == 0){
       std::ofstream dirStream("/sys/class/gpio/gpio392/value");
       int signal = 0;
-      if ((remote_mode <= 2)&&(std::abs(desired_motor_rpm_l) > 100)){
+      if (std::abs(desired_motor_rpm_l) > 100){
         signal = 1;}
       dirStream << signal;
     }
+
+    // Manual switch state update
   }
   loop_number += 1;
 }

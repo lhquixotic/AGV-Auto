@@ -1,6 +1,7 @@
 <launch>
     <!-- full stack-->
     <include file="$(find socketcan_bridge)/launch/socketcan_bridge.launch"></include>
+    <node pkg="usb_cam" type="usb_cam_node" name="usb_cam_node" />
     <!-- <include file = "$(find socketcan_bridge)/launch/socketcan_bridge_can1.launch"></include> -->
     <include file = "$(find canparse)/launch/canparse.launch"></include>
     <include file = "$(find cansend)/launch/cansend.launch"></include>
@@ -8,4 +9,5 @@
     <include file = "$(find serial_com)/launch/serial_com_rfid.launch"></include>
     <include file = "$(find remote)/launch/remote.launch"></include>
     <include file = "$(find control)/launch/control.launch"></include>
+    <include file = "$(find simple_lane_detection)/launch/ros_detector.launch"></include>
 </launch>
