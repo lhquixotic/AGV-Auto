@@ -12,7 +12,7 @@ echo 'nvidia' | sudo -S chmod 777 /dev/ttyUSB1
 echo 'nvidia' | sudo -S chmod 777 /dev/ttyUSB0
 echo 'nvidia' | sudo -S chmod 777 /dev/ttyUSB2
 echo 'serial com device init done!'
-python /home/nvidia/AGV-Auto/test_gpio.py
+python /home/nvidia/AGV-Auto/setup_gpio.py
 
 source /home/nvidia/AGV-Auto/devel/setup.bash
 

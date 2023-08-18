@@ -16,6 +16,7 @@
 #include "utils.hpp"
 #include <fstream>
 
+
 extern SteerControl *steer_control;
 extern MagneticReq *magnetic_req;
 extern MotorControl *motor_control;
@@ -64,6 +65,10 @@ class Cansend {
   void sendSteerReq(double steer_cmd,int device_id);
   void sendSteerInfo(double des_steer_l, double des_steer_r);
 
+  void manualControl(double desired_angle);
+  void automaticControl(double desired_angle);
+  void standStillControl();
+
   Para para;
   Pid_para angle_error_pid_para;
   
@@ -78,13 +83,18 @@ class Cansend {
   VehicleDynamicCal veh_dyn_cal;
 
   // steer wheel angle variable
-  double ini_left_angle;
-  double cur_left_angle;
-  double ini_right_angle;
-  double cur_right_angle; 
+  // double ini_left_angle;
+  // double cur_left_angle;
+  // double ini_right_angle;
+  // double cur_right_angle; 
 
-  // std::ifstream dirStream("/sys/class/gpio/gpio392/value");
-  // std::ofstream dirStream;
+  // desired control value    
+  int desired_motor_rpm_l;
+  int desired_motor_rpm_r;
+
+  // manual switch
+  int manual_switch;
+
 };
 }
 
