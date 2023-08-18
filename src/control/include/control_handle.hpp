@@ -28,6 +28,7 @@ class ControlHandle {
   ros::Subscriber rfidSignalSubscriber_;
   ros::Subscriber magneticSignalSubscriber_;
   ros::Subscriber chassisStateSubscriber_;
+  ros::Subscriber laneDetectionSubscriber_;
 
   ros::Publisher controlCommandPublisher_;
 
@@ -35,11 +36,13 @@ class ControlHandle {
   void rfidSignalCallback(const common_msgs::SerialMsg &msg);
   void magneticSignalCallback(const common_msgs::MagneticSignal &msg);
   void chassisStateCallback(const common_msgs::ChassisState &msg);
+  void laneDetectionCallback(const simple_lane_detection::object &msg);
 
   std::string remote_control_topic_name_;
   std::string rfid_signal_topic_name_;
   std::string magnetic_signal_topic_name_;
   std::string chassis_state_topic_name_;
+  std::string lane_detection_topic_name_;
 
   std::string control_command_topic_name_;
 

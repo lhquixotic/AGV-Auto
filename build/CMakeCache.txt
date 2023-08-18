@@ -543,6 +543,9 @@ serial_com_SOURCE_DIR:STATIC=/home/nvidia/AGV-Auto/src/drivers/serial_com
 //Value Computed by CMake
 simple_lane_detection_BINARY_DIR:STATIC=/home/nvidia/AGV-Auto/build/simple_lane_detection
 
+//The directory containing a CMake configuration file for simple_lane_detection.
+simple_lane_detection_DIR:PATH=/home/nvidia/AGV-Auto/devel/share/simple_lane_detection/cmake
+
 //Value Computed by CMake
 simple_lane_detection_SOURCE_DIR:STATIC=/home/nvidia/AGV-Auto/src/simple_lane_detection
 

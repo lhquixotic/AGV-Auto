@@ -8,6 +8,7 @@ control/CMakeFiles/control.dir/src/control.cpp.o
  /home/nvidia/AGV-Auto/devel/include/common_msgs/MagneticSignal.h
  /home/nvidia/AGV-Auto/devel/include/common_msgs/RemoteControl.h
  /home/nvidia/AGV-Auto/devel/include/common_msgs/SerialMsg.h
+ /home/nvidia/AGV-Auto/devel/include/simple_lane_detection/object.h
  /home/nvidia/AGV-Auto/src/control/include/control.hpp
  /home/nvidia/AGV-Auto/src/control/include/pid.hpp
  /home/nvidia/AGV-Auto/src/control/include/utils.hpp
@@ -79,6 +80,7 @@ control/CMakeFiles/control.dir/src/control_handle.cpp.o
  /home/nvidia/AGV-Auto/devel/include/common_msgs/MagneticSignal.h
  /home/nvidia/AGV-Auto/devel/include/common_msgs/RemoteControl.h
  /home/nvidia/AGV-Auto/devel/include/common_msgs/SerialMsg.h
+ /home/nvidia/AGV-Auto/devel/include/simple_lane_detection/object.h
  /home/nvidia/AGV-Auto/src/control/include/control.hpp
  /home/nvidia/AGV-Auto/src/control/include/control_handle.hpp
  /home/nvidia/AGV-Auto/src/control/include/pid.hpp
@@ -151,6 +153,7 @@ control/CMakeFiles/control.dir/src/main.cpp.o
  /home/nvidia/AGV-Auto/devel/include/common_msgs/MagneticSignal.h
  /home/nvidia/AGV-Auto/devel/include/common_msgs/RemoteControl.h
  /home/nvidia/AGV-Auto/devel/include/common_msgs/SerialMsg.h
+ /home/nvidia/AGV-Auto/devel/include/simple_lane_detection/object.h
  /home/nvidia/AGV-Auto/src/control/include/control.hpp
  /home/nvidia/AGV-Auto/src/control/include/control_handle.hpp
  /home/nvidia/AGV-Auto/src/control/include/pid.hpp

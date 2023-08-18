@@ -15,6 +15,7 @@
   <depend>geometry_msgs</depend>
   <depend>common_msgs</depend>
   <depend>nav_msgs</depend>
+  <depend>simple_lane_detection</depend>
 
   <export>
   </export>

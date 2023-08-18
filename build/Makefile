@@ -1221,45 +1221,6 @@ receiveprotocol/fast:
 .PHONY : receiveprotocol/fast
 
 #=============================================================================
-# Target rules for targets named control
-
-# Build rule for target.
-control: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 control
-.PHONY : control
-
-# fast build rule for target.
-control/fast:
-	$(MAKE) -f control/CMakeFiles/control.dir/build.make control/CMakeFiles/control.dir/build
-.PHONY : control/fast
-
-#=============================================================================
-# Target rules for targets named cansend
-
-# Build rule for target.
-cansend: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 cansend
-.PHONY : cansend
-
-# fast build rule for target.
-cansend/fast:
-	$(MAKE) -f drivers/canbus/cansend/CMakeFiles/cansend.dir/build.make drivers/canbus/cansend/CMakeFiles/cansend.dir/build
-.PHONY : cansend/fast
-
-#=============================================================================
-# Target rules for targets named sendprotocol
-
-# Build rule for target.
-sendprotocol: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 sendprotocol
-.PHONY : sendprotocol
-
-# fast build rule for target.
-sendprotocol/fast:
-	$(MAKE) -f drivers/canbus/cansend/include/protocol/CMakeFiles/sendprotocol.dir/build.make drivers/canbus/cansend/include/protocol/CMakeFiles/sendprotocol.dir/build
-.PHONY : sendprotocol/fast
-
-#=============================================================================
 # Target rules for targets named remote
 
 # Build rule for target.
@@ -1505,6 +1466,45 @@ simple_lane_detection_generate_messages_nodejs: cmake_check_build_system
 simple_lane_detection_generate_messages_nodejs/fast:
 	$(MAKE) -f simple_lane_detection/CMakeFiles/simple_lane_detection_generate_messages_nodejs.dir/build.make simple_lane_detection/CMakeFiles/simple_lane_detection_generate_messages_nodejs.dir/build
 .PHONY : simple_lane_detection_generate_messages_nodejs/fast
+
+#=============================================================================
+# Target rules for targets named control
+
+# Build rule for target.
+control: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 control
+.PHONY : control
+
+# fast build rule for target.
+control/fast:
+	$(MAKE) -f control/CMakeFiles/control.dir/build.make control/CMakeFiles/control.dir/build
+.PHONY : control/fast
+
+#=============================================================================
+# Target rules for targets named cansend
+
+# Build rule for target.
+cansend: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 cansend
+.PHONY : cansend
+
+# fast build rule for target.
+cansend/fast:
+	$(MAKE) -f drivers/canbus/cansend/CMakeFiles/cansend.dir/build.make drivers/canbus/cansend/CMakeFiles/cansend.dir/build
+.PHONY : cansend/fast
+
+#=============================================================================
+# Target rules for targets named sendprotocol
+
+# Build rule for target.
+sendprotocol: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 sendprotocol
+.PHONY : sendprotocol
+
+# fast build rule for target.
+sendprotocol/fast:
+	$(MAKE) -f drivers/canbus/cansend/include/protocol/CMakeFiles/sendprotocol.dir/build.make drivers/canbus/cansend/include/protocol/CMakeFiles/sendprotocol.dir/build
+.PHONY : sendprotocol/fast
 
 #=============================================================================
 # Target rules for targets named run_tests_socketcan_interface_gtest_socketcan_interface-test_dispatcher
@@ -2302,9 +2302,6 @@ help:
 	@echo "... roscpp_generate_messages_lisp"
 	@echo "... rosgraph_msgs_generate_messages_eus"
 	@echo "... receiveprotocol"
-	@echo "... control"
-	@echo "... cansend"
-	@echo "... sendprotocol"
 	@echo "... remote"
 	@echo "... nmea_msgs_generate_messages_eus"
 	@echo "... nmea_msgs_generate_messages_cpp"
@@ -2324,6 +2321,9 @@ help:
 	@echo "... simple_lane_detection_gennodejs"
 	@echo "... simple_lane_detection_genpy"
 	@echo "... simple_lane_detection_generate_messages_nodejs"
+	@echo "... control"
+	@echo "... cansend"
+	@echo "... sendprotocol"
 	@echo "... run_tests_socketcan_interface_gtest_socketcan_interface-test_dispatcher"
 	@echo "... _run_tests_socketcan_interface_gtest_socketcan_interface-test_filter"
 	@echo "... _run_tests_socketcan_interface_gtest_socketcan_interface-test_dispatcher"

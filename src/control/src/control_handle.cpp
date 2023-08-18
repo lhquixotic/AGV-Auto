@@ -54,6 +54,11 @@ void ControlHandle::loadParameters() {
                                       "/control_cmd")) {
     ROS_WARN_STREAM("Did not load control_command_topic_name. Standard value is: " << control_command_topic_name_);
   }
+  if (!nodeHandle_.param<std::string>("lane_detection_topic_name",
+                                      lane_detection_topic_name_,
+                                      "/car_min_line")) {
+    ROS_WARN_STREAM("Did not load lane_detection_topic_name. Standard value is: " << lane_detection_topic_name_);
+  }
   if (!nodeHandle_.param("node_rate", node_rate_, 1)) {
     ROS_WARN_STREAM("Did not load node_rate. Standard value is: " << node_rate_);
   }
@@ -65,6 +70,9 @@ void ControlHandle::loadParameters() {
   nodeHandle_.param<double>("desired_distance",control_para_.desired_distance,5.0);
   nodeHandle_.param<double>("max_steer_angle",control_para_.max_steer_angle,25.0);
   nodeHandle_.param<int>("max_magnetic_missing_time",control_para_.max_magnetic_missing_time,50);
+  nodeHandle_.param<int>("lane_mid_reference",control_para_.lane_mid_reference,260);
+  nodeHandle_.param<int>("visual_scale",control_para_.visual_scale,20);
+  nodeHandle_.param<bool>("enable_visual_control",control_para_.enable_visual_control,false);
   ROS_INFO_STREAM("Longitudinal control enable: "<<control_para_.longitudinal_control_switch
                   << "; Lateral control enable: "<<control_para_.lateral_control_switch);
               
@@ -89,6 +97,9 @@ void ControlHandle::subscribeToTopics() {
       nodeHandle_.subscribe(magnetic_signal_topic_name_, 10, &ControlHandle::magneticSignalCallback, this);
   chassisStateSubscriber_ = 
       nodeHandle_.subscribe(chassis_state_topic_name_,10, &ControlHandle::chassisStateCallback, this);
+  laneDetectionSubscriber_ = 
+      nodeHandle_.subscribe(lane_detection_topic_name_,10, &ControlHandle::laneDetectionCallback, this);
+  
 }
 
 void ControlHandle::publishToTopics() {
@@ -123,6 +134,11 @@ void ControlHandle::rfidSignalCallback(const common_msgs::SerialMsg &msg){
 
 void ControlHandle::chassisStateCallback(const common_msgs::ChassisState &msg){
   control_.setChassisState(msg);
+}
+
+void ControlHandle::laneDetectionCallback(const simple_lane_detection::object &msg){
+  control_.setLaneDetection(msg);
+  control_.laneDetectionFlag = true;
 }
 
 }

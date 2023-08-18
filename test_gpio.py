@@ -2,9 +2,15 @@ import Jetson.GPIO as GPIO
 
 GPIO.setmode(GPIO.BOARD)
 
-GPIO.setup(12, GPIO.OUT)
+GPIO.setup(21, GPIO.IN)
 
-GPIO.output(12, GPIO.HIGH)
+GPIO.setup(19, GPIO.OUT)
+
+GPIO.output(19, GPIO.LOW)
+
+print(GPIO.input(21))
+
+# GPIO.output(19, GPIO.HIGH)
 
 # GPIO.output(12, GPIO.LOW)
 

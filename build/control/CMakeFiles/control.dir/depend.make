@@ -7,6 +7,7 @@ control/CMakeFiles/control.dir/src/control.cpp.o: /home/nvidia/AGV-Auto/devel/in
 control/CMakeFiles/control.dir/src/control.cpp.o: /home/nvidia/AGV-Auto/devel/include/common_msgs/MagneticSignal.h
 control/CMakeFiles/control.dir/src/control.cpp.o: /home/nvidia/AGV-Auto/devel/include/common_msgs/RemoteControl.h
 control/CMakeFiles/control.dir/src/control.cpp.o: /home/nvidia/AGV-Auto/devel/include/common_msgs/SerialMsg.h
+control/CMakeFiles/control.dir/src/control.cpp.o: /home/nvidia/AGV-Auto/devel/include/simple_lane_detection/object.h
 control/CMakeFiles/control.dir/src/control.cpp.o: /home/nvidia/AGV-Auto/src/control/include/control.hpp
 control/CMakeFiles/control.dir/src/control.cpp.o: /home/nvidia/AGV-Auto/src/control/include/pid.hpp
 control/CMakeFiles/control.dir/src/control.cpp.o: /home/nvidia/AGV-Auto/src/control/include/utils.hpp
@@ -78,6 +79,7 @@ control/CMakeFiles/control.dir/src/control_handle.cpp.o: /home/nvidia/AGV-Auto/d
 control/CMakeFiles/control.dir/src/control_handle.cpp.o: /home/nvidia/AGV-Auto/devel/include/common_msgs/MagneticSignal.h
 control/CMakeFiles/control.dir/src/control_handle.cpp.o: /home/nvidia/AGV-Auto/devel/include/common_msgs/RemoteControl.h
 control/CMakeFiles/control.dir/src/control_handle.cpp.o: /home/nvidia/AGV-Auto/devel/include/common_msgs/SerialMsg.h
+control/CMakeFiles/control.dir/src/control_handle.cpp.o: /home/nvidia/AGV-Auto/devel/include/simple_lane_detection/object.h
 control/CMakeFiles/control.dir/src/control_handle.cpp.o: /home/nvidia/AGV-Auto/src/control/include/control.hpp
 control/CMakeFiles/control.dir/src/control_handle.cpp.o: /home/nvidia/AGV-Auto/src/control/include/control_handle.hpp
 control/CMakeFiles/control.dir/src/control_handle.cpp.o: /home/nvidia/AGV-Auto/src/control/include/pid.hpp
@@ -150,6 +152,7 @@ control/CMakeFiles/control.dir/src/main.cpp.o: /home/nvidia/AGV-Auto/devel/inclu
 control/CMakeFiles/control.dir/src/main.cpp.o: /home/nvidia/AGV-Auto/devel/include/common_msgs/MagneticSignal.h
 control/CMakeFiles/control.dir/src/main.cpp.o: /home/nvidia/AGV-Auto/devel/include/common_msgs/RemoteControl.h
 control/CMakeFiles/control.dir/src/main.cpp.o: /home/nvidia/AGV-Auto/devel/include/common_msgs/SerialMsg.h
+control/CMakeFiles/control.dir/src/main.cpp.o: /home/nvidia/AGV-Auto/devel/include/simple_lane_detection/object.h
 control/CMakeFiles/control.dir/src/main.cpp.o: /home/nvidia/AGV-Auto/src/control/include/control.hpp
 control/CMakeFiles/control.dir/src/main.cpp.o: /home/nvidia/AGV-Auto/src/control/include/control_handle.hpp
 control/CMakeFiles/control.dir/src/main.cpp.o: /home/nvidia/AGV-Auto/src/control/include/pid.hpp

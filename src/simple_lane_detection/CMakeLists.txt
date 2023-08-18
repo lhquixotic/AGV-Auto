@@ -19,8 +19,8 @@ find_package(catkin REQUIRED COMPONENTS
 # catkin_python_setup()
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
-
-
+# add_subdirectory(utils)
+# add_library(utils  utils/filter_utils.py)
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
@@ -75,7 +75,6 @@ add_message_files(
 generate_messages(
   DEPENDENCIES
   std_msgs
-
 )
 
 ################################################

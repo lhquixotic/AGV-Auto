@@ -8,4 +8,6 @@
     <include file = "$(find serial_com)/launch/serial_com_rfid.launch"></include>
     <include file = "$(find remote)/launch/remote.launch"></include>
     <include file = "$(find control)/launch/control.launch"></include>
+    <include file = "$(find simple_lane_detection)/launch/ros_detector.launch"></include>
+    <node pkg="usb_cam" type="usb_cam_node" name="usb_cam_node" />
 </launch>

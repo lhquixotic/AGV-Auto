@@ -8,6 +8,7 @@ set(PROJECT_DEPS
   std_msgs
   common_msgs
   nav_msgs
+  simple_lane_detection
   )
 
 find_package(catkin REQUIRED COMPONENTS
@@ -16,6 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   common_msgs
   nav_msgs
+  simple_lane_detection
   )
 
 catkin_package(

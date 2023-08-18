@@ -114,6 +114,24 @@ ros/message_operations.h
 std_msgs/Header.h
 -
 
+/home/nvidia/AGV-Auto/devel/include/simple_lane_detection/object.h
+string
+-
+vector
+-
+memory
+-
+ros/types.h
+-
+ros/serialization.h
+-
+ros/builtin_message_traits.h
+-
+ros/message_operations.h
+-
+std_msgs/Header.h
+-
+
 /home/nvidia/AGV-Auto/src/control/include/control.hpp
 common_msgs/SerialMsg.h
 /home/nvidia/AGV-Auto/src/control/include/common_msgs/SerialMsg.h
@@ -131,6 +149,8 @@ pid.hpp
 /home/nvidia/AGV-Auto/src/control/include/pid.hpp
 vector
 -
+simple_lane_detection/object.h
+/home/nvidia/AGV-Auto/src/control/include/simple_lane_detection/object.h
 
 /home/nvidia/AGV-Auto/src/control/include/control_handle.hpp
 control.hpp
