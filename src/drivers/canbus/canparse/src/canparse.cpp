@@ -14,6 +14,7 @@ Canparse::Canparse(ros::NodeHandle &nh) : nh_(nh) {
 // Getters
 common_msgs::MagneticSignal Canparse::getMagneticSignal(){return magnetic_signal;}
 common_msgs::ChassisState Canparse::getChassisState(){return chassis_state;}
+common_msgs::RadarSignal Canparse::getRadarSignal(){return radar_signal;}
 
 // Setters
 void Canparse::Parse(can_msgs::Frame f) {
@@ -40,13 +41,17 @@ void Canparse::Parse(can_msgs::Frame f) {
     steer.Update(f.data.c_array());
     break;
   
+  case 0x0512:
+    radar.Update(f.data.c_array());
+    break;
+
   default:
     break;
   }
 }
 
 void Canparse::runAlgorithm() {
-  // Magnetic data
+  /****** Magnetic data ******/
   // read data
   uint8_t magnetic_data_h = magnetic.MagneticDataH();
   uint8_t magnetic_data_l = magnetic.MagneticDataL();
@@ -77,7 +82,7 @@ void Canparse::runAlgorithm() {
     magnetic_signal.current_loc = sum_of_1/number_of_1;
   }
   
-  // Steer data
+  /****** Steer data ******/
   bool left_steer_data_recved = steer.LeftSteerDataRecved();
   bool right_steer_data_recved = steer.RightSteerDataRecved();
   if (left_steer_data_recved){
@@ -96,7 +101,17 @@ void Canparse::runAlgorithm() {
     if(left_steer_data_recved && right_steer_data_recved){
       ROS_INFO("[CanParse] right angle: %f, left angle: %f",chassis_state.real_steer_angle_right+127,chassis_state.real_steer_angle_left-0.8);
     }
-    }
+  }
+
+  /****** Radar data ******/ 
+  // read data
+  uint8_t radar_data_h = radar.RadarDataH();
+  uint8_t radar_data_l = radar.RadarDataL();
+  uint16_t radar_data = (radar_data_h << 8) | radar_data_l;
+
+  radar_signal.header.frame_id = 'vehicle';
+  radar_signal.distance = float(radar_data/1000.0);
+
   loop_number ++;
 }
 }

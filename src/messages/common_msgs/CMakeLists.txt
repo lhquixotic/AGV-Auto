@@ -30,6 +30,8 @@ add_message_files(DIRECTORY msg
     MagneticSignal.msg
     ControlCommandStamped.msg
     ControlCommand.msg
+    RadarSignal.msg
+    ObstacleDistance.msg
 )
 
 generate_messages(

@@ -7,6 +7,8 @@ magnetic_signal_topic_name: /perception/magnetic
 
 chassis_state_topic_name: /chassis_state
 
+obstacle_distance_topic_name: /perception/obstacle_distance
+
 # Publisher
 control_command_topic_name: /control_cmd
 

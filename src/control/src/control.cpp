@@ -43,6 +43,9 @@ namespace ns_control
   void Control::setChassisState(const common_msgs::ChassisState &msg){
     chassis_state = msg;
   }
+  void Control::setObstacleDistance(const common_msgs::ObstacleDistance &msg){
+    obstacle_distance = msg;
+  }
   void Control::setLaneDetection(const simple_lane_detection::object &msg){
     lane_detection = msg;
     int lane_mid = msg.mid_cx_down;
@@ -222,6 +225,12 @@ namespace ns_control
           control_cmd.linear_velocity = 0;
           control_cmd.steering_angle = 0;
         }else{
+          if (obstacle_distance.distance < control_para.obstacle_dist_threshold){
+            control_cmd.linear_velocity = 0;
+            control_cmd.steering_angle = 0;
+            ROS_WARN("Obstacle detected.");
+            break;
+          }
           // choose sensor type
           if (!control_para.enable_visual_control)magneticControl();
           else visualControl();

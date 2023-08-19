@@ -3,10 +3,12 @@
 
 #include "common_msgs/MagneticSignal.h"
 #include "common_msgs/ChassisState.h"
+#include "common_msgs/RadarSignal.h"
 #include "std_msgs/String.h"
 #include <can_msgs/Frame.h>
 
 #include "Magnetic.h"
+#include "Radar.h"
 #include "Steer.h"
 
 namespace ns_canparse {
@@ -18,10 +20,12 @@ class Canparse {
   Canparse(ros::NodeHandle &nh);
   Magnetic magnetic;
   Steer steer;
+  Radar radar;
 
   // Getters
   common_msgs::ChassisState getChassisState();
   common_msgs::MagneticSignal getMagneticSignal();
+  common_msgs::RadarSignal getRadarSignal();
 
   // Setters
   void Parse(can_msgs::Frame f);
@@ -34,6 +38,7 @@ class Canparse {
 
   common_msgs::ChassisState chassis_state;
   common_msgs::MagneticSignal magnetic_signal;
+  common_msgs::RadarSignal radar_signal;
 
   bool kept_left_steer_recved;
   bool kept_right_steer_recved;

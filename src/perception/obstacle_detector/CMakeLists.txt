@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(canparse)
+project(obstacle_detector)
 
 add_compile_options(-std=c++11)
 
@@ -7,8 +7,6 @@ set(PROJECT_DEPS
   roscpp
   std_msgs
   common_msgs
-  can_msgs
-  obstacle_detector
   )
 
 find_package(catkin REQUIRED COMPONENTS
@@ -16,8 +14,6 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   geometry_msgs
   common_msgs
-  can_msgs
-  obstacle_detector
   )
 
 catkin_package(
@@ -29,22 +25,19 @@ catkin_package(
 
 include_directories(
   include
-  include/protocol
   ${catkin_INCLUDE_DIRS}
   ${roscpp_INCLUDE_DIRS}
 )
-add_subdirectory(./include/protocol) 
-AUX_SOURCE_DIRECTORY(./src  DIR_SRCS)
+
 # Each node in the package must be declared like this
 add_executable(${PROJECT_NAME}
-   ${DIR_SRCS}
+  src/obstacle_detector_handle.cpp
+  src/obstacle_detector.cpp
+  src/main.cpp
   )
+
 add_dependencies(${PROJECT_NAME} ${catkin_EXPORTED_TARGETS})
 
 target_link_libraries(${PROJECT_NAME}
   ${catkin_LIBRARIES}
   )
-target_link_libraries(${PROJECT_NAME}
-  receiveprotocol
-  )
-  

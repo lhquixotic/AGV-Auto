@@ -3,6 +3,7 @@
 #include <sstream>
 
 MagneticReq *magnetic_req;
+RadarReq *radar_req;
 SteerControl *steer_control;
 MotorControl *motor_control;
 
@@ -12,6 +13,7 @@ Cansend::Cansend(ros::NodeHandle &nh) : nh_(nh) ,
                                           angle_pid_controller(1.0,0.0,0.0){
 
   magnetic_req=new MagneticReq();
+  radar_req=new RadarReq();
   steer_control=new SteerControl();
   motor_control=new MotorControl();
   
@@ -41,6 +43,7 @@ Cansend::~Cansend(){
   delete magnetic_req;
   delete steer_control;
   delete motor_control;
+  delete radar_req;
 }
 
 // Getters
@@ -211,6 +214,9 @@ void Cansend::runAlgorithm() {
       if (std::abs(desired_motor_rpm_l) > 100){signal = 1;}
       dirStream << signal;
     }
+    
+    // Inquiry rada state
+    radar_req->Update();
   }
   loop_number += 1;
 }

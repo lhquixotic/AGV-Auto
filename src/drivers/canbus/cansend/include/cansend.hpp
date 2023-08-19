@@ -12,6 +12,7 @@
 #include "MagneticReq.h"
 #include "SteerControl.h"
 #include "MotorControl.h"
+#include "RadarReq.h"
 
 #include "utils.hpp"
 #include <fstream>
@@ -20,6 +21,7 @@
 extern SteerControl *steer_control;
 extern MagneticReq *magnetic_req;
 extern MotorControl *motor_control;
+extern RadarReq *radar_req;
 
 namespace ns_cansend {
 

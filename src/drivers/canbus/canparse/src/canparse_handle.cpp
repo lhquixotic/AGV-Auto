@@ -36,6 +36,11 @@ void CanparseHandle::loadParameters() {
                                       "/chassis_state")) {
     ROS_WARN_STREAM("Did not load magnetic_signal_topic_name_. Standard value is: " << magnetic_signal_topic_name_);
   }
+  if (!nodeHandle_.param<std::string>("radar_signal_topic_name",
+                                      radar_signal_topic_name_,
+                                      "/perception/radar")) {
+    ROS_WARN_STREAM("Did not load radar_signal_topic_name_. Standard value is: " << radar_signal_topic_name_);
+  }
   if (!nodeHandle_.param("node_rate", node_rate_, 1)) {
     ROS_WARN_STREAM("Did not load node_rate. Standard value is: " << node_rate_);
   }
@@ -51,20 +56,18 @@ void CanparseHandle::publishToTopics() {
   ROS_INFO("publish to topics");
   magneticSignalPublisher_ = nodeHandle_.advertise<common_msgs::MagneticSignal>(magnetic_signal_topic_name_,1);
   chassisStatePublisher_ = nodeHandle_.advertise<common_msgs::ChassisState>(chassis_state_topic_name_,1);
+  radarSignalPublisher_ = nodeHandle_.advertise<common_msgs::RadarSignal>(radar_signal_topic_name_,1);
 }
 
 void CanparseHandle::run() {
-  // std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
   canparse_.runAlgorithm();
-  // std::chrono::steady_clock::time_point t2 = std::chrono::steady_clock::now();
-  // double time_round = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1).count();
-  // std::cout << "time cost = " << time_round << ", frequency = " << 1 / time_round << std::endl;
   sendMsg();
 }
 
 void CanparseHandle::sendMsg() {
   magneticSignalPublisher_.publish(canparse_.getMagneticSignal());
   chassisStatePublisher_.publish(canparse_.getChassisState());
+  radarSignalPublisher_.publish(canparse_.getRadarSignal());
 }
 
 void CanparseHandle::CanbusReceiveCallback(const can_msgs::Frame &f) {

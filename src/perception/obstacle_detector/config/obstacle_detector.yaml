@@ -1,0 +1,10 @@
+vision_detection_topic_name: /perception/vision_detection
+
+radar_detection_topic_name: /perception/radar_detection
+
+obstacle_distance_topic_name: /perception/obstacle_distance
+
+enable_visual_detection: false
+enable_radar_detection: true
+
+node_rate: 25   # [Herz]

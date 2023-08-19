@@ -43,6 +43,12 @@ void ControlHandle::loadParameters() {
     ROS_WARN_STREAM(
         "Did not load magnetic_signal_topic_name. Standard value is: " << magnetic_signal_topic_name_);
   }
+  if (!nodeHandle_.param<std::string>("obstacle_distance_topic_name",
+                                      obstacle_distance_topic_name_,
+                                      "/perception/obstacle_distance")) {
+    ROS_WARN_STREAM(
+        "Did not load obstacle_distance_topic_name. Standard value is: " << obstacle_distance_topic_name_);
+  }
   if (!nodeHandle_.param<std::string>("chassis_state_topic_name",
                                       chassis_state_topic_name_,
                                       "/chassis_state")) {
@@ -75,6 +81,7 @@ void ControlHandle::loadParameters() {
   nodeHandle_.param<bool>("enable_visual_control",control_para_.enable_visual_control,false);
   nodeHandle_.param<bool>("always_enable_manual_switch",control_para_.always_enable_manual_switch,false);
   nodeHandle_.param<bool>("always_enable_remote_control",control_para_.always_enable_remote_control,false);
+  nodeHandle_.param<double>("obstacle_dist_threshold",control_para_.obstacle_dist_threshold,2.50);
   
   ROS_INFO_STREAM("Longitudinal control enable: "<<control_para_.longitudinal_control_switch
                   << "; Lateral control enable: "<<control_para_.lateral_control_switch);
@@ -102,6 +109,8 @@ void ControlHandle::subscribeToTopics() {
       nodeHandle_.subscribe(chassis_state_topic_name_,10, &ControlHandle::chassisStateCallback, this);
   laneDetectionSubscriber_ = 
       nodeHandle_.subscribe(lane_detection_topic_name_,10, &ControlHandle::laneDetectionCallback, this);
+  obstacleDistanceSubscriber_ = 
+      nodeHandle_.subscribe(obstacle_distance_topic_name_,10, &ControlHandle::obstacleDistanceCallback, this);
   
 }
 
@@ -137,6 +146,10 @@ void ControlHandle::rfidSignalCallback(const common_msgs::SerialMsg &msg){
 
 void ControlHandle::chassisStateCallback(const common_msgs::ChassisState &msg){
   control_.setChassisState(msg);
+}
+
+void ControlHandle::obstacleDistanceeCallback(const common_msgs::ObstacleDistance &msg){
+  control_.setObstacleDistance(msg);
 }
 
 void ControlHandle::laneDetectionCallback(const simple_lane_detection::object &msg){

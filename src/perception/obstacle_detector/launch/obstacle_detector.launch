@@ -1,0 +1,5 @@
+<launch>
+    <node name="obstacle_detector_node" pkg="obstacle_detector" type="obstacle_detector" output="screen">
+        <rosparam command="load" file="$(find obstacle_detector)/config/obstacle_detector.yaml" /> <!--Load parameters from config files-->
+    </node>
+</launch>

@@ -32,6 +32,7 @@ struct Para{
   bool enable_visual_control;
   bool always_enable_manual_switch;
   bool always_enable_remote_control;
+  doubel obstacle_dist_threshold;
 };
 
 class Control {
@@ -49,6 +50,7 @@ class Control {
   void setMagneticSignal(const common_msgs::MagneticSignal &msg);
   void setChassisState(const common_msgs::ChassisState &msg);
   void setLaneDetection(const simple_lane_detection::object &msg);
+  void setObstacleDistance(const common_msgs::ObstacleDistance &msg);
 
   void setMagnetPidParameters(const Pid_para &msg);
   void setControlParameters(const Para &msg);
@@ -73,6 +75,7 @@ class Control {
   common_msgs::ControlCommand control_cmd;
   common_msgs::ControlCommandStamped ccs;
   simple_lane_detection::object lane_detection;
+  common_msgs::ObstacleDistance obstacle_distance;
 
   common_msgs::RemoteControl remote_control;
   common_msgs::SerialMsg rfid_signal;
@@ -106,16 +109,11 @@ class Control {
   // Pid_para angle_error_pid_para;
   Para control_para;
 
-  // double ini_wheel_angle;
-  // double cur_wheel_angle; 
-
   int loop_number;
 
   // for magnetic memory
-  // std::vector<int> magnetic_buffer = std::vector<int>(5,8);
   int kept_magnetic_loc;
   int magnetic_missing_time;
-  // methods
 };
 }
 

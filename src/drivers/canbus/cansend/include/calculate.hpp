@@ -9,7 +9,6 @@ class VehicleDynamicCal{
         double r; // wheel radius
         double PI;
     public:
-        double R;
         double calculate_angle(double desired_angle, bool is_left);
         double calculate_whlspd(double desired_vehspd, double desired_angle, bool is_left);
         VehicleDynamicCal();
