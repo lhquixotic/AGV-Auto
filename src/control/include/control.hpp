@@ -84,6 +84,11 @@ class Control {
   bool auto_control_enable;
   void updateStateMachine();
   void updateRfid();
+  void updateRemoteEnable();
+  void updateManualSwitchState();
+
+  void magneticControl();
+  void visualControl();
 
   bool is_initialized;
   int kept_remote_mode;

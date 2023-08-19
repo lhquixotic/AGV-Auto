@@ -79,19 +79,9 @@ namespace ns_control
     }
   }
 
-  void Control::updateManualSwitchState(){
-    // Manual switch state update
-    if (loop_number%10 == 0){
-      std::ofstream gpioStream("/sys/class/gpio/gpio377/value");
-      int gpio_value;
-      gpioStream >> gpio_value;
-      manual_switch = gpio_value;
-    }
-  }
-
   void Control::updateStateMachine(){
     if (!is_initialized){
-        // Initialization (when 1->2)
+        // Initialization (when remote 1->2 or manual off->on)
         kept_remote_mode = 2;
         kept_rfid_stop = 0;
         is_initialized = true;
@@ -101,7 +91,7 @@ namespace ns_control
       if ((kept_rfid_stop==0)&&(rfid_stop==1)){
         auto_control_enable = false;
       }
-      if (kept_remote_mode==3||kept_manual_switch==1){
+      if (((kept_remote_mod==3)&&enable_remote_control)||((kept_manual_switch==0)&(!enable_remote_control))){
         auto_control_enable = true;
       }
       // Update the kept values
@@ -136,12 +126,31 @@ namespace ns_control
   }
 
   void Control::visualControl(){
+    if (laneDetectionFlag){
+            error_input =  lane_error;
+            ROS_INFO_STREAM("[Visual] lane_error: "<< lane_error);
+    }else{
+      ROS_WARN("No visual input!");
+    }
+  }
+  
+  void Control::updateRemoteEnable(){
+    // TODO: add a gpio for remote enable button
+    enable_remote_control = true;
+  }
 
+  void Control::updateManualSwitchState(){
+    // Manual switch state update
+    if (loop_number%10 == 0){
+      std::ofstream gpioStream("/sys/class/gpio/gpio377/value");
+      int gpio_value;
+      gpioStream >> gpio_value;
+      manual_switch = gpio_value;
+    }
   }
 
   void Control::runAlgorithm(){
     loop_number ++;
-
     // 判断逻辑：
     // 判断是否接收到遥控器指令及读取遥控器模式：如果模式为0-手动模式，输出控制量为遥控器控制量；
     // 如果为自动模式，判断是否读取到磁条信号【并判断rfid】，如果没有读取到磁条信号(1.未收到磁
@@ -155,30 +164,40 @@ namespace ns_control
     // 1. 【遥控器模式】：按下 *遥控器使能开关*，只能进行遥控器控制，控制逻辑同上；
     // 2. 【手动开关模式】：关闭 *遥控器使能开关*，只能进行手动开关控制，状态为自动控制/锁止状态。
 
+    // choose whether remote enable
     updateRemoteEnable(); // update eanble remote control button state
-
     if (control_para.always_enable_manual_switch)enable_remote_control=false;
     if (control_para.always_enable_remote_control)enable_remote_control=true;
 
     // choose control_mode mode
     if (enable_remote_control){// only remote control
       if(remoteControlFlag){
-        if (kept_remote_mode!=remote_control.mode){ROS_INFO("Remote control mode: %d",remote_control.mode);}
+        if (kept_remote_mode!=remote_control.mode){
+          ROS_INFO("Remote control mode: %d",remote_control.mode);}
         control_mode = remote_control.mode}
       else {
         contro_mode = 3;
         ROS_ERROR("[Control] FATAL: No remote controller detected!");}
     }else{// only manual switch control
-      if (kept_manual_switch!=manual_switch){ROS_INFO("Manual switch mode: %d",manual_switch);}
-      if(manual_switch == 0) control_mode = 3;
-      else control_mode = 2;
+      updateManualSwitchState();
+      if (kept_manual_switch!=manual_switch){
+        ROS_INFO("Manual switch mode: %d",manual_switch);}
+      contol_mode = 2;
+      if(manual_switch == 0) {
+        is_initialized = false;
+        auto_control_enable = false;
+        kept_rfid_value = 0;
+        kept_magnetic_loc = 99;
+        magnetic_missing_time = 0;}
     }
+
     // switch control_mode to control
     switch (control_mode){
       case 0:// * [Only Remote] manual control
         control_cmd.control_mode = 1;
         control_cmd.linear_velocity = remote_control.accel;
         control_cmd.steering_angle = remote_control.steer;
+
         is_initialized = false;
         auto_control_enable = false;
         kept_rfid_value = 0;
@@ -186,12 +205,20 @@ namespace ns_control
         magnetic_missing_time = 0;
         break;
       case 2:
+        if ((!enable_remote_control)&&(manual_switch == 0)){
+          // if manual switch is off, control_mode = 2 for statemachine, but should lock
+          control_cmd.control_mode = 3;
+          control_cmd.linear_velocity = 0;
+          control_cmd.steering_angle = 0;
+          break;
+        }
+
         updateStateMachine();
         updateRfid();
         control_cmd.control_mode = 2;
 
         // calculate control cmd value
-        if (!auto_control_eanble){
+        if (!auto_control_enable){
           control_cmd.linear_velocity = 0;
           control_cmd.steering_angle = 0;
         }else{

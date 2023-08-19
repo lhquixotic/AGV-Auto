@@ -73,7 +73,9 @@ void ControlHandle::loadParameters() {
   nodeHandle_.param<int>("lane_mid_reference",control_para_.lane_mid_reference,260);
   nodeHandle_.param<int>("visual_scale",control_para_.visual_scale,20);
   nodeHandle_.param<bool>("enable_visual_control",control_para_.enable_visual_control,false);
-  nodeHandle_.param<bool>("enable_manual_switch",control_para_.enable_manual_switch,false);
+  nodeHandle_.param<bool>("always_enable_manual_switch",control_para_.always_enable_manual_switch,false);
+  nodeHandle_.param<bool>("always_enable_remote_control",control_para_.always_enable_remote_control,false);
+  
   ROS_INFO_STREAM("Longitudinal control enable: "<<control_para_.longitudinal_control_switch
                   << "; Lateral control enable: "<<control_para_.lateral_control_switch);
               
