@@ -93,7 +93,7 @@ class Cansend {
   int desired_motor_rpm_r;
 
   // manual switch
-  int manual_switch;
+  // int manual_switch;
 
 };
 }

@@ -30,6 +30,8 @@ struct Para{
   int lane_mid_reference;
   int visual_scale;
   bool enable_visual_control;
+  bool always_enable_manual_switch;
+  bool always_enable_remote_control;
 };
 
 class Control {
@@ -88,6 +90,11 @@ class Control {
   int kept_rfid_stop;
   int kept_rfid_value;
   int lane_error;
+  int manual_switch;
+  int kept_manual_switch;
+  bool enable_remote_control;
+
+  int control_mode;
 
   PID magnet_pid_controller;
   Pid_para magnet_error_pid_para;

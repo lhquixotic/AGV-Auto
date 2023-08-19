@@ -17,3 +17,5 @@ max_magnetic_missing_time: 500 # /25s
 lane_mid_reference: 260
 visual_scale: 25
 enable_visual_control: true
+always_enable_manual_switch: true
+always_enable_remote_control: true

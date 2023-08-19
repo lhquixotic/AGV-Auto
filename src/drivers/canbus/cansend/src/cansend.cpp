@@ -22,7 +22,6 @@ Cansend::Cansend(ros::NodeHandle &nh) : nh_(nh) ,
   // ini_right_angle = 0;
   // cur_right_angle = 0;
   kept_remote_mode = 1;
-  manual_switch = 0;
   steer_control->sendBackZeroReq(1);
   steer_control->sendBackZeroReq(2);
   desired_motor_rpm_r = 0;
@@ -193,7 +192,7 @@ void Cansend::runAlgorithm() {
     else{
       if ((remote_mode == 1)) manualControl(desired_angle);
       else{
-        if(remote_mode == 2) automaticControl(desired_angle);
+        if((remote_mode == 2)) automaticControl(desired_angle);
       }
     }
 
@@ -209,12 +208,9 @@ void Cansend::runAlgorithm() {
     if(loop_number%50 == 0){
       std::ofstream dirStream("/sys/class/gpio/gpio392/value");
       int signal = 0;
-      if (std::abs(desired_motor_rpm_l) > 100){
-        signal = 1;}
+      if (std::abs(desired_motor_rpm_l) > 100){signal = 1;}
       dirStream << signal;
     }
-
-    // Manual switch state update
   }
   loop_number += 1;
 }
