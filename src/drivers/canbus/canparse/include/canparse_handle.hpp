@@ -26,7 +26,9 @@ class CanparseHandle {
   ros::Subscriber canbus_receive_Subscriber_;
   ros::Publisher magneticSignalPublisher_;
   ros::Publisher chassisStatePublisher_;
-  ros::Publisher radarSigalPublisher_;
+  ros::Publisher radarSignalPublisher_;
+  ros::Publisher rightRadarSignalPublisher_;
+
 
   void CanbusReceiveCallback(const can_msgs::Frame &f);
 
@@ -37,6 +39,9 @@ class CanparseHandle {
   std::string canbus_receive_topic_name_;
 
   std::string radar_signal_topic_name_;
+
+  std::string right_radar_signal_topic_name_;
+
 
   int node_rate_;
 

@@ -41,6 +41,11 @@ void CanparseHandle::loadParameters() {
                                       "/perception/radar")) {
     ROS_WARN_STREAM("Did not load radar_signal_topic_name_. Standard value is: " << radar_signal_topic_name_);
   }
+  if (!nodeHandle_.param<std::string>("right_radar_signal_topic_name",
+                                      right_radar_signal_topic_name_,
+                                      "/perception/right_radar_detection")) {
+    ROS_WARN_STREAM("Did not load right_radar_signal_topic_name_. Standard value is: " << right_radar_signal_topic_name_);
+  }
   if (!nodeHandle_.param("node_rate", node_rate_, 1)) {
     ROS_WARN_STREAM("Did not load node_rate. Standard value is: " << node_rate_);
   }
@@ -57,6 +62,7 @@ void CanparseHandle::publishToTopics() {
   magneticSignalPublisher_ = nodeHandle_.advertise<common_msgs::MagneticSignal>(magnetic_signal_topic_name_,1);
   chassisStatePublisher_ = nodeHandle_.advertise<common_msgs::ChassisState>(chassis_state_topic_name_,1);
   radarSignalPublisher_ = nodeHandle_.advertise<common_msgs::RadarSignal>(radar_signal_topic_name_,1);
+  rightRadarSignalPublisher_ = nodeHandle_.advertise<common_msgs::RadarSignal>(right_radar_signal_topic_name_,1);
 }
 
 void CanparseHandle::run() {
@@ -68,6 +74,8 @@ void CanparseHandle::sendMsg() {
   magneticSignalPublisher_.publish(canparse_.getMagneticSignal());
   chassisStatePublisher_.publish(canparse_.getChassisState());
   radarSignalPublisher_.publish(canparse_.getRadarSignal());
+  rightRadarSignalPublisher_.publish(canparse_.getRightRadarSignal());
+
 }
 
 void CanparseHandle::CanbusReceiveCallback(const can_msgs::Frame &f) {

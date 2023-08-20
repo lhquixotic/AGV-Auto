@@ -38,7 +38,7 @@ class ControlHandle {
   void magneticSignalCallback(const common_msgs::MagneticSignal &msg);
   void chassisStateCallback(const common_msgs::ChassisState &msg);
   void laneDetectionCallback(const simple_lane_detection::object &msg);
-  vodi obstacleDistanceCallback(const common_msgs::ObstacleDistance &msg);
+  void obstacleDistanceCallback(const common_msgs::ObstacleDistance &msg);
 
   std::string remote_control_topic_name_;
   std::string rfid_signal_topic_name_;

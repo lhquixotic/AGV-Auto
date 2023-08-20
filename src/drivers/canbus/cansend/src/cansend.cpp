@@ -4,6 +4,7 @@
 
 MagneticReq *magnetic_req;
 RadarReq *radar_req;
+RightRadarReq *right_radar_req;
 SteerControl *steer_control;
 MotorControl *motor_control;
 
@@ -14,6 +15,7 @@ Cansend::Cansend(ros::NodeHandle &nh) : nh_(nh) ,
 
   magnetic_req=new MagneticReq();
   radar_req=new RadarReq();
+  right_radar_req=new RightRadarReq();
   steer_control=new SteerControl();
   motor_control=new MotorControl();
   
@@ -44,6 +46,7 @@ Cansend::~Cansend(){
   delete steer_control;
   delete motor_control;
   delete radar_req;
+  delete right_radar_req;
 }
 
 // Getters
@@ -105,7 +108,7 @@ void Cansend::sendSteerInfo(double des_steer_l, double des_steer_r){
 
 void Cansend::standStillControl(){
   // [Lock] Still control
-  steer_control->setNullMsg();
+  sendSteerInfo(0,0);
   desired_motor_rpm_l = 0;
   desired_motor_rpm_r = 0;
 }
@@ -214,9 +217,6 @@ void Cansend::runAlgorithm() {
       if (std::abs(desired_motor_rpm_l) > 100){signal = 1;}
       dirStream << signal;
     }
-    
-    // Inquiry rada state
-    radar_req->Update();
   }
   loop_number += 1;
 }

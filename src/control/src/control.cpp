@@ -2,6 +2,8 @@
 #include "control.hpp"
 #include "utils.hpp"
 #include <sstream>
+#include <fstream>
+#include <numeric>
 
 namespace ns_control
 {
@@ -50,6 +52,7 @@ namespace ns_control
     lane_detection = msg;
     int lane_mid = msg.mid_cx_down;
     lane_error = int((lane_mid - control_para.lane_mid_reference) / control_para.visual_scale);
+    // ROS_INFO_STREAM("[Visual] lane mid: " << lane_mid);
   }
 
   void Control::setMagnetPidParameters(const Pid_para &msg){
@@ -94,7 +97,7 @@ namespace ns_control
       if ((kept_rfid_stop==0)&&(rfid_stop==1)){
         auto_control_enable = false;
       }
-      if (((kept_remote_mod==3)&&enable_remote_control)||((kept_manual_switch==0)&(!enable_remote_control))){
+      if (((kept_remote_mode==3)&&enable_remote_control)||((kept_manual_switch==0)&(!enable_remote_control))){
         auto_control_enable = true;
       }
       // Update the kept values
@@ -145,7 +148,7 @@ namespace ns_control
   void Control::updateManualSwitchState(){
     // Manual switch state update
     if (loop_number%10 == 0){
-      std::ofstream gpioStream("/sys/class/gpio/gpio377/value");
+      std::ifstream gpioStream("/sys/class/gpio/gpio377/value");
       int gpio_value;
       gpioStream >> gpio_value;
       manual_switch = gpio_value;
@@ -177,15 +180,15 @@ namespace ns_control
       if(remoteControlFlag){
         if (kept_remote_mode!=remote_control.mode){
           ROS_INFO("Remote control mode: %d",remote_control.mode);}
-        control_mode = remote_control.mode}
+        control_mode = remote_control.mode;}
       else {
-        contro_mode = 3;
+        control_mode = 3;
         ROS_ERROR("[Control] FATAL: No remote controller detected!");}
     }else{// only manual switch control
       updateManualSwitchState();
       if (kept_manual_switch!=manual_switch){
         ROS_INFO("Manual switch mode: %d",manual_switch);}
-      contol_mode = 2;
+      control_mode = 2;
       if(manual_switch == 0) {
         is_initialized = false;
         auto_control_enable = false;
@@ -193,6 +196,10 @@ namespace ns_control
         kept_magnetic_loc = 99;
         magnetic_missing_time = 0;}
     }
+
+    double desired_angle;
+    int sum;
+    int mean_error;
 
     // switch control_mode to control
     switch (control_mode){
@@ -228,7 +235,7 @@ namespace ns_control
           if (obstacle_distance.distance < control_para.obstacle_dist_threshold){
             control_cmd.linear_velocity = 0;
             control_cmd.steering_angle = 0;
-            ROS_WARN("Obstacle detected.");
+            ROS_WARN("Obstacle detected");
             break;
           }
           // choose sensor type
@@ -236,7 +243,16 @@ namespace ns_control
           else visualControl();
           // output control value
           // Use current reference magnetic location for steering
-          double desired_angle = magnet_pid_controller.outputSignal(error_input,0);
+
+          // update buffer
+          // error_buffer.erase(error_buffer.begin());
+          // // add current data
+          // error_buffer.push_back(error_input);
+
+          // sum = std::accumulate(std::begin(error_buffer), std::end(error_buffer), 0);
+          // mean_error =  int(sum/error_buffer.size());
+
+          desired_angle = magnet_pid_controller.outputSignal(error_input,0);
           desired_angle = clamp(desired_angle,-control_para.max_steer_angle,control_para.max_steer_angle);
 
           control_cmd.steering_angle = desired_angle;
@@ -257,8 +273,8 @@ namespace ns_control
     }
 
     // update kept value
-    if (enbale_remote_control) kept_remote_mode = remote_control.mode;
-    else kept_manual_control = manual_control;
+    if (enable_remote_control) kept_remote_mode = remote_control.mode;
+    else kept_manual_switch = manual_switch;
 
     // switch for longitudinal and lateral control
     if(!control_para.longitudinal_control_switch){//disable longitudianl control

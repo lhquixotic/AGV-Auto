@@ -1,13 +1,27 @@
 import cv2
 import numpy as np
+from math import atan, pi
 
-def filter_track_hough(track_hough):
+def filter_track_hough(track_hough, last_line):
+    if last_line.max() > 0.0:
+        last_paras = np.polyfit((last_line[0],last_line[2]), (last_line[1],last_line[3]), 1)
+        last_angle = (180.0 + (atan(last_paras[0]))/pi*180.0) % 180.0
     new_hough = []
+
     for line in track_hough:
         x1, y1, x2, y2 = line.reshape(4)
         parameters = np.polyfit((x1, x2), (y1, y2), 1)
         if abs(parameters[0]) <= 1.0:
             continue
+        if last_line.max() > 0.0:
+            angle = (180.0 + (atan(parameters[0]))/pi*180.0) % 180.0
+            if abs(angle - last_angle) > 15:
+                continue 
+            
+            dist = abs(x1 - last_line[0])
+            if dist > 200:
+                continue
+            
         new_hough.append([x1, y1, x2, y2])
     return np.array(new_hough)
 

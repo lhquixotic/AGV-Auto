@@ -148,7 +148,7 @@ void ControlHandle::chassisStateCallback(const common_msgs::ChassisState &msg){
   control_.setChassisState(msg);
 }
 
-void ControlHandle::obstacleDistanceeCallback(const common_msgs::ObstacleDistance &msg){
+void ControlHandle::obstacleDistanceCallback(const common_msgs::ObstacleDistance &msg){
   control_.setObstacleDistance(msg);
 }
 

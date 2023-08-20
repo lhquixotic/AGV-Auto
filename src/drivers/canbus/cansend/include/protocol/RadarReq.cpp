@@ -6,7 +6,7 @@ RadarReq::RadarReq(){
   is_error_ = 0;
   is_rtr_ = 0;
   Reset();
-  uint8_t req_msg[]={0x01,0x03,0x01,0x00,0x00,0x01}; //01 03 01 00 00 01
+  uint8_t req_msg[]={0x01,0x03,0x01,0x01,0x00,0x01}; //01 03 01 01 00 01
   for(int i=0;i<dlc_;i++) data_[i] = req_msg[i];
 }
 void RadarReq::Reset(){

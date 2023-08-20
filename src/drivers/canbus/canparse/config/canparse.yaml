@@ -4,4 +4,6 @@ chassis_state_topic_name: /chassis_state
 
 magnetic_signal_topic_name: /perception/magnetic
 
+radar_signal_topic_name: /perception/radar_detection
+
 node_rate: 50   # [Herz]

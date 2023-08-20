@@ -15,6 +15,8 @@ Canparse::Canparse(ros::NodeHandle &nh) : nh_(nh) {
 common_msgs::MagneticSignal Canparse::getMagneticSignal(){return magnetic_signal;}
 common_msgs::ChassisState Canparse::getChassisState(){return chassis_state;}
 common_msgs::RadarSignal Canparse::getRadarSignal(){return radar_signal;}
+common_msgs::RadarSignal Canparse::getRightRadarSignal(){return right_radar_signal;}
+
 
 // Setters
 void Canparse::Parse(can_msgs::Frame f) {
@@ -41,8 +43,12 @@ void Canparse::Parse(can_msgs::Frame f) {
     steer.Update(f.data.c_array());
     break;
   
-  case 0x0512:
+  case 0x0521:
     radar.Update(f.data.c_array());
+    break;
+
+  case 0x0522:
+    right_radar.Update(f.data.c_array());
     break;
 
   default:
@@ -111,6 +117,15 @@ void Canparse::runAlgorithm() {
 
   radar_signal.header.frame_id = 'vehicle';
   radar_signal.distance = float(radar_data/1000.0);
+
+  /****** Right radar data ******/ 
+  // read data
+  uint8_t right_radar_data_h = right_radar.RightRadarDataH();
+  uint8_t right_radar_data_l = right_radar.RightRadarDataL();
+  uint16_t right_radar_data = (right_radar_data_h << 8) | right_radar_data_l;
+
+  right_radar_signal.header.frame_id = 'vehicle';
+  right_radar_signal.distance = float(right_radar_data/1000.0);
 
   loop_number ++;
 }

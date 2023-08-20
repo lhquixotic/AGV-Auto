@@ -6,6 +6,7 @@
 #include "common_msgs/RemoteControl.h"
 #include "common_msgs/MagneticSignal.h"
 #include "common_msgs/ChassisState.h"
+#include "common_msgs/ObstacleDistance.h"
 
 // #include "nav_msgs/Odometry.h"
 
@@ -16,6 +17,7 @@
 #include "pid.hpp"
 #include <vector>
 #include "simple_lane_detection/object.h"
+#include <algorithm>
 
 namespace ns_control {
 
@@ -32,7 +34,7 @@ struct Para{
   bool enable_visual_control;
   bool always_enable_manual_switch;
   bool always_enable_remote_control;
-  doubel obstacle_dist_threshold;
+  double obstacle_dist_threshold;
 };
 
 class Control {
@@ -101,6 +103,7 @@ class Control {
   int manual_switch;
   int kept_manual_switch;
   bool enable_remote_control;
+  int error_input;
 
   int control_mode;
 
@@ -110,6 +113,8 @@ class Control {
   Para control_para;
 
   int loop_number;
+  std::vector<int> error_buffer = std::vector<int> (5,0);
+
 
   // for magnetic memory
   int kept_magnetic_loc;

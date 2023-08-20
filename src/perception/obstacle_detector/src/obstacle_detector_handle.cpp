@@ -34,6 +34,12 @@ void ObstacleDetectorHandle::loadParameters() {
     ROS_WARN_STREAM(
         "Did not load radar_detection_topic_name. Standard value is: " << radar_detection_topic_name_);
   }
+  if (!nodeHandle_.param<std::string>("right_radar_detection_topic_name",
+                                      right_radar_detection_topic_name_,
+                                      "/perception/right_radar_detection")) {
+    ROS_WARN_STREAM(
+        "Did not load right_radar_detection_topic_name. Standard value is: " << right_radar_detection_topic_name_);
+  }
   if (!nodeHandle_.param<std::string>("obstacle_distance_topic_name",
                                       obstacle_distance_topic_name_,
                                       "/perception/obstacle_distance")) {
@@ -50,9 +56,10 @@ void ObstacleDetectorHandle::loadParameters() {
 
 void ObstacleDetectorHandle::subscribeToTopics() {
   ROS_INFO("subscribe to topics");
-  visionConeDetectionsSubscriber_ =
+  // visionConeDetectionsSubscriber_ =
       // nodeHandle_.subscribe(vision_detection_topic_name_, 1, &ObstacleDetectorHandle::visionDetectionCallback, this);
-      nodeHandle_.subscribe(radar_detection_topic_name_, 1, &ObstacleDetectorHandle::radarDetectionCallback, this);
+  radarDetectionSubscriber_ = nodeHandle_.subscribe(radar_detection_topic_name_, 1, &ObstacleDetectorHandle::radarDetectionCallback, this);
+  rightRadarDetectionSubscriber_ = nodeHandle_.subscribe(right_radar_detection_topic_name_, 1, &ObstacleDetectorHandle::rightRadarDetectionCallback, this);
 }//FIXME: change topic name you want to subscribe.
 
 void ObstacleDetectorHandle::publishToTopics() {
@@ -71,5 +78,9 @@ void ObstacleDetectorHandle::sendMsg() {
 
 void ObstacleDetectorHandle::radarDetectionCallback(const common_msgs::RadarSignal &msg) {
   obstacle_detector_.setRadarDetection(msg);
+}
+
+void ObstacleDetectorHandle::rightRadarDetectionCallback(const common_msgs::RadarSignal &msg) {
+  obstacle_detector_.setRightRadarDetection(msg);
 }
 }

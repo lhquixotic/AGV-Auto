@@ -2,6 +2,27 @@ import cv2
 import numpy as np
 from math import sqrt, atan, pi
 
+def normalize_hough_directions(hough):
+    hough_new = []
+    hough = hough.reshape((-1, 4))
+    for line in hough:
+        [x1, y1, x2, y2] = line
+        if y1>=y2:
+            hough_new.append([x1, y1, x2, y2])
+        else:
+            hough_new.append([x2, y2, x1, y1])
+    return np.array(hough_new)
+
+def smooth_track(track, last_line):
+    last_paras = np.polyfit((last_line[0],last_line[2]), (last_line[1],last_line[3]), 1)
+    last_angle = (180.0 + (atan(last_paras[0]))/pi*180.0) % 180.0
+    paras = np.polyfit((track[0,0], track[0,2]), (track[0,1],track[0,3]), 1)
+    angle = (180.0 + (atan(paras[0]))/pi*180.0) % 180.0
+    if abs(angle - last_angle) > 30:
+        return (last_line.copy())[None,:]
+    else:
+        return track
+
 def point_distance_line(point,line_point1,line_point2):
     vec1 = line_point1 - point
     vec2 = line_point2 - point
@@ -16,16 +37,46 @@ def min_num(x, y):
         return x
     return y
 
-def select_track_line(hough, x, y, flag):
-    min_dist = 1000.0; min_paras = [0.0,0.0,0.0,0.0]
+"""
+def select_track_line(hough, x, y, flag, last_line, threshold = 80.0):
+    new_hough = []
     for line in hough:
         x1, y1, x2, y2 = line.reshape(4)
-        # parameters = np.polyfit((x1, x2), (y1, y2), 1)
-        dist = min_num(point2point_distance(np.array([x, y]), np.array([x1, y1])), point2point_distance(np.array([x, y]), np.array([x2, y2])))
-        if dist < min_dist:
+        if x1< x-threshold and x1>x+threshold:
+            continue
+        new_hough.append([x1, y1, x2, y2])
+    new_hough = np.array(new_hough)
+    if len(new_hough) == 0:
+        return (last_line.copy())[None,:]
+    elif len(new_hough) <= 2:
+        max_dist = 0.0; max_paras = []
+        for line in new_hough:
+            dist = min_num(point2point_distance(np.array([x,y]), line[:2]), \
+                    point2point_distance(np.array([x,y]), line[2:]))
+            if dist >= max_dist:
+                max_paras = line.copy()
+                max_dist = dist
+        return max_paras[None,:]
+    else:
+        track = np.zeros((4))
+        for line in new_hough:
+            for kk in range(4):
+                track[kk] += line[kk]
+        track /= len(new_hough)
+        return np.round(track[None,:]).astype(np.int32)
+s"""
+
+def select_track_line(hough, x, y, flag, last_line):
+    new_hough = []
+    hough = np.array(hough)
+    min_dist = 10000.0; min_paras = []
+    for line in hough:
+        dist = min_num(point2point_distance(np.array([x,y]), line[:2]), \
+                point2point_distance(np.array([x,y]), line[2:]))
+        if dist <= min_dist:
             min_dist = dist
-            min_paras[0] = x1; min_paras[1] = y1; min_paras[2] = x2; min_paras[3] = y2
-    return np.array(min_paras)[None,:]
+            min_paras = line.copy()
+    return min_paras[None,:]
 
 def cross_product(p1, p2, p3):
     return (p2[0] - p1[0]) * (p3[1] - p1[1]) - (p3[0] - p1[0]) * (p2[1] - p1[1])
