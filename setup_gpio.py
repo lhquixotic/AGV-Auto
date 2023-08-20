@@ -11,4 +11,7 @@ GPIO.output(19, GPIO.HIGH)
 GPIO.setup(12, GPIO.OUT) # for light gpio392
 GPIO.output(12, GPIO.HIGH)
 
+GPIO.setup(35, GPIO.OUT) # for beebee gpio395
+GPIO.output(35, GPIO.LOW)
+
 # GPIO.cleanup()

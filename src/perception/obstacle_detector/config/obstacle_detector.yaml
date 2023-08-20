@@ -2,6 +2,8 @@ vision_detection_topic_name: /perception/vision_detection
 
 radar_detection_topic_name: /perception/radar_detection
 
+radar_detection_topic_name: /perception/right_radar_detection
+
 obstacle_distance_topic_name: /perception/obstacle_distance
 
 enable_visual_detection: false

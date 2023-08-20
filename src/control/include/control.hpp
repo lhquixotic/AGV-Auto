@@ -95,6 +95,9 @@ class Control {
   void magneticControl();
   void visualControl();
 
+  void buzzer_on();
+  void buzzer_off();
+
   bool is_initialized;
   int kept_remote_mode;
   int kept_rfid_stop;
@@ -119,6 +122,9 @@ class Control {
   // for magnetic memory
   int kept_magnetic_loc;
   int magnetic_missing_time;
+
+  // buzzer
+  int buzzer_state;
 };
 }
 

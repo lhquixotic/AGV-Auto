@@ -85,11 +85,11 @@ void Cansend::sendSteerReq(double steer_cmd, int device_id){
 }
 
 void Cansend::sendSteerInfo(double des_steer_l, double des_steer_r){
-  int32_t left_steer_value = -17000 + des_steer_l * 8664;
+  int32_t left_steer_value = para.steer_offset_left + des_steer_l * 8664;
   uint16_t left_steer_angle_h = (left_steer_value & 0xffff0000) >> 16;
   uint16_t left_steer_angle_l = left_steer_value & 0x0000ffff; 
 
-  int32_t right_steer_value = 26000 + des_steer_r * 8664;
+  int32_t right_steer_value = para.steer_offset_right + des_steer_r * 8664;
   uint16_t right_steer_angle_h = (right_steer_value & 0xffff0000) >> 16;
   uint16_t right_steer_angle_l = right_steer_value & 0x0000ffff;
 

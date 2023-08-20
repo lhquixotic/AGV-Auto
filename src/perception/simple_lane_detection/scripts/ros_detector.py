@@ -55,7 +55,7 @@ def image_callback(msg):
     if track_hough is None or len(track_hough) == 0:
         track = (last_line.copy())[None,:]
     else:
-        track_hough = filter_track_hough(track_hough, last_line)
+        track_hough = filter_track_hough(img, track_hough, last_line)
         if track_hough is None or len(track_hough) == 0:
             track = (last_line.copy())[None,:]
         else:

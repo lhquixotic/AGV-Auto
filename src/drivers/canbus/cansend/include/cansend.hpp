@@ -39,6 +39,8 @@ struct Para{
   double steer_dead_input;
   double motor_manual_rpm;
   double motor_auto_rpm;
+  int steer_offset_left;
+  int steer_offset_right;
 };
 
 class Cansend {

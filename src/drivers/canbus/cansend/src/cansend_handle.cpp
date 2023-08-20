@@ -59,6 +59,9 @@ void CansendHandle::loadParameters() {
   nodeHandle_.param<double>("cansend_para/steer_max_angle",para_.steer_max_angle,45);
   nodeHandle_.param<double>("cansend_para/steer_dead_input",para_.steer_dead_input,0.1);
   nodeHandle_.param<double>("cansend_para/motor_auto_rpm",para_.motor_auto_rpm,600);
+  nodeHandle_.param<int>("cansend_para/steer_offset_left",para_.steer_offset_left,-17000);
+  nodeHandle_.param<int>("cansend_para/steer_offset_right",para_.steer_offset_right,26000);
+  
   ROS_INFO_STREAM("[Cansend] Para: test_steer_angle" << para_.test_steer_angle);
   
   nodeHandle_.param<double>("angle_error_pid/kp", angle_error_pid_para_.kp, 1.0);

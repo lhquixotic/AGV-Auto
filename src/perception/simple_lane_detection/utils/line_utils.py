@@ -70,6 +70,9 @@ def select_track_line(hough, x, y, flag, last_line):
     new_hough = []
     hough = np.array(hough)
     min_dist = 10000.0; min_paras = []
+    if last_line.max() > 0.0:
+        x = last_line[0]
+        y = last_line[1]
     for line in hough:
         dist = min_num(point2point_distance(np.array([x,y]), line[:2]), \
                 point2point_distance(np.array([x,y]), line[2:]))

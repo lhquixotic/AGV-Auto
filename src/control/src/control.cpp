@@ -22,6 +22,7 @@ namespace ns_control
                                             manual_switch = 0;
                                             kept_manual_switch = 0;
                                             control_mode = 1;
+                                            buzzer_state = 0;
                                           };
 
   // Getters
@@ -155,6 +156,18 @@ namespace ns_control
     }
   }
 
+  void Control::buzzer_on(){
+    std::ofstream buzzerStream("/sys/class/gpio/gpio395/value");
+    int buzzer_on_value = 1;
+    buzzerStream << buzzer_on_value;
+  }
+
+  void Control::buzzer_off(){
+    std::ofstream buzzerStream("/sys/class/gpio/gpio395/value");
+    int buzzer_off_value = 0;
+    buzzerStream << buzzer_off_value;
+  }
+
   void Control::runAlgorithm(){
     loop_number ++;
     // 判断逻辑：
@@ -235,9 +248,12 @@ namespace ns_control
           if (obstacle_distance.distance < control_para.obstacle_dist_threshold){
             control_cmd.linear_velocity = 0;
             control_cmd.steering_angle = 0;
+            // buzzer on
+            if(buzzer_state == 0) {buzzer_on();buzzer_state=1;}
             ROS_WARN("Obstacle detected");
             break;
           }
+          if (buzzer_state == 1) {buzzer_off();buzzer_state=0;}
           // choose sensor type
           if (!control_para.enable_visual_control)magneticControl();
           else visualControl();
