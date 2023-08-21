@@ -19,9 +19,9 @@ def smooth_track(track, last_line):
     paras = np.polyfit((track[0,0], track[0,2]), (track[0,1],track[0,3]), 1)
     angle = (180.0 + (atan(paras[0]))/pi*180.0) % 180.0
     if abs(angle - last_angle) > 30:
-        return (last_line.copy())[None,:]
+        return (last_line.copy())[None,:], 1
     else:
-        return track
+        return track, 0
 
 def point_distance_line(point,line_point1,line_point2):
     vec1 = line_point1 - point

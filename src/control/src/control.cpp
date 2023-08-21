@@ -226,6 +226,7 @@ namespace ns_control
         kept_rfid_value = 0;
         kept_magnetic_loc = 99;
         magnetic_missing_time = 0;
+        if (buzzer_state == 1) {buzzer_off();buzzer_state=0;}
         break;
       case 2:
         if ((!enable_remote_control)&&(manual_switch == 0)){
@@ -282,6 +283,7 @@ namespace ns_control
         control_cmd.control_mode = 3;
         control_cmd.linear_velocity = 0;
         control_cmd.steering_angle = 0;
+        if (buzzer_state == 1) {buzzer_off();buzzer_state=0;}
         break;
       default:
         ROS_WARN("[Control] WARN: Remote control set wrong control mode.");
