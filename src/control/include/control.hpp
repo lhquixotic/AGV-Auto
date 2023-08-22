@@ -35,6 +35,7 @@ struct Para{
   bool always_enable_manual_switch;
   bool always_enable_remote_control;
   double obstacle_dist_threshold;
+  int turn_right_rfid_tag;
 };
 
 class Control {
@@ -105,6 +106,7 @@ class Control {
   int lane_error;
   int manual_switch;
   int kept_manual_switch;
+  int manual_switch_remote;
   bool enable_remote_control;
   int error_input;
 

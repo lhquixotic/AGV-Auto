@@ -82,6 +82,8 @@ void ControlHandle::loadParameters() {
   nodeHandle_.param<bool>("always_enable_manual_switch",control_para_.always_enable_manual_switch,false);
   nodeHandle_.param<bool>("always_enable_remote_control",control_para_.always_enable_remote_control,false);
   nodeHandle_.param<double>("obstacle_dist_threshold",control_para_.obstacle_dist_threshold,2.50);
+  nodeHandle_.param<int>("turn_right_rfid_tag",control_para_.turn_right_rfid_tag,185);
+  
   
   ROS_INFO_STREAM("Longitudinal control enable: "<<control_para_.longitudinal_control_switch
                   << "; Lateral control enable: "<<control_para_.lateral_control_switch);

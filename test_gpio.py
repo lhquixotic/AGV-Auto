@@ -2,8 +2,8 @@ import Jetson.GPIO as GPIO
 
 GPIO.setmode(GPIO.BOARD)
 
-GPIO.setup(35, GPIO.OUT)
-GPIO.output(35, GPIO.LOW)
+GPIO.setup(24, GPIO.OUT) 
+GPIO.output(24, GPIO.LOW)
 
 # GPIO.setup(19, GPIO.OUT)
 

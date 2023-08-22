@@ -18,8 +18,9 @@ cansend_para:
   steer_dead_input: 0.2
   motor_manual_rpm: 1500
   motor_auto_rpm: 1000
-  steer_offset_left: -17000
-  steer_offset_light: 26000
+  steer_offset_left: 10000
+  steer_offset_right: -1090000
+  motor_direction: 1
 
 angle_error_pid:
   kp: 0.04

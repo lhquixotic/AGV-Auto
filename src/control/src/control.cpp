@@ -20,6 +20,7 @@ namespace ns_control
                                             magnetic_missing_time = 0;
                                             lane_error = 0;
                                             manual_switch = 0;
+                                            manual_switch_remote = 0;
                                             kept_manual_switch = 0;
                                             control_mode = 1;
                                             buzzer_state = 0;
@@ -77,8 +78,12 @@ namespace ns_control
       // ROS_INFO_STREAM("RFID Read, data: "<<rfid_value);
       if ((rfid_value != kept_rfid_value) && (rfid_value != 0)){
         // ROS_INFO_STREAM("[Control] rfid value: "<<rfid_value<<", kept_rfid_value: "<<kept_rfid_value);
-        ROS_INFO("[Control] Stop because rfid is detected.");
+        ROS_INFO("[Control] Stop because rfid is detected. ID: %d", rfid_value);
         rfid_stop = 1;
+        if (rfid_value == control_para.turn_right_rfid_tag){
+          ROS_WARN("[Control] ID: %d is a turn right tag", rfid_value);
+          rfid_stop = 0;
+        }
       }else{
         rfid_stop = 0;
       }
@@ -126,7 +131,12 @@ namespace ns_control
       }
       error_input = magnetic_signal.middle_loc - cur_magnetic_loc; // error -, left turn
     }
-    // Print
+    
+    if(kept_rfid_value == control_para.turn_right_rfid_tag){ // Into turn right
+        if(magnetic_signal.intensity > 4) 
+        { error_input = 3;
+          ROS_INFO("Detected RFID-%d, turn right");}
+      }
     if(loop_number%25 == 0){
       ROS_INFO("[Magnetic] magnetic_error: %d.", error_input);
     }
@@ -149,10 +159,16 @@ namespace ns_control
   void Control::updateManualSwitchState(){
     // Manual switch state update
     if (loop_number%10 == 0){
-      std::ifstream gpioStream("/sys/class/gpio/gpio377/value");
-      int gpio_value;
-      gpioStream >> gpio_value;
-      manual_switch = gpio_value;
+      std::ifstream stream1("/sys/class/gpio/gpio377/value");
+      int value1;
+      stream1 >> value1;
+      manual_switch = value1;
+
+      std::ifstream stream2("/sys/class/gpio/gpio274/value");
+      int value2;
+      stream2 >> value2;
+      manual_switch_remote = value2; 
+      // ROS_INFO_STREAM("switch 1: " << manual_switch << ", switch 2: " << manual_switch_remote);     
     }
   }
 
@@ -184,7 +200,9 @@ namespace ns_control
     // 2. 【手动开关模式】：关闭 *遥控器使能开关*，只能进行手动开关控制，状态为自动控制/锁止状态。
 
     // choose whether remote enable
-    updateRemoteEnable(); // update eanble remote control button state
+    updateManualSwitchState();
+    if (manual_switch_remote == 1) enable_remote_control = true;
+    else enable_remote_control = false;
     if (control_para.always_enable_manual_switch)enable_remote_control=false;
     if (control_para.always_enable_remote_control)enable_remote_control=true;
 
@@ -198,14 +216,13 @@ namespace ns_control
         control_mode = 3;
         ROS_ERROR("[Control] FATAL: No remote controller detected!");}
     }else{// only manual switch control
-      updateManualSwitchState();
       if (kept_manual_switch!=manual_switch){
         ROS_INFO("Manual switch mode: %d",manual_switch);}
       control_mode = 2;
       if(manual_switch == 0) {
         is_initialized = false;
         auto_control_enable = false;
-        kept_rfid_value = 0;
+        // kept_rfid_value = 0;
         kept_magnetic_loc = 99;
         magnetic_missing_time = 0;}
     }
@@ -213,6 +230,8 @@ namespace ns_control
     double desired_angle;
     int sum;
     int mean_error;
+
+    // if (loop_number%5 == 0){ROS_INFO("control_mode: %d" , control_mode);}
 
     // switch control_mode to control
     switch (control_mode){

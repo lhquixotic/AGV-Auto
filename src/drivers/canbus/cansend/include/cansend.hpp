@@ -41,6 +41,7 @@ struct Para{
   double motor_auto_rpm;
   int steer_offset_left;
   int steer_offset_right;
+  int motor_direction;
 };
 
 class Cansend {
@@ -99,6 +100,11 @@ class Cansend {
   // desired control value    
   int desired_motor_rpm_l;
   int desired_motor_rpm_r;
+
+  // light control
+  int light_state;
+  void light_on();
+  void light_off();
 
   // manual switch
   // int manual_switch;

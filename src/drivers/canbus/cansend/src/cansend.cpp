@@ -31,13 +31,9 @@ Cansend::Cansend(ros::NodeHandle &nh) : nh_(nh) ,
   desired_motor_rpm_r = 0;
   desired_motor_rpm_l = 0;
   
-  // std::ofstream dirStream("/sys/class/gpio/gpio392/value");
-  // std::ifstream dirStream("/sys/devices/c2f0000.gpio/gpiochip1/gpio/gpio392/value");
-  // dirStream.open("/sys/class/gpio/gpio392/value");
-
-  // if (!dirStream){
-  //   ROS_WARN("[Light] Unable to open GPIO392.");
-  // }
+  // light initialization
+  light_off();
+  light_state = 0;
   
 };
 
@@ -85,6 +81,7 @@ void Cansend::sendSteerReq(double steer_cmd, int device_id){
 }
 
 void Cansend::sendSteerInfo(double des_steer_l, double des_steer_r){
+  // ROS_INFO_STREAM(para.steer_offset_left<<","<<para.steer_offset_right);
   int32_t left_steer_value = para.steer_offset_left + des_steer_l * 8664;
   uint16_t left_steer_angle_h = (left_steer_value & 0xffff0000) >> 16;
   uint16_t left_steer_angle_l = left_steer_value & 0x0000ffff; 
@@ -104,6 +101,17 @@ void Cansend::sendSteerInfo(double des_steer_l, double des_steer_r){
     case 5: steer_control->setConductSteer(2); break;
     default: break;
   }
+}
+
+void Cansend::light_on(){
+  std::ofstream dirStream("/sys/class/gpio/gpio392/value");
+  int signal = 1;
+  dirStream << signal;
+}
+void Cansend::light_off(){
+  std::ofstream dirStream("/sys/class/gpio/gpio392/value");
+  int signal = 0;
+  dirStream << signal;
 }
 
 void Cansend::standStillControl(){
@@ -206,16 +214,15 @@ void Cansend::runAlgorithm() {
     desired_motor_rpm_l = clamp(desired_motor_rpm_l,-para.motor_max_rpm,para.motor_max_rpm);
     desired_motor_rpm_r = clamp(desired_motor_rpm_r,-para.motor_max_rpm,para.motor_max_rpm);
     
-    motor_control->SetMotor1SpeedCon(-desired_motor_rpm_l);
-    motor_control->SetMotor2SpeedCon(desired_motor_rpm_r);
+    motor_control->SetMotor1SpeedCon(-para.motor_direction * desired_motor_rpm_l);
+    motor_control->SetMotor2SpeedCon(para.motor_direction * desired_motor_rpm_r);
     kept_remote_mode = remote_mode;
 
     // Warning light control
-    if(loop_number%50 == 0){
-      std::ofstream dirStream("/sys/class/gpio/gpio392/value");
-      int signal = 0;
-      if (std::abs(desired_motor_rpm_l) > 100){signal = 1;}
-      dirStream << signal;
+    if (std::abs(desired_motor_rpm_l) > 100){
+      if (light_state == 0) {light_on(); light_state = 1;}
+    }else{
+      if (light_state == 1) {light_off(); light_state = 0;}
     }
   }
   loop_number += 1;

@@ -6,32 +6,34 @@
     <include file = "$(find canparse)/launch/canparse.launch"></include>
     <node name="cansend_node" pkg="cansend" type="cansend" output="screen" respawn="true">
         <rosparam command="load" file="$(find cansend)/config/cansend.yaml" />
-        <param name="cansend_para/motor_direction" value="1"/>
-        <param name="cansend_para/steer_offset_left" value="-17000"/>
-        <param name="cansend_para/steer_offset_right" value="26000"/>
+        <param name="cansend_para/motor_direction" value="-1"/>
+        <param name="cansend_para/steer_offset_left" value="-10000"/>
+        <param name="cansend_para/steer_offset_right" value="-1095000"/>
     </node>
     <!-- serial setup -->
     <node name="serial_com_remote_node" pkg="serial_com" type="serial_com" output="screen">
-        <param name="port" value="/dev/ttyUSB0"/>
+        <param name="port" value="/dev/ttyUSB1"/>
         <param name="baud" value="115200"/>
         <param name="node_rate" value="25"/>
         <param name="serial_info_topic_name" value="/drivers/remote/signals"/>
         <param name="device" value="remote" />
     </node>
     <node name="serial_com_rfid_node" pkg="serial_com" type="serial_com" output="screen">
-        <param name="port" value="/dev/ttyUSB1"/>
+        <param name="port" value="/dev/ttyUSB0"/>
         <param name="baud" value="115200"/>
         <param name="node_rate" value="50"/>
         <param name="serial_info_topic_name" value="/drivers/rfid/signals"/>
         <param name="device" value="rfid" />
     </node>
+    
     <include file = "$(find remote)/launch/remote.launch"></include>
     <include file = "$(find obstacle_detector)/launch/obstacle_detector.launch"></include>
+    
     <!-- control -->
     <node name="control_node" pkg="control" type="control" output="screen">
         <rosparam command="load" file="$(find control)/config/control.yaml" /> <!--Load parameters from config files-->
         <rosparam command="load" file="$(find control)/config/control_para.yaml" />
         <param name="lane_mid_reference" value="260"/>
-        <param name="turn_right_rfid_tag" value="185"/>
+        <param name="turn_right_rfid_tag" value="226"/>
     </node>
 </launch>
