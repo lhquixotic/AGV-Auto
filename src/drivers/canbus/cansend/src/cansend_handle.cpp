@@ -13,6 +13,7 @@ CansendHandle::CansendHandle(ros::NodeHandle &nodeHandle) :
   loadParameters();
   cansend_.setAnglePidParameters(angle_error_pid_para_);
   cansend_.setParameters(para_);
+  cansend_.setVehicleParams(para_.vehicle_B,para_.vehicle_L);
   subscribeToTopics();
   publishToTopics();
   ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Info);
@@ -62,6 +63,8 @@ void CansendHandle::loadParameters() {
   nodeHandle_.param<int>("cansend_para/steer_offset_left",para_.steer_offset_left,-17000);
   nodeHandle_.param<int>("cansend_para/steer_offset_right",para_.steer_offset_right,26000);
   nodeHandle_.param<int>("cansend_para/motor_direction",para_.motor_direction,1);
+  nodeHandle_.param<double>("cansend_para/vehicle_B",para_.vehicle_B,1.7);
+  nodeHandle_.param<double>("cansend_para/vehicle_L",para_.vehicle_L,3.03);
   
   ROS_INFO_STREAM("[Cansend] Para: test_steer_angle" << para_.test_steer_angle);
   

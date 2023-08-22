@@ -77,13 +77,15 @@ void ControlHandle::loadParameters() {
   nodeHandle_.param<double>("max_steer_angle",control_para_.max_steer_angle,25.0);
   nodeHandle_.param<int>("max_magnetic_missing_time",control_para_.max_magnetic_missing_time,50);
   nodeHandle_.param<int>("lane_mid_reference",control_para_.lane_mid_reference,260);
+  nodeHandle_.param<int>("lane_mid_preview",control_para_.lane_mid_reference,300);
   nodeHandle_.param<int>("visual_scale",control_para_.visual_scale,20);
   nodeHandle_.param<bool>("enable_visual_control",control_para_.enable_visual_control,false);
   nodeHandle_.param<bool>("always_enable_manual_switch",control_para_.always_enable_manual_switch,false);
   nodeHandle_.param<bool>("always_enable_remote_control",control_para_.always_enable_remote_control,false);
   nodeHandle_.param<double>("obstacle_dist_threshold",control_para_.obstacle_dist_threshold,2.50);
   nodeHandle_.param<int>("turn_right_rfid_tag",control_para_.turn_right_rfid_tag,185);
-  
+  nodeHandle_.param<int>("go_straight_rfid_tag",control_para_.go_straight_rfid_tag,226);  
+  nodeHandle_.param<double>("preview_error_p",control_para_.preview_error_p,0);
   
   ROS_INFO_STREAM("Longitudinal control enable: "<<control_para_.longitudinal_control_switch
                   << "; Lateral control enable: "<<control_para_.lateral_control_switch);

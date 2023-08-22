@@ -11,6 +11,7 @@ class VehicleDynamicCal{
     public:
         double calculate_angle(double desired_angle, bool is_left);
         double calculate_whlspd(double desired_vehspd, double desired_angle, bool is_left);
+        void setVehicleParams(double vehicle_B, double vehicle_L);
         VehicleDynamicCal();
 };
 #endif

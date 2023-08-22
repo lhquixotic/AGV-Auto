@@ -9,6 +9,8 @@
         <param name="cansend_para/motor_direction" value="-1"/>
         <param name="cansend_para/steer_offset_left" value="-10000"/>
         <param name="cansend_para/steer_offset_right" value="-1095000"/>
+        <param name="cansend_para/vehicle_B" value="2.0"/>
+        <param name="cansend_para/vehicle_L" value="3.5"/>
     </node>
     <!-- serial setup -->
     <node name="serial_com_remote_node" pkg="serial_com" type="serial_com" output="screen">
@@ -35,5 +37,7 @@
         <rosparam command="load" file="$(find control)/config/control_para.yaml" />
         <param name="lane_mid_reference" value="260"/>
         <param name="turn_right_rfid_tag" value="226"/>
+        <param name="go_straight_rfid_tag" value="185"/>
+        <param name="magnet_error_pid/kp" value="2.5"/>
     </node>
 </launch>

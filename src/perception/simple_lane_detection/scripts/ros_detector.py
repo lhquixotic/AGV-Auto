@@ -66,9 +66,14 @@ def image_callback(msg):
             track_hough = normalize_hough_directions(track_hough)
             track = select_track_line(track_hough, camera_point.x, camera_point.y, flag, last_line)
     
-    if last_line.max() > 0.0:
-        track, ind = smooth_track(track, (last_line))
-        last_counter += ind
+            if last_line.max() > 0.0:
+                track, ind = smooth_track(track, (last_line))
+                if ind > 0:
+                    last_counter += ind
+                else:
+                    last_counter = 0
+            else:
+                last_counter = 0
     track = np.round(track).astype(np.int32)
     track_visualize = visualize_lines(img.copy(), track)
 
@@ -81,7 +86,7 @@ def image_callback(msg):
     point.mid_cx_upper = track[2]
     point.mid_cy_upper = track[3]
     last_line = track.copy()
-    if last_counter == 6:
+    if last_counter == 15:
         last_line = np.zeros((4))
         last_counter = 0
     # point.right_cy_down = track[1]

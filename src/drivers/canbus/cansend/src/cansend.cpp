@@ -67,6 +67,10 @@ void Cansend::setParameters(const Para &msg){
   para = msg;
 }
 
+void Cansend::setVehicleParams(const double vehicle_B, const double vehicle_L){
+  veh_dyn_cal.setVehicleParams(vehicle_B,vehicle_L);
+}
+
 void Cansend::setAnglePidParameters(const Pid_para &msg){
     angle_error_pid_para = msg;
     angle_pid_controller.kp = angle_error_pid_para.kp;

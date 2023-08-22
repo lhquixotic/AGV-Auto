@@ -15,9 +15,12 @@ desired_distance: 5 # m
 max_steer_angle: 40.0 
 max_magnetic_missing_time: 500 # /25s
 lane_mid_reference: 260
+lane_mid_preview: 300
 visual_scale: 35
 enable_visual_control: false
 always_enable_manual_switch: false
 always_enable_remote_control: false
 obstacle_dist_threshold: 2.5
 turn_right_rfid_tag: 185
+go_straight_rfid_tag: 226
+preview_error_p: 0.2

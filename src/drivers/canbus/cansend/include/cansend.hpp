@@ -42,6 +42,8 @@ struct Para{
   int steer_offset_left;
   int steer_offset_right;
   int motor_direction;
+  double vehicle_B;
+  double vehicle_L;
 };
 
 class Cansend {
@@ -60,6 +62,7 @@ class Cansend {
   void setChassisState(common_msgs::ChassisState msg);
   void setParameters(const Para &msg);
   void setAnglePidParameters(const Pid_para &msg);
+  void setVehicleParams(const double vehicle_B, const double vehicle_L);
 
   void runAlgorithm();
 

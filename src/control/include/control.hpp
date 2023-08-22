@@ -30,12 +30,15 @@ struct Para{
   double max_steer_angle;
   int max_magnetic_missing_time;
   int lane_mid_reference;
+  int lane_mid_preview;
   int visual_scale;
   bool enable_visual_control;
   bool always_enable_manual_switch;
   bool always_enable_remote_control;
   double obstacle_dist_threshold;
   int turn_right_rfid_tag;
+  int go_straight_rfid_tag;
+  double preview_error_p;
 };
 
 class Control {
@@ -104,11 +107,14 @@ class Control {
   int kept_rfid_stop;
   int kept_rfid_value;
   int lane_error;
+  int preview_error;
   int manual_switch;
   int kept_manual_switch;
   int manual_switch_remote;
   bool enable_remote_control;
   int error_input;
+  int kept_loop_number;
+  int time_recorder;
 
   int control_mode;
 
@@ -119,7 +125,8 @@ class Control {
 
   int loop_number;
   std::vector<int> error_buffer = std::vector<int> (5,0);
-
+  std::vector<int> switch1_buffer = std::vector<int> (5,0);
+  std::vector<int> switch2_buffer = std::vector<int> (5,0);
 
   // for magnetic memory
   int kept_magnetic_loc;

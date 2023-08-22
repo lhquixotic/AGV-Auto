@@ -19,11 +19,13 @@ namespace ns_control
                                             kept_magnetic_loc = 99;
                                             magnetic_missing_time = 0;
                                             lane_error = 0;
+                                            preview_error = 0;
                                             manual_switch = 0;
                                             manual_switch_remote = 0;
                                             kept_manual_switch = 0;
                                             control_mode = 1;
                                             buzzer_state = 0;
+                                            time_recorder = 0;
                                           };
 
   // Getters
@@ -54,6 +56,8 @@ namespace ns_control
     lane_detection = msg;
     int lane_mid = msg.mid_cx_down;
     lane_error = int((lane_mid - control_para.lane_mid_reference) / control_para.visual_scale);
+    int preview_lane_mid = msg.mid_cx_upper;
+    preview_error = int((preview_lane_mid - control_para.lane_mid_preview) / control_para.visual_scale);
     // ROS_INFO_STREAM("[Visual] lane mid: " << lane_mid);
   }
 
@@ -83,6 +87,14 @@ namespace ns_control
         if (rfid_value == control_para.turn_right_rfid_tag){
           ROS_WARN("[Control] ID: %d is a turn right tag", rfid_value);
           rfid_stop = 0;
+          kept_loop_number = loop_number;
+          time_recorder ++;
+        }
+        if (rfid_value == control_para.go_straight_rfid_tag){
+          ROS_WARN("[Control] ID: %d is a go straight tag", rfid_value);
+          rfid_stop = 0;
+          kept_loop_number = loop_number;
+          time_recorder ++;
         }
       }else{
         rfid_stop = 0;
@@ -144,8 +156,29 @@ namespace ns_control
 
   void Control::visualControl(){
     if (laneDetectionFlag){
-            error_input =  lane_error;
-            ROS_INFO_STREAM("[Visual] lane_error: "<< lane_error);
+            error_input =  lane_error + control_para.preview_error_p * preview_error;
+            if (kept_rfid_value == control_para.turn_right_rfid_tag){
+              // turn right tag
+              if ((time_recorder < 150)&&(time_recorder>0)){
+                error_input = 4;
+                time_recorder ++;
+                ROS_INFO("[TURN RIGHT TAG] error input 4");
+              }else{
+                time_recorder = 0;
+              }
+            }
+            if (kept_rfid_value == control_para.go_straight_rfid_tag){
+              // go straight tag
+              if ((time_recorder < 100)&&(time_recorder>0)){
+                error_input = 0;
+                time_recorder ++;
+                ROS_INFO("[GO STRAIGHT TAG] error input 0");
+              }else{
+                time_recorder = 0;
+              }
+            }
+            ROS_INFO_STREAM("[Visual] lane_error: "<< lane_error<<", with preview: "<< error_input);
+            // << ", up: " << lane_detection.mid_cx_upper<<", down: "<<lane_detection.mid_cx_down);
     }else{
       ROS_WARN("No visual input!");
     }
@@ -162,13 +195,31 @@ namespace ns_control
       std::ifstream stream1("/sys/class/gpio/gpio377/value");
       int value1;
       stream1 >> value1;
-      manual_switch = value1;
+
+      // update switch state use buffer
+      switch1_buffer.erase(switch1_buffer.begin());
+      // add current data
+      switch1_buffer.push_back(value1);
+
+      int sum1 = std::accumulate(std::begin(switch1_buffer), std::end(switch1_buffer), 0);
+      manual_switch =  int(sum1/switch1_buffer.size());
+
+      // manual_switch = value1;
 
       std::ifstream stream2("/sys/class/gpio/gpio274/value");
       int value2;
       stream2 >> value2;
-      manual_switch_remote = value2; 
-      // ROS_INFO_STREAM("switch 1: " << manual_switch << ", switch 2: " << manual_switch_remote);     
+
+      // update switch state use buffer
+      switch2_buffer.erase(switch2_buffer.begin());
+      // add current data
+      switch2_buffer.push_back(value2);
+
+      int sum2 = std::accumulate(std::begin(switch2_buffer), std::end(switch2_buffer), 0);
+      manual_switch_remote =  int(sum2/switch2_buffer.size());
+
+      // manual_switch_remote = value2; 
+      // ROS_INFO_STREAM("switch 1: " << manual_switch << ", switch 2: " << manual_switch_remote); 
     }
   }
 
@@ -245,6 +296,8 @@ namespace ns_control
         kept_rfid_value = 0;
         kept_magnetic_loc = 99;
         magnetic_missing_time = 0;
+        time_recorder = 0;
+        
         if (buzzer_state == 1) {buzzer_off();buzzer_state=0;}
         break;
       case 2:
@@ -269,8 +322,7 @@ namespace ns_control
             control_cmd.linear_velocity = 0;
             control_cmd.steering_angle = 0;
             // buzzer on
-            if(buzzer_state == 0) {buzzer_on();buzzer_state=1;}
-            ROS_WARN("Obstacle detected");
+            if(buzzer_state == 0) {buzzer_on();buzzer_state=1;ROS_WARN("Obstacle detected");}
             break;
           }
           if (buzzer_state == 1) {buzzer_off();buzzer_state=0;}

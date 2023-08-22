@@ -21,6 +21,8 @@ cansend_para:
   steer_offset_left: 10000
   steer_offset_right: -1090000
   motor_direction: 1
+  vehicle_B: 1.7
+  vehicle_L: 3.03
 
 angle_error_pid:
   kp: 0.04

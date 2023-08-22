@@ -7,6 +7,11 @@ VehicleDynamicCal::VehicleDynamicCal(){
     PI = 3.141593;
 }
 
+void VehicleDynamicCal::setVehicleParams(double vehicle_B, double vehicle_L){
+    B = vehicle_B;
+    L = vehicle_L;
+}
+
 double VehicleDynamicCal::calculate_angle(double desired_angle, bool is_left){
     if(std::abs(desired_angle)<2){return desired_angle;}
     double R = L / tan(desired_angle/180*PI);

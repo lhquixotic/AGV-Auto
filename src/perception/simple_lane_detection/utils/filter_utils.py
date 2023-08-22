@@ -10,7 +10,7 @@ def filter_track_hough(img, track_hough, last_line):
 
     for line in track_hough:
         x1, y1, x2, y2 = line.reshape(4)
-        if img[y1, x1, 2]> 200:
+        if img[y1, x1, 2]> 194:
             continue
         parameters = np.polyfit((x1, x2), (y1, y2), 1)
         if abs(parameters[0]) <= 1.0:
